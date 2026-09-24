@@ -1,0 +1,56 @@
+{
+  "pipeline_version": "unified_v2_hu_int16_1mm_iso_gated_registration_2026-09-24",
+  "phase_order": [
+    "NC",
+    "AP",
+    "PVP",
+    "DP"
+  ],
+  "orientation": "LPS",
+  "image_dtype": "int16 Hounsfield units; -1000 outside the acquired field of view",
+  "intensity_policy": "No clipping or normalisation in preprocessing. PLC-CECT is limited to [-200, 200] HU by its 8-bit release; clip all datasets to at most that range in the loader.",
+  "spacing_policy": "all cases resampled once to 1 x 1 x 1 mm on a liver-centred grid",
+  "plc_geometry_policy": "in-plane 0.78125 mm from the 400 mm / 512 protocol; per-phase slice spacing estimated from vertebra centroid distances (estimate_plc_geometry.py)",
+  "registration_dice_gate": 0.8,
+  "case_counts": {
+    "MCT-LTDiag": {
+      "complete": 517,
+      "failed": 0
+    },
+    "PLC-CECT": {
+      "complete": 361,
+      "failed": 0
+    },
+    "WAW-TACE": {
+      "complete": 164,
+      "failed": 0
+    }
+  },
+  "usable_phase_counts": {
+    "MCT-LTDiag": {
+      "NC": 517,
+      "AP": 517,
+      "PVP": 517,
+      "DP": 517
+    },
+    "PLC-CECT": {
+      "NC": 345,
+      "AP": 355,
+      "PVP": 361,
+      "DP": 358
+    },
+    "WAW-TACE": {
+      "NC": 162,
+      "AP": 162,
+      "PVP": 164,
+      "DP": 162
+    }
+  },
+  "sanity_failures": {
+    "MCT-LTDiag": 4,
+    "PLC-CECT": 51,
+    "WAW-TACE": 10
+  },
+  "total_complete": 1042,
+  "total_failed": 0
+}

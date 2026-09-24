@@ -1,0 +1,244 @@
+# LiverPreprocessing
+
+Reproducible conversion of three public multiphase liver CT releases, **MCT-LTDiag**, **PLC-CECT** and **WAW-TACE**, into one representation that a single segmentation / detection network (U-Net style) can consume without any dataset-specific handling:
+
+- four contrast phases per patient, channel order **NC, AP, PVP, DP**, registered to PVP;
+- **int16 Hounsfield units**, no clipping and no normalisation in preprocessing;
+- one **1 x 1 x 1 mm**, LPS-oriented (x -> left, y -> posterior, z -> superior) grid per patient, cropped to the liver plus a 20 mm margin;
+- a binary liver mask and a binary tumour mask on the same grid;
+- patient-level diagnosis labels, connected-lesion size statistics, per-phase registration quality (`usable_*` flags) and geometric sanity flags in a manifest.
+
+Any subset of the three datasets can be processed, and each release folder can be given by its own path. The pipeline is deterministic given the raw releases; the reference outputs we obtained (per-volume PLC geometry, the full manifest, summary counts) are in `reference/` so that a rerun can be checked line by line.
+
+Pipeline version: `unified_v2_hu_int16_1mm_iso_gated_registration_2026-09-24`.
+
+## Why a pipeline is needed at all
+
+The three releases are not on one physical scale, and the PLC-CECT headers are wrong in three ways. Everything below was established by reading the raw files and cross-checking anatomy; details are in the stage descriptions.
+
+| Release | Geometry in the header | Intensity | What the pipeline does |
+|---|---|---|---|
+| MCT-LTDiag | correct (about 0.7-0.8 x 0.7-0.8 x 5 mm, four phases already on one grid) | HU | resample once to 1 mm |
+| WAW-TACE | correct (0.54-0.98 mm in-plane, 0.44-7.5 mm slices), phases on their own grids | HU | register to PVP, resample once to 1 mm |
+| PLC-CECT | **all 1,444 CT files claim 1 x 1 x 1 mm, origin 0, uint8**; the true in-plane spacing is 400 mm / 512 = 0.78125 mm; the slice spacing differs per patient *and per phase* (0.3-8 mm); **1,442 of 1,444 volumes are stored superior-first although the header says k -> superior** | 8-bit window of [-200, 200] HU | recover slice order and spacing per volume from anatomy (stage 0), map back to HU, register, resample once to 1 mm |
+
+With the released headers a network sees PLC livers 22 % too small in-plane, compressed 1-5x along z by a different factor in every phase, upside down, and with an intensity scale that differs from the other two datasets. None of that can be fixed after training.
+
+## Requirements
+
+- Python 3.11 (Windows and Linux; developed on Windows 11)
+- A CUDA GPU for stage 0 (TotalSegmentator 3 mm model, about 1.5 s per volume on an RTX 5000 Ada; CPU works but is slow). Stages 1-2 are CPU only.
+- About 4 GB RAM per conversion worker (8 workers were used on a 32-core, 128 GB machine)
+- Disk: the processed dataset is 48 GB for all three releases
+
+```bash
+python -m venv .venv
+# Windows: .venv\Scripts\activate    Linux: source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m pip install TotalSegmentator      # stage 0 only; pulls nnunetv2 and torch
+python -c "import torch; print(torch.cuda.is_available())"   # must print True for a GPU run
+python scripts/estimate_plc_geometry.py download-weights     # once; ~135 MB into ~/.totalsegmentator
+```
+
+If `pip` installs a CPU-only `torch`, install the CUDA build that matches your driver from <https://pytorch.org> (we used `torch 2.11.0+cu128` with `torchvision 0.26.0+cu128`). Versions used for the reference outputs: TotalSegmentator 2.18.0, nnunetv2 2.8.1, SimpleITK 2.5.6, NumPy 2.4.2, nibabel 5.3.3, SciPy 1.17.1. The weight store can be relocated with the environment variable `TOTALSEG_WEIGHTS_PATH`.
+
+## Raw data layout
+
+Obtain the three releases from their official sources (MCT-LTDiag: per-patient TAR archives plus `meta_info_patient.tab`; PLC-CECT: the released ZIP parts plus `patient_data.csv`, see the data paper <https://doi.org/10.1038/s41597-025-05125-2> and <https://github.com/ljwa2323/PLC_CECT>; WAW-TACE: the Hugging Face image and organ-mask folders plus `ct_hcc_metadata.csv` and `tumor_masks.zip`). Place each release in its own folder; the folders can live anywhere:
+
+```text
+<any path>/MCT-LTDiag/
+    meta_info_patient.tab
+    230218a1.tar                     one TAR per patient (517); each holds NIFTI/{nc,art,pvp,delay}.nii.gz,
+    ...                              mask_pvp.nii.gz and liver_mask_pvp.nii.gz
+<any path>/PLC-CECT/
+    patient_data.csv                 patient_id, phase (P/C1/C2/C3), cancer_type, ct_path, mask_path, liver_mask_path
+    raw-*.zip                        the released ZIP parts (1,444 CT, 1,444 liver masks, tumour masks)
+<any path>/WAW-TACE/
+    ct_hcc_metadata.csv              patient_id, ct_phase (0-3), ct_file_name, tumor_count, slice_thickness
+    tumor_masks.zip                  <patient>_<phase>_<lesion>_tumor_seg.nrrd
+    huggingface/images/<file>.nii.gz
+    huggingface/organ_masks/<file>.nii.gz   TotalSegmentator-style organ labels; label 5 = liver
+```
+
+When the three folders share one parent and carry these names, `--raw-root <parent>` is enough. Otherwise give `--mct-root`, `--plc-root`, `--waw-root` explicitly; an explicit path always wins.
+
+## Run
+
+Always run the runner with the interpreter of the environment above (stage 0 imports TotalSegmentator). Print the resolved release folders, the WAW cohort size and the exact stage commands without writing anything:
+
+```bash
+python scripts/run_unified_preprocessing.py \
+    --raw-root /data/raw \
+    --output-root /data/processed/unified \
+    --workers 8 --dry-run
+```
+
+Full conversion of the three datasets (remove `--dry-run`). The same command resumes an interrupted run: measured PLC volumes and cases already at the current pipeline version are skipped.
+
+```bash
+python scripts/run_unified_preprocessing.py \
+    --raw-root /data/raw \
+    --output-root /data/processed/unified \
+    --workers 8
+```
+
+A single dataset, with its folder given explicitly (stage 0 runs only when PLC-CECT is selected; the WAW cohort is only derived when WAW-TACE is selected):
+
+```bash
+python scripts/run_unified_preprocessing.py \
+    --datasets MCT-LTDiag \
+    --mct-root /somewhere/else/MCT-LTDiag \
+    --output-root /data/processed/unified \
+    --workers 8
+
+python scripts/run_unified_preprocessing.py \
+    --datasets PLC-CECT WAW-TACE \
+    --plc-root /disk1/PLC-CECT --waw-root /disk2/WAW-TACE \
+    --output-root /data/processed/unified \
+    --workers 8
+```
+
+Rebuild cases produced by an older pipeline version in place. Each case is rebuilt in `.staging/` and moved into `cases/<case_id>/` only when complete, so an interrupted replacement leaves every case either old or new, never mixed:
+
+```bash
+python scripts/run_unified_preprocessing.py \
+    --raw-root /data/raw --output-root /data/processed/unified \
+    --workers 8 --replace-datasets PLC-CECT MCT-LTDiag WAW-TACE
+```
+
+Windows PowerShell uses the same options (`.\.venv\Scripts\python.exe scripts\run_unified_preprocessing.py --raw-root D:\raw ...`).
+
+### Stages and run time
+
+| Stage | Script | Input | Output | Time (reference run) |
+|---|---|---|---|---|
+| 0 | `estimate_plc_geometry.py all` | PLC-CECT release | `manifests/plc_geometry.csv`, `manifests/plc_geometry/` | 71 min for 1,444 volumes, one GPU |
+| 1 | `preprocess_multiphase_ct.py` | releases + `plc_geometry.csv` | `cases/`, `dataset_manifest.csv`, `summary.json`, `failures.json` | about 5 h for 1,042 cases with 8 workers (MCT-LTDiag alone about 40 min; the registered datasets dominate) |
+| 2 | `prepare_hierarchical_labels.py` | `cases/` | labels in `case.json` and the manifest, `lesion_size_statistics.csv`, `lesion_size_summary.csv`, `label_schema.json` | 3 min |
+
+The runner stops at the first stage that fails. Every stage can also be started on its own with the options shown by `--help`.
+
+## Stage 0: PLC-CECT geometry recovery
+
+For each of the 1,444 released PLC volumes:
+
+1. Read the CT and the released liver mask, map the 8-bit values to HU (`HU = v / 255 * 400 - 200`), set the in-plane spacing to 0.78125 mm.
+2. Initial slice-spacing guess = 170 mm / (liver slices), 170 mm being the median liver craniocaudal extent of MCT-LTDiag and WAW-TACE. The guess only scales the model input; the final estimate does not depend on it. A released mask that spans less than 40 % of a volume is treated as a failed segmentation: a second pass uses 170 mm / (0.96 x volume slices) and the pass with the more consistent vertebra labels is kept.
+3. Slice order. The liver area per slice tapers abruptly at the dome and slowly at the inferior tip; the sign of that asymmetry gives the stored order. The four phases of a patient are cross-checked by correlating their profiles (a phase counts as reversed relative to PVP only when the reversed correlation beats the direct one by 0.05) and the patient decision is the sum of the aligned margins. On MCT-LTDiag and WAW-TACE, whose headers are trusted, this rule is right in 80 of 80 cases.
+4. The TotalSegmentator 3 mm model (task 297, fold 0, no mirroring) is run in-process through the nnU-Net predictor on the volume resampled to 3 mm in RAS voxel order (running the TotalSegmentator command line costs 60-150 s per volume on Windows because of process spawning; in-process it is about 1.5 s). The detected vertebrae are sorted along z and scored Kendall-style (+1 per pair whose levels ascend with z, lumbar below thoracic, -1 per inverted pair). Below a score of 4 the other slice order is segmented too and the more consistent one is kept. On the release 1,442 volumes are reversed; the profile rule was overridden by the vertebra order in 78 volumes (33 patients, mostly one phase stored in the other order).
+5. Slice spacing per volume = sum of reference distances / sum of measured centroid distances (in slices) over consecutive vertebra pairs with adjacent levels that do not touch the volume edge. Adult reference distances between consecutive vertebral centroids (mm): T7-T8 23.5, T8-T9 24.5, T9-T10 25.5, T10-T11 27.0, T11-T12 29.0, T12-L1 31.5, L1-L2 33.5, L2-L3 35.0, L3-L4 35.5, L4-L5 35.0 (a generic 30 mm is used only when no level-specific pair exists).
+6. Fusion per patient: the liver spans the same physical z range in every phase, so `spacing_phase = L / liver_slices_phase` with one shared `L`, the weighted median of the per-phase products. A phase whose own estimate (>= 2 level-specific pairs) disagrees with the shared value by more than 15 % keeps its own estimate (its scan or mask does not cover the same range; `spacing_z_source = vertebrae_this_phase_liver_extent_inconsistent`).
+7. Confidence: `high` when at least two phases agree within 10 %, `medium` within 20 % or for a phase that keeps its own estimate, `low` otherwise.
+8. Volumes whose released liver mask is empty or covers less than 60 % of the segmented liver get the TotalSegmentator liver written to `manifests/plc_geometry/liver_fallback/` and stage 1 uses it instead (25 volumes in the release).
+
+Accuracy: individual stature adds about +/-8 % to population reference distances; within a patient the four phases agree to a median 8.5 % (max-min of the implied liver extents), so the per-volume noise is about +/-5 %. Expect +/-10 % on the slice spacing, about +/-3 % on an equivalent spherical diameter. Over the 1,438 volumes with a vertebra estimate the ratio to the nearest nominal reconstruction increment has median 1.01 (interquartile 0.97-1.06) with histogram peaks at 0.65-0.7, 0.8, 1.0, 1.45, 2.05 and 5.2-5.6 mm, so the reference table is unbiased at the population level and `--reference-scale` stays at 1.0. Estimates are kept continuous; the release mixes increments such as 0.3, 0.6, 0.65, 0.8, 1.0, 1.25, 1.5, 2, 2.5, 5 and 7.5 mm and the peaks overlap. Result: 0.29-8.05 mm (p5 0.64, median 1.19, p95 5.6); confidence high 724 / medium 660 / low 60 volumes.
+
+Outputs: `plc_geometry.csv` (one row per volume: spacing, `k_axis_flip`, sources, confidence, liver extent, vertebra levels, fallback file), `plc_geometry/plc_vertebra_measurements.jsonl` (raw measurements, append-only, resumable), `plc_geometry/plc_geometry_summary.json`.
+
+## Stage 1: conversion
+
+| Dataset | Phase mapping, reference | Geometry source | Registration | Intensity |
+|---|---|---|---|---|
+| MCT-LTDiag | released NC / arterial / PVP / delay; PVP reference | released headers | released cross-phase correspondence (identity) | released HU |
+| PLC-CECT | P, C1, C2, C3 -> NC, AP, PVP, DP; C2 / PVP reference | `plc_geometry.csv` | liver-mask rigid / affine + MI B-spline to PVP, Dice gate 0.80 | 8-bit window mapped back to [-200, 200] HU |
+| WAW-TACE | phases 0-3 -> NC, AP, PVP, DP; PVP reference; tumour annotated in one phase (AP 90, PVP 48, DP 24, NC 2) and propagated to PVP | released headers | same as PLC-CECT | released HU |
+
+Registration of each non-reference phase (PLC-CECT, WAW-TACE):
+
+1. Initial transform: translation from the liver-mask centroids.
+2. Rigid (`Euler3DTransform`) and affine (`AffineTransform`), both optimised with mean squares between the two liver masks smoothed with a 4 mm Gaussian on a grid of at least 4 mm inside the liver bounding box plus 30 mm, three resolution levels, regular-step gradient descent with physical-shift scaling. Because both phases have a liver mask this stage cannot collapse the way an intensity metric with a moving-image mask does. The affine candidate is accepted only when all three axis scales lie within 0.85-1.18: inside that range the z scale absorbs residual PLC slice-spacing error; outside it the two masks do not cover the same anatomy and the rigid candidate is used (`affine.rejected` in `case.json`).
+3. B-spline: Mattes mutual information (32 bins, 20 % random samples inside the reference liver dilated by 10 mm, no moving mask) between the HU images clipped to [-200, 300], control-point spacing about 40 mm, L-BFGS-B, initialised from the best of the centroid, rigid and affine candidates.
+4. Selection: the B-spline candidate is kept when its liver Dice is within 0.02 of its base; otherwise the highest liver Dice wins. Tumour masks never influence the transform.
+5. Gate: `usable = final liver Dice >= 0.80`. Failed phases are still resampled and written but flagged in `case.json` (`registrations.<phase>.usable`) and in the manifest (`usable_nc`, `usable_ap`, `usable_dp`, `usable_phases`). For WAW-TACE the tumour mask is propagated from the annotated phase; `tumour_mask_reliable = 0` when that phase failed the gate.
+
+Output grid: the reference liver mask united with the tumour mask, padded by 20 mm, defines a box on the reference native grid; the output is a 1 mm grid whose origin is the physical position of that box's first voxel centre. Every channel is produced by **one** interpolation from its native grid through its transform onto this grid (linear for images, nearest neighbour for masks, `-1000` HU outside the acquired field). Images are rounded to int16. Because all outputs are LPS with an identity direction, the arrays can be used directly; the origin only places a case in its scanner's world coordinates, which is why different patients do not overlap in a viewer and why no cross-patient alignment is needed.
+
+Sanity checks, recorded per case (`sanity.flags`, `sanity_pass`) and never blocking: reference field of view outside 250-500 mm; any phase slice spacing outside 0.4-7 mm; zero origin (non-PLC); liver volume outside 500-3,500 mL or empty; a phase whose liver z extent differs by more than 30 % from the reference phase; a phase below the Dice gate.
+
+## Stage 2: labels and lesion sizes
+
+`tumor_mask.nii.gz` is a semantic binary mask (0 background, 1 liver lesion). Patient-level targets in `case.json` and the manifest: lesion presence (absent / present), behaviour (benign / malignant / not applicable), origin (primary hepatic / extrahepatic metastatic / not applicable), coarse diagnosis (control, HH, HCC, ICC, cHCC-CCA, metastasis), fine diagnosis (CN, HH, HCC, ICC, cHCC-CCA, CRLM, BCLM); controls use -1 for behaviour and origin so those losses can be masked. A lesion is one 26-connected component on the 1 mm grid; its volume is converted to an equivalent spherical diameter (ESD) with bins 0-5, 5-10, 10-15 and > 15 mm (closed upper bounds); no minimum component size; ESD is not the RECIST longest diameter.
+
+## Output layout
+
+```text
+<output-root>/
+├── cases/
+│   └── <DATASET>_<patient>/
+│       ├── image_nc.nii.gz            int16 HU, 1 mm, LPS
+│       ├── image_ap.nii.gz
+│       ├── image_pvp.nii.gz
+│       ├── image_dp.nii.gz
+│       ├── liver_mask.nii.gz          uint8 {0, 1}
+│       ├── tumor_mask.nii.gz          uint8 {0, 1}
+│       ├── transform_<phase>_to_pvp.h5   PLC-CECT and WAW-TACE only
+│       └── case.json
+├── manifests/
+│   ├── waw_four_phase_patients.csv
+│   ├── plc_geometry.csv
+│   └── plc_geometry/                  measurements, summary, liver_fallback/
+├── dataset_manifest.csv
+├── failures.json
+├── summary.json
+├── label_schema.json
+├── lesion_size_statistics.csv
+└── lesion_size_summary.csv
+```
+
+`case.json` records the pipeline version, reference phase, `usable_phases`, per-phase registration details (selected stage, Dice of every candidate, affine axis scales, optimiser stop conditions, errors, transform file), the native geometry of every phase, the PLC geometry provenance, the crop box, output geometry, intensity source and valid range, sanity results, liver volume and the archive members every input came from. `dataset_manifest.csv` has one row per case with the same information flattened (native slice spacing per phase, `spacing_source`, `spacing_confidence`, `intensity_valid_range_hu`, Dice and `usable_*` per phase, `tumour_mask_reliable`, `sanity_pass`, `sanity_flags`) plus the label and lesion-size columns.
+
+## Using the output as one network input
+
+- Load the four channels, clip to at most [-200, 200] HU (the PLC valid range; MCT / WAW are unclipped in storage) and normalise in the loader. Everything is already 1 mm isotropic, LPS, liver-centred; array sizes differ per case, so pad or crop in the loader.
+- Honour `usable_nc/ap/dp`: zero or drop a flagged channel (phase dropout) rather than training on a misaligned one. PVP is always usable.
+- Honour `tumour_mask_reliable` (WAW-TACE) and `sanity_pass` when selecting training cases.
+- For size-stratified evaluation use the native slice spacing (`native_spacing_z_*_mm`) and `spacing_confidence`: a 5 mm native slice cannot resolve a 3 mm lesion whatever the output grid says, and PLC sizes carry the estimation uncertainty.
+- Make patient-level splits after preprocessing; all phases and lesions of one patient stay together.
+
+## Reference outputs and checks
+
+Numbers obtained on 2026-09-24 from the current releases (also in `reference/`):
+
+| Dataset | Cases | Lesion-positive | Lesions | ESD 0-5 / 5-10 / 10-15 / > 15 mm | All four phases usable | Sanity flags |
+|---|---:|---:|---:|---|---:|---:|
+| MCT-LTDiag | 517 | 517 | 2,159 | 508 / 458 / 323 / 870 | 517 | 4 |
+| PLC-CECT | 361 | 278 | 343 | 1 / 9 / 23 / 310 | 344 | 51 |
+| WAW-TACE | 164 | 164 | 262 | 3 / 9 / 19 / 231 | 162 | 10 |
+| Combined | 1,042 | 959 | 2,764 | 512 / 476 / 365 / 1,411 | 1,023 | 65 |
+
+Liver Dice after the selected transform (median NC / AP / DP, phases below the 0.80 gate): PLC-CECT 0.94 / 0.96 / 0.97 (16 / 6 / 3); WAW-TACE 0.96 / 0.97 / 0.97 (2 / 2 / 2, the two whole-body scans 33 and 34 whose released organ masks are inconsistent with their CT). On the nominal 1 mm grid of the release PLC-CECT appeared to contain dozens of sub-15 mm lesions; on the recovered geometry 33 of 343 components are <= 15 mm.
+
+`reference/` holds `plc_geometry.csv` (per-volume slice order and spacing), `plc_geometry_summary.json`, `dataset_manifest.csv` (one row per case with every quality field), `lesion_size_summary.csv` and `summary.json`. A rerun should reproduce the counts above exactly and the PLC spacings to within numerical noise (registration uses fixed random seeds; TotalSegmentator inference is deterministic on one GPU model but may differ in the last digit across GPU generations).
+
+Checks after a run:
+
+```bash
+python -m unittest discover -s tests -v                       # conventions, runner, labels
+python scripts/verify_unified_v2_output.py --root /data/processed/unified
+```
+
+The verifier reads every case (six files present, identical 1 mm grids, int16 images, binary uint8 masks, current pipeline version) and prints per-dataset counts, usable-phase sets and sanity-flag kinds; `summary.json` and `failures.json` give the completion and failure inventory.
+
+## Limitations
+
+- PLC-CECT slice spacing is an anatomical estimate (+/-10 %) and the slice-order correction is inferred, not documented by the authors (GitHub issues #3 and #7 of `ljwa2323/PLC_CECT` had no answer at the time of writing); PLC intensities above 200 HU are saturated by the release.
+- MCT-LTDiag was acquired at 5 mm slices; its 1 mm grid is interpolated. WAW-TACE mixes 0.44-7.5 mm native slices.
+- Registration quality is measured on the liver boundary only; a passed gate does not guarantee millimetre alignment of small lesions across phases.
+- The three datasets have different populations and annotation protocols (WAW-TACE: HCC only, TACE setting); a shared mask encoding does not make their disease distributions identical.
+
+## Repository layout
+
+```text
+scripts/run_unified_preprocessing.py    stages 0-2 in order, dataset selection, per-dataset roots, dry run, resume, replace
+scripts/estimate_plc_geometry.py        stage 0 (download-weights / measure / solve / all)
+scripts/preprocess_multiphase_ct.py     stage 1
+scripts/prepare_hierarchical_labels.py  stage 2
+scripts/verify_unified_v2_output.py     read-only completion check
+tests/                                  unit tests (unittest)
+reference/                              outputs of the reference run
+requirements.txt
+```
+
+No SHA-256 hashes are computed or required anywhere; completeness is checked by file inventories, geometry and counts.

@@ -1,0 +1,39 @@
+{
+  "geometry_version": "plc_geometry_v2_totalsegmentator3mm_2026-09-24",
+  "patients": 361,
+  "volumes": 1444,
+  "reference_scale": 1.0,
+  "spacing_z_mm_percentiles": {
+    "p0": 0.291,
+    "p5": 0.64,
+    "p25": 0.855,
+    "p50": 1.189,
+    "p75": 2.098,
+    "p95": 5.585,
+    "p100": 8.049
+  },
+  "k_axis_flipped_volumes": 1442,
+  "orientation_source_counts": {
+    "dataset_default_no_liver_profile+vertebra_order_confirmed": 10,
+    "dataset_default_no_liver_profile+vertebra_order_unconfirmed": 2,
+    "liver_profile+vertebra_order_confirmed": 1324,
+    "liver_profile+vertebra_order_weakly_confirmed": 6,
+    "liver_profile_weak+vertebra_order_confirmed": 23,
+    "liver_profile_weak+vertebra_order_weakly_confirmed": 1,
+    "totalsegmentator_vertebra_order_override": 78
+  },
+  "confidence_counts": {
+    "high": 724,
+    "low": 60,
+    "medium": 660
+  },
+  "source_counts": {
+    "vertebrae_shared_liver_extent": 1321,
+    "vertebrae_this_phase_liver_extent_inconsistent": 123
+  },
+  "liver_extent_mm_percentiles": {
+    "p5": 111.8,
+    "p50": 159.5,
+    "p95": 197.1
+  }
+}

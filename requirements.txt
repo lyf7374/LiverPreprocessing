@@ -1,0 +1,5 @@
+numpy>=1.26
+SimpleITK>=2.3
+nibabel>=5.2
+scipy>=1.11
+# Stage 0 additionally needs: pip install TotalSegmentator  (2.18.0 / nnunetv2 2.8.1 used) and a CUDA build of torch/torchvision
