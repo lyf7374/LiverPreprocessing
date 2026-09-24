@@ -88,6 +88,19 @@ PIPELINE_VERSION = "unified_v2_hu_int16_1mm_iso_gated_registration_2026-09-24"
 
 PLC_IN_PLANE_SPACING_MM = 400.0 / 512.0  # 0.78125 mm: 400 mm display FOV, 512 matrix
 PLC_WINDOW_HU = (-200.0, 200.0)
+# The PLC-CECT authors state a window of level 0 / width 400, i.e. [-200, 200] HU,
+# and the stored values follow that statement.  Measured against MCT-LTDiag and
+# WAW-TACE, PLC tissues come out about 35-40 HU too low (non-contrast liver
+# parenchyma 12 HU instead of ~55, portal-venous liver 66 instead of ~97, fat
+# -133 instead of ~-98), which suggests the release was actually windowed at
+# level 40.  The stored data are not altered; the offset is recorded so that a
+# loader can add it.
+PLC_INTENSITY_OFFSET_RECOMMENDED_HU = 40.0
+INTENSITY_OFFSET_BASIS = (
+    "Empirical: liver parenchyma (NC and PVP) and fat in PLC-CECT measure 35-40 HU below "
+    "MCT-LTDiag / WAW-TACE and below physiological values under the authors' stated "
+    "[-200, 200] window. Add this offset in the loader for cross-dataset consistency."
+)
 TARGET_SPACING_MM = (1.0, 1.0, 1.0)
 OUT_OF_FIELD_HU = -1000.0
 REGISTRATION_CLIP_HU = (-200.0, 300.0)
@@ -1384,6 +1397,12 @@ def process_case(
                     if intensity_kind == "released_uint8_windowed"
                     else "Unclipped HU; clip in the data loader (e.g. [-200, 200]) for cross-dataset consistency."
                 ),
+                "intensity_offset_hu_recommended": (
+                    PLC_INTENSITY_OFFSET_RECOMMENDED_HU if intensity_kind == "released_uint8_windowed" else 0.0
+                ),
+                "intensity_offset_basis": (
+                    INTENSITY_OFFSET_BASIS if intensity_kind == "released_uint8_windowed" else "none"
+                ),
                 "image_read_details": image_read_details,
                 "tumour_annotation_files": len(tumour_inputs),
                 "tumour_voxels": tumour_voxels,
@@ -1490,6 +1509,14 @@ def manifest_row(record: dict[str, Any]) -> dict[str, Any]:
             if record.get("intensity_valid_range_hu")
             else ("full" if record["status"] == "complete" else "")
         ),
+        "intensity_offset_hu_recommended": (
+            record.get(
+                "intensity_offset_hu_recommended",
+                PLC_INTENSITY_OFFSET_RECOMMENDED_HU if record.get("intensity_kind") == "released_uint8_windowed" else 0.0,
+            )
+            if record["status"] == "complete"
+            else ""
+        ),
         "registration_liver_dice_nc": dice("NC"),
         "registration_liver_dice_ap": dice("AP"),
         "registration_liver_dice_dp": dice("DP"),
@@ -1552,7 +1579,10 @@ def write_manifest(output_root: Path, run_records: list[dict[str, Any]]) -> None
         "image_dtype": "int16 Hounsfield units; -1000 outside the acquired field of view",
         "intensity_policy": (
             "No clipping or normalisation in preprocessing. PLC-CECT is limited to "
-            "[-200, 200] HU by its 8-bit release; clip all datasets to at most that range in the loader."
+            "[-200, 200] HU by its 8-bit release; clip all datasets to at most that range in the loader. "
+            f"PLC-CECT values are stored as the authors' stated window maps them; add the manifest column "
+            f"intensity_offset_hu_recommended ({PLC_INTENSITY_OFFSET_RECOMMENDED_HU:.0f} HU for PLC-CECT, 0 otherwise) "
+            "in the loader before clipping."
         ),
         "spacing_policy": "all cases resampled once to 1 x 1 x 1 mm on a liver-centred grid",
         "plc_geometry_policy": (

@@ -8,7 +8,7 @@
   ],
   "orientation": "LPS",
   "image_dtype": "int16 Hounsfield units; -1000 outside the acquired field of view",
-  "intensity_policy": "No clipping or normalisation in preprocessing. PLC-CECT is limited to [-200, 200] HU by its 8-bit release; clip all datasets to at most that range in the loader.",
+  "intensity_policy": "No clipping or normalisation in preprocessing. PLC-CECT is limited to [-200, 200] HU by its 8-bit release; clip all datasets to at most that range in the loader. PLC-CECT values are stored as the authors' stated window maps them; add the manifest column intensity_offset_hu_recommended (40 HU for PLC-CECT, 0 otherwise) in the loader before clipping.",
   "spacing_policy": "all cases resampled once to 1 x 1 x 1 mm on a liver-centred grid",
   "plc_geometry_policy": "in-plane 0.78125 mm from the 400 mm / 512 protocol; per-phase slice spacing estimated from vertebra centroid distances (estimate_plc_geometry.py)",
   "registration_dice_gate": 0.8,

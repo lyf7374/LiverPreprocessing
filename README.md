@@ -178,6 +178,25 @@ Output grid: the reference liver mask united with the tumour mask, padded by 20 
 
 Sanity checks, recorded per case (`sanity.flags`, `sanity_pass`) and never blocking: reference field of view outside 250-500 mm; any phase slice spacing outside 0.4-7 mm; zero origin (non-PLC); liver volume outside 500-3,500 mL or empty; a phase whose liver z extent differs by more than 30 % from the reference phase; a phase below the Dice gate.
 
+### Known intensity offset of PLC-CECT (recorded, not altered)
+
+The PLC-CECT authors state that the release was windowed to [-200, 200] HU (level 0, width 400; paper and `window_adjust.py`), and the stored values follow that statement (`HU = v / 255 * 400 - 200`). Measured against the other two datasets, PLC tissues come out systematically lower:
+
+| Tissue (median over 25-40 cases per dataset) | MCT-LTDiag | WAW-TACE | PLC-CECT | PLC offset |
+|---|---:|---:|---:|---:|
+| Non-contrast liver parenchyma, HU | 57 | 49 | 12 | about -41 |
+| Portal-venous liver parenchyma, HU | 101 | 93 | 66 | about -31 |
+| Portal-venous fat peak, HU | -101 | -95 | -133 | about -35 |
+
+A non-contrast liver of 12 HU is not physiological (about 55 HU is), and fat shows the same shift, so the release was most likely windowed at level 40 ([-160, 240] HU) rather than level 0. Because the authors document level 0 and we have no DICOM to settle it, the stored voxels keep the authors' mapping. The offset is recorded instead: `case.json` carries `intensity_offset_hu_recommended` (40 for PLC-CECT, 0 for the other datasets) and `intensity_offset_basis`, and the manifest has the column `intensity_offset_hu_recommended`. A loader should add it before clipping:
+
+```python
+hu = image.astype(np.float32) + float(row["intensity_offset_hu_recommended"])
+x = np.clip(hu, -200, 200) / 200.0          # same tissue -> same value in all three datasets
+```
+
+Without the offset a network trained on MCT-LTDiag and WAW-TACE still segmented unseen PLC-CECT livers with a mean Dice of 0.89 (a small 3D U-Net, 1,500 iterations), so the shift is not large enough to break mixed training; applying it makes the three intensity distributions coincide.
+
 ## Stage 2: labels and lesion sizes
 
 `tumor_mask.nii.gz` is a semantic binary mask (0 background, 1 liver lesion). Patient-level targets in `case.json` and the manifest: lesion presence (absent / present), behaviour (benign / malignant / not applicable), origin (primary hepatic / extrahepatic metastatic / not applicable), coarse diagnosis (control, HH, HCC, ICC, cHCC-CCA, metastasis), fine diagnosis (CN, HH, HCC, ICC, cHCC-CCA, CRLM, BCLM); controls use -1 for behaviour and origin so those losses can be masked. A lesion is one 26-connected component on the 1 mm grid; its volume is converted to an equivalent spherical diameter (ESD) with bins 0-5, 5-10, 10-15 and > 15 mm (closed upper bounds); no minimum component size; ESD is not the RECIST longest diameter.
@@ -208,11 +227,11 @@ Sanity checks, recorded per case (`sanity.flags`, `sanity_pass`) and never block
 └── lesion_size_summary.csv
 ```
 
-`case.json` records the pipeline version, reference phase, `usable_phases`, per-phase registration details (selected stage, Dice of every candidate, affine axis scales, optimiser stop conditions, errors, transform file), the native geometry of every phase, the PLC geometry provenance, the crop box, output geometry, intensity source and valid range, sanity results, liver volume and the archive members every input came from. `dataset_manifest.csv` has one row per case with the same information flattened (native slice spacing per phase, `spacing_source`, `spacing_confidence`, `intensity_valid_range_hu`, Dice and `usable_*` per phase, `tumour_mask_reliable`, `sanity_pass`, `sanity_flags`) plus the label and lesion-size columns.
+`case.json` records the pipeline version, reference phase, `usable_phases`, per-phase registration details (selected stage, Dice of every candidate, affine axis scales, optimiser stop conditions, errors, transform file), the native geometry of every phase, the PLC geometry provenance, the crop box, output geometry, intensity source and valid range, sanity results, liver volume and the archive members every input came from. `dataset_manifest.csv` has one row per case with the same information flattened (native slice spacing per phase, `spacing_source`, `spacing_confidence`, `intensity_valid_range_hu`, `intensity_offset_hu_recommended`, Dice and `usable_*` per phase, `tumour_mask_reliable`, `sanity_pass`, `sanity_flags`) plus the label and lesion-size columns.
 
 ## Using the output as one network input
 
-- Load the four channels, clip to at most [-200, 200] HU (the PLC valid range; MCT / WAW are unclipped in storage) and normalise in the loader. Everything is already 1 mm isotropic, LPS, liver-centred; array sizes differ per case, so pad or crop in the loader.
+- Load the four channels, add the manifest's `intensity_offset_hu_recommended` (40 HU for PLC-CECT, see above), clip to at most [-200, 200] HU (the PLC valid range; MCT / WAW are unclipped in storage) and normalise in the loader. Everything is already 1 mm isotropic, LPS, liver-centred; array sizes differ per case, so pad or crop in the loader.
 - Honour `usable_nc/ap/dp`: zero or drop a flagged channel (phase dropout) rather than training on a misaligned one. PVP is always usable.
 - Honour `tumour_mask_reliable` (WAW-TACE) and `sanity_pass` when selecting training cases.
 - For size-stratified evaluation use the native slice spacing (`native_spacing_z_*_mm`) and `spacing_confidence`: a 5 mm native slice cannot resolve a 3 mm lesion whatever the output grid says, and PLC sizes carry the estimation uncertainty.
@@ -244,7 +263,7 @@ The verifier reads every case (six files present, identical 1 mm grids, int16 im
 
 ## Limitations
 
-- PLC-CECT slice spacing is an anatomical estimate (+/-10 %) and the slice-order correction is inferred, not documented by the authors (GitHub issues #3 and #7 of `ljwa2323/PLC_CECT` had no answer at the time of writing); PLC intensities above 200 HU are saturated by the release.
+- PLC-CECT slice spacing is an anatomical estimate (+/-10 %) and the slice-order correction is inferred, not documented by the authors (GitHub issues #3 and #7 of `ljwa2323/PLC_CECT` had no answer at the time of writing); PLC intensities above 200 HU are saturated by the release, and the stored PLC values are about 40 HU below the other datasets under the authors' stated window (recorded as `intensity_offset_hu_recommended`, see Stage 1).
 - MCT-LTDiag was acquired at 5 mm slices; its 1 mm grid is interpolated. WAW-TACE mixes 0.44-7.5 mm native slices.
 - Registration quality is measured on the liver boundary only; a passed gate does not guarantee millimetre alignment of small lesions across phases.
 - The three datasets have different populations and annotation protocols (WAW-TACE: HCC only, TACE setting); a shared mask encoding does not make their disease distributions identical.
