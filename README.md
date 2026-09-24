@@ -243,5 +243,3 @@ reference/                              outputs of the reference run
 requirements.txt                        minimum versions
 requirements-lock.txt                   exact versions of the reference environment
 ```
-
-No SHA-256 hashes are computed or required anywhere; completeness is checked by file inventories, geometry and counts.

@@ -44,7 +44,6 @@ dipy==1.12.1
 distro==1.9.0
 dynamic_network_architectures==0.4.4
 einops==0.8.2
-en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl#sha256=1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85
 faiss-cpu==1.14.3
 filelock==3.29.0
 Flask==2.1.2
