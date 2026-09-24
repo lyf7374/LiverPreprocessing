@@ -195,7 +195,7 @@ hu = image.astype(np.float32) + float(row["intensity_offset_hu_recommended"])
 x = np.clip(hu, -200, 200) / 200.0          # same tissue -> same value in all three datasets
 ```
 
-Without the offset a network trained on MCT-LTDiag and WAW-TACE still segmented unseen PLC-CECT livers with a mean Dice of 0.89 (a small 3D U-Net, 1,500 iterations), so the shift is not large enough to break mixed training; applying it makes the three intensity distributions coincide.
+Without the offset a network trained on MCT-LTDiag and WAW-TACE still segmented unseen PLC-CECT livers with a mean Dice of 0.89 (a small 3D U-Net, 1,500 iterations), so the shift is not large enough to break mixed training. With the offset applied in the loader the median normalised liver intensity of PLC-CECT (NC / AP / PVP / DP: 0.26 / 0.30 / 0.44 / 0.46) coincides with MCT-LTDiag (0.27 / 0.36 / 0.52 / 0.43) and WAW-TACE (0.23 / 0.28 / 0.45 / 0.41), where before it was 0.06 / 0.10 / 0.24 / 0.26; the transfer Dice is unchanged (liver 0.89, tumour 0.35).
 
 ## Stage 2: labels and lesion sizes
 
