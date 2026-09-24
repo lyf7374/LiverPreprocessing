@@ -94,6 +94,12 @@ REGISTRATION_CLIP_HU = (-200.0, 300.0)
 REGISTRATION_DICE_GATE = 0.80
 BSPLINE_DICE_TOLERANCE = 0.02
 INT16_RANGE = (-32768, 32767)
+TRANSFORM_SEMANTICS = (
+    "ITK resampling transform: maps physical points of the {reference} (fixed, output) grid "
+    "to physical points of the native {phase} (moving) image; pass it to sitk.Resample to pull "
+    "{phase} onto the {reference} grid. To move {phase} coordinates or landmarks into {reference} "
+    "space use its inverse."
+)
 
 SANITY_FOV_MM = (250.0, 500.0)
 SANITY_SLICE_SPACING_MM = (0.4, 7.0)
@@ -225,9 +231,13 @@ def required_zip_source(
 
 
 def read_plc_geometry(path: Path) -> dict[tuple[str, str], dict[str, Any]]:
+    """plc_geometry.csv; fallback liver files are stored relative to the CSV's folder."""
     rows = list(csv.DictReader(path.open(encoding="utf-8-sig", newline="")))
     geometry: dict[tuple[str, str], dict[str, Any]] = {}
     for row in rows:
+        fallback = row.get("totalsegmentator_liver_native_file") or None
+        if fallback and not Path(fallback).is_absolute():
+            fallback = str(path.parent / fallback)
         geometry[(row["patient_id"], row["phase"])] = {
             "spacing_mm": [
                 float(row["spacing_x_mm"]),
@@ -244,7 +254,7 @@ def read_plc_geometry(path: Path) -> dict[tuple[str, str], dict[str, Any]]:
             "liver_z_extent_mm": float(row["liver_z_extent_mm"]),
             "vertebra_pairs": int(row["vertebra_pairs"] or 0),
             "geometry_version": row["geometry_version"],
-            "liver_fallback_file": row.get("totalsegmentator_liver_native_file") or None,
+            "liver_fallback_file": fallback,
         }
     return geometry
 
@@ -485,7 +495,13 @@ def materialize(source: dict[str, str], directory: Path, name: str) -> Path:
                 shutil.copyfileobj(src, dst, length=1024 * 1024)
     elif source["kind"] == "tar":
         with tarfile.open(source["archive"], "r") as handle:
-            member = handle.getmember(source["member"])
+            try:
+                member = handle.getmember(source["member"])
+            except KeyError:
+                # The release stores ./NIFTI/<name>; fall back to a search by
+                # basename if an archive is laid out differently.
+                basename = Path(source["member"]).name
+                member = handle.getmember(tar_member_names(Path(source["archive"]))[basename])
             if member.size == 0:
                 raise ValueError(f"Empty TAR member: {source['member']}")
             src = handle.extractfile(member)
@@ -1142,19 +1158,20 @@ def process_case(
         state = "already_replaced" if replace else "already_complete"
         return {**existing, "run_state": state}
 
-    case_dir.mkdir(parents=True, exist_ok=True)
-    staging_dir: Path | None = None
-    write_dir = case_dir
-    if replace:
-        staging_root = (output_root_path / ".staging").resolve()
-        staging_root.mkdir(parents=True, exist_ok=True)
-        staging_dir = (staging_root / f"{case['case_id']}-{os.getpid()}").resolve()
-        if not staging_dir.is_relative_to(staging_root):
-            raise ValueError(f"Unsafe staging path: {staging_dir}")
-        if staging_dir.exists():
-            shutil.rmtree(staging_dir)
-        staging_dir.mkdir()
-        write_dir = staging_dir
+    # Every case is built in .staging/ and moved into cases/ with one directory
+    # rename, so cases/<case_id> is never partially written: it is either the
+    # previous complete version, the new complete version, or absent.
+    staging_root = (output_root_path / ".staging").resolve()
+    staging_root.mkdir(parents=True, exist_ok=True)
+    staging_dir = (staging_root / f"{case['case_id']}-{os.getpid()}").resolve()
+    retired_dir = (staging_root / f"{case['case_id']}-{os.getpid()}.old").resolve()
+    for path in (staging_dir, retired_dir):
+        if not path.is_relative_to(staging_root):
+            raise ValueError(f"Unsafe staging path: {path}")
+        if path.exists():
+            shutil.rmtree(path)
+    staging_dir.mkdir()
+    write_dir = staging_dir
 
     try:
         with tempfile.TemporaryDirectory(prefix=f"{case['case_id']}-") as temp_name:
@@ -1237,12 +1254,13 @@ def process_case(
                     bspline_grid_spacing_mm,
                 )
                 transforms[phase] = transform
-                transform_name = f"transform_{phase.lower()}_to_{reference_phase.lower()}.h5"
+                transform_name = f"resampling_transform_{reference_phase.lower()}_to_{phase.lower()}.h5"
                 sitk.WriteTransform(transform, str(write_dir / transform_name))
                 dice = details.get("final_liver_dice")
                 registrations[phase] = {
                     **details,
                     "transform_file": transform_name,
+                    "transform_semantics": TRANSFORM_SEMANTICS.format(reference=reference_phase, phase=phase),
                     "usable": bool(dice is not None and dice >= REGISTRATION_DICE_GATE),
                     "dice_gate": REGISTRATION_DICE_GATE,
                 }
@@ -1381,16 +1399,16 @@ def process_case(
             }
             write_json(write_dir / "case.json", record)
 
-        if staging_dir is not None:
-            for stale in list(case_dir.glob("transform_*.tfm")) + list(case_dir.glob("transform_*.h5")):
-                stale.unlink()
-            for staged_file in staging_dir.iterdir():
-                os.replace(staged_file, case_dir / staged_file.name)
-            staging_dir.rmdir()
+        case_dir.parent.mkdir(parents=True, exist_ok=True)
+        if case_dir.exists():
+            os.rename(case_dir, retired_dir)
+        os.rename(staging_dir, case_dir)
+        if retired_dir.exists():
+            shutil.rmtree(retired_dir, ignore_errors=True)
         return record
     finally:
-        if staging_dir is not None and staging_dir.exists():
-            shutil.rmtree(staging_dir)
+        if staging_dir.exists():
+            shutil.rmtree(staging_dir, ignore_errors=True)
 
 
 def failure_record(case: dict[str, Any], exc: BaseException) -> dict[str, Any]:
@@ -1598,6 +1616,19 @@ def main() -> int:
             dataset_cases = dataset_cases[: args.limit_per_dataset]
         cases.extend(dataset_cases)
     print(f"Prepared {len(cases)} case specifications", flush=True)
+    stale = [
+        case["case_id"]
+        for case in cases
+        if case["dataset"] not in args.replace_datasets
+        and output_is_complete(args.output_root / "cases" / case["case_id"])
+        and not output_has_current_pipeline(args.output_root / "cases" / case["case_id"])
+    ]
+    if stale:
+        raise SystemExit(
+            f"{len(stale)} complete cases were produced by another pipeline version "
+            f"(first: {stale[:3]}). Rerun with --replace-datasets for their datasets, "
+            "or use a different --output-root; they are not silently reused."
+        )
 
     records: list[dict[str, Any]] = []
     if args.workers == 1:

@@ -41,7 +41,7 @@ python -c "import torch; print(torch.cuda.is_available())"   # must print True f
 python scripts/estimate_plc_geometry.py download-weights     # once; ~135 MB into ~/.totalsegmentator
 ```
 
-If `pip` installs a CPU-only `torch`, install the CUDA build that matches your driver from <https://pytorch.org> (we used `torch 2.11.0+cu128` with `torchvision 0.26.0+cu128`). Versions used for the reference outputs: TotalSegmentator 2.18.0, nnunetv2 2.8.1, SimpleITK 2.5.6, NumPy 2.4.2, nibabel 5.3.3, SciPy 1.17.1. The weight store can be relocated with the environment variable `TOTALSEG_WEIGHTS_PATH`.
+If `pip` installs a CPU-only `torch`, install the CUDA build that matches your driver from <https://pytorch.org> (we used `torch 2.11.0+cu128` with `torchvision 0.26.0+cu128`). `requirements.txt` gives minimum versions; `requirements-lock.txt` is the exact `pip freeze` of the environment that produced the reference outputs (TotalSegmentator 2.18.0, nnunetv2 2.8.1, SimpleITK 2.5.6, NumPy 2.4.2, nibabel 5.3.3, SciPy 1.17.1, torch 2.11.0+cu128). Use the lock file when the goal is to reproduce the reference numbers exactly. Stage 0 uses TotalSegmentator task 297 (`Dataset297_TotalSegmentator_total_3mm_1559subj`, trainer `nnUNetTrainer_4000epochs_NoMirroring`, fold 0) as downloaded by TotalSegmentator 2.18.0; the weight store can be relocated with the environment variable `TOTALSEG_WEIGHTS_PATH`.
 
 ## Raw data layout
 
@@ -75,7 +75,7 @@ python scripts/run_unified_preprocessing.py \
     --workers 8 --dry-run
 ```
 
-Full conversion of the three datasets (remove `--dry-run`). The same command resumes an interrupted run: measured PLC volumes and cases already at the current pipeline version are skipped.
+Full conversion of the three datasets (remove `--dry-run`). The same command resumes an interrupted run: measured PLC volumes and cases already at the current pipeline version are skipped. Complete cases produced by another pipeline version are never reused silently: the run stops and asks for `--replace-datasets` (or another `--output-root`).
 
 ```bash
 python scripts/run_unified_preprocessing.py \
@@ -100,7 +100,7 @@ python scripts/run_unified_preprocessing.py \
     --workers 8
 ```
 
-Rebuild cases produced by an older pipeline version in place. Each case is rebuilt in `.staging/` and moved into `cases/<case_id>/` only when complete, so an interrupted replacement leaves every case either old or new, never mixed:
+Rebuild cases produced by an older pipeline version in place. Every case (new or replaced) is built in `.staging/` and enters `cases/` with a single directory rename after all its files and its `case.json` are written, so `cases/<case_id>/` is only ever a complete old version, a complete new version, or absent; an interrupted run leaves at most a leftover folder under `.staging/`, which is never read:
 
 ```bash
 python scripts/run_unified_preprocessing.py \
@@ -135,7 +135,7 @@ For each of the 1,444 released PLC volumes:
 
 Accuracy: individual stature adds about +/-8 % to population reference distances; within a patient the four phases agree to a median 8.5 % (max-min of the implied liver extents), so the per-volume noise is about +/-5 %. Expect +/-10 % on the slice spacing, about +/-3 % on an equivalent spherical diameter. Over the 1,438 volumes with a vertebra estimate the ratio to the nearest nominal reconstruction increment has median 1.01 (interquartile 0.97-1.06) with histogram peaks at 0.65-0.7, 0.8, 1.0, 1.45, 2.05 and 5.2-5.6 mm, so the reference table is unbiased at the population level and `--reference-scale` stays at 1.0. Estimates are kept continuous; the release mixes increments such as 0.3, 0.6, 0.65, 0.8, 1.0, 1.25, 1.5, 2, 2.5, 5 and 7.5 mm and the peaks overlap. Result: 0.29-8.05 mm (p5 0.64, median 1.19, p95 5.6); confidence high 724 / medium 660 / low 60 volumes.
 
-Outputs: `plc_geometry.csv` (one row per volume: spacing, `k_axis_flip`, sources, confidence, liver extent, vertebra levels, fallback file), `plc_geometry/plc_vertebra_measurements.jsonl` (raw measurements, append-only, resumable), `plc_geometry/plc_geometry_summary.json`.
+Outputs: `plc_geometry.csv` (one row per volume: spacing, `k_axis_flip`, sources, confidence, liver extent, vertebra levels, fallback file as a path relative to `manifests/`), `plc_geometry/plc_vertebra_measurements.jsonl` (raw measurements, append-only, resumable), `plc_geometry/plc_geometry_summary.json`. The CSV contains no machine-specific paths, so `reference/plc_geometry.csv` can be dropped into another output root's `manifests/` folder to skip stage 0 (the fallback liver masks it refers to must then be regenerated or copied).
 
 ## Stage 1: conversion
 
@@ -152,6 +152,8 @@ Registration of each non-reference phase (PLC-CECT, WAW-TACE):
 3. B-spline: Mattes mutual information (32 bins, 20 % random samples inside the reference liver dilated by 10 mm, no moving mask) between the HU images clipped to [-200, 300], control-point spacing about 40 mm, L-BFGS-B, initialised from the best of the centroid, rigid and affine candidates.
 4. Selection: the B-spline candidate is kept when its liver Dice is within 0.02 of its base; otherwise the highest liver Dice wins. Tumour masks never influence the transform.
 5. Gate: `usable = final liver Dice >= 0.80`. Failed phases are still resampled and written but flagged in `case.json` (`registrations.<phase>.usable`) and in the manifest (`usable_nc`, `usable_ap`, `usable_dp`, `usable_phases`). For WAW-TACE the tumour mask is propagated from the annotated phase; `tumour_mask_reliable = 0` when that phase failed the gate.
+
+Saved transforms: `resampling_transform_pvp_to_<phase>.h5` is the ITK transform used for resampling. It maps physical points of the PVP (fixed, output) grid to physical points of the native `<phase>` (moving) image; pass it to `sitk.Resample` to pull that phase onto the PVP grid. To move `<phase>` coordinates or landmarks into PVP space, invert it. `case.json` repeats this under `registrations.<phase>.transform_semantics`.
 
 Output grid: the reference liver mask united with the tumour mask, padded by 20 mm, defines a box on the reference native grid; the output is a 1 mm grid whose origin is the physical position of that box's first voxel centre. Every channel is produced by **one** interpolation from its native grid through its transform onto this grid (linear for images, nearest neighbour for masks, `-1000` HU outside the acquired field). Images are rounded to int16. Because all outputs are LPS with an identity direction, the arrays can be used directly; the origin only places a case in its scanner's world coordinates, which is why different patients do not overlap in a viewer and why no cross-patient alignment is needed.
 
@@ -173,7 +175,7 @@ Sanity checks, recorded per case (`sanity.flags`, `sanity_pass`) and never block
 │       ├── image_dp.nii.gz
 │       ├── liver_mask.nii.gz          uint8 {0, 1}
 │       ├── tumor_mask.nii.gz          uint8 {0, 1}
-│       ├── transform_<phase>_to_pvp.h5   PLC-CECT and WAW-TACE only
+│       ├── resampling_transform_pvp_to_<phase>.h5   PLC-CECT and WAW-TACE only
 │       └── case.json
 ├── manifests/
 │   ├── waw_four_phase_patients.csv
@@ -238,7 +240,8 @@ scripts/prepare_hierarchical_labels.py  stage 2
 scripts/verify_unified_v2_output.py     read-only completion check
 tests/                                  unit tests (unittest)
 reference/                              outputs of the reference run
-requirements.txt
+requirements.txt                        minimum versions
+requirements-lock.txt                   exact versions of the reference environment
 ```
 
 No SHA-256 hashes are computed or required anywhere; completeness is checked by file inventories, geometry and counts.

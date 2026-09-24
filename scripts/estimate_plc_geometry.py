@@ -701,7 +701,22 @@ def weighted_median(values: list[tuple[float, float]]) -> float:
     return ordered[-1][0]
 
 
-def solve_patient(records: dict[str, dict[str, Any]], reference_scale: float) -> list[dict[str, Any]]:
+def relative_fallback_path(value: str | None, output_root: Path | None) -> str:
+    """Store fallback liver files relative to manifests/ so the CSV is portable."""
+    if not value:
+        return ""
+    path = Path(value)
+    if output_root is not None:
+        try:
+            return path.resolve().relative_to((output_root / "manifests").resolve()).as_posix()
+        except ValueError:
+            pass
+    return f"plc_geometry/liver_fallback/{path.name}"
+
+
+def solve_patient(
+    records: dict[str, dict[str, Any]], reference_scale: float, output_root: Path | None = None
+) -> list[dict[str, Any]]:
     """Fuse per-phase estimates through the shared liver z extent."""
     per_phase: dict[str, dict[str, Any]] = {}
     for phase, record in records.items():
@@ -806,7 +821,9 @@ def solve_patient(records: dict[str, dict[str, Any]], reference_scale: float) ->
                 "vertebra_pair_kind": item["vertebra"]["kind"] or "",
                 "vertebra_levels": "+".join(v["level"] for v in record.get("vertebrae", [])),
                 "initial_guess_mm": round(record["slice_spacing_guess_mm"], 4),
-                "totalsegmentator_liver_native_file": record.get("totalsegmentator_liver_native_file") or "",
+                "totalsegmentator_liver_native_file": relative_fallback_path(
+                    record.get("totalsegmentator_liver_native_file"), output_root
+                ),
                 "geometry_version": GEOMETRY_VERSION,
             }
         )
@@ -824,7 +841,7 @@ def run_solve(args: argparse.Namespace) -> None:
         if len(records) != len(PHASES):
             missing.append(case["patient_id"])
             continue
-        rows.extend(solve_patient(records, args.reference_scale))
+        rows.extend(solve_patient(records, args.reference_scale, args.output_root))
     if missing:
         raise SystemExit(
             f"{len(missing)} PLC patients lack measurements for all four phases "
