@@ -93,7 +93,10 @@ PHASE_EXTENT_INCONSISTENCY = 0.15  # relative disagreement that overrides the sh
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
-    sub.add_parser("download-weights", help="Fetch the TotalSegmentator 3 mm weights (task 297) once.")
+    sub.add_parser(
+        "download-weights",
+        help="Fetch the TotalSegmentator 3 mm weights (task 297) ahead of time; otherwise they are fetched on first use.",
+    )
     for name in ("measure", "solve", "all"):
         p = sub.add_parser(name)
         p.add_argument("--raw-root", type=Path, default=None, help="Folder holding the PLC-CECT release folder.")
@@ -158,10 +161,11 @@ def load_predictor(device: str):
 
     model_dir = weights_dir() / MODEL_FOLDER / MODEL_TRAINER
     if not (model_dir / "fold_0" / "checkpoint_final.pth").is_file():
-        raise SystemExit(
-            f"TotalSegmentator 3 mm weights not found at {model_dir}. Run "
-            "'estimate_plc_geometry.py download-weights' once (or set TOTALSEG_WEIGHTS_PATH)."
-        )
+        # First run on this machine: fetch the weights the way the TotalSegmentator
+        # command line would.  'download-weights' does the same ahead of time for
+        # offline machines, and TOTALSEG_WEIGHTS_PATH points at a copied store.
+        print(f"TotalSegmentator 3 mm weights not found at {model_dir}; downloading once.", flush=True)
+        download_weights()
     predictor = nnUNetPredictor(
         tile_step_size=0.5,
         use_gaussian=True,

@@ -67,6 +67,21 @@ class UnifiedPreprocessingRunnerTests(unittest.TestCase):
         self.assertNotIn("--replace-datasets", commands[2])
         self.assertEqual(commands[2][-2:], ["--root", str(Path("D:/processed/unified"))])
 
+    def test_omits_geometry_stage_when_reusing_an_existing_csv(self) -> None:
+        commands = build_stage_commands(
+            python_executable=Path("C:/Python/python.exe"),
+            project_root=Path("C:/project"),
+            dataset_roots={"PLC-CECT": Path("D:/raw/PLC-CECT")},
+            output_root=Path("D:/processed/unified"),
+            waw_selection=Path("D:/processed/unified/manifests/waw_four_phase_patients.csv"),
+            workers=4,
+            datasets=("PLC-CECT",),
+            include_geometry_stage=False,
+        )
+
+        self.assertEqual(len(commands), 2)
+        self.assertTrue(str(commands[0][1]).endswith("preprocess_multiphase_ct.py"))
+
     def test_skips_geometry_stage_when_plc_is_not_selected(self) -> None:
         commands = build_stage_commands(
             python_executable=Path("C:/Python/python.exe"),

@@ -38,8 +38,9 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 python -m pip install TotalSegmentator      # stage 0 only; pulls nnunetv2 and torch
 python -c "import torch; print(torch.cuda.is_available())"   # must print True for a GPU run
-python scripts/estimate_plc_geometry.py download-weights     # once; ~135 MB into ~/.totalsegmentator
 ```
+
+The TotalSegmentator 3 mm weights (~135 MB) are fetched automatically into `~/.totalsegmentator/nnunet/results` the first time stage 0 runs. For an offline machine fetch them beforehand with `python scripts/estimate_plc_geometry.py download-weights`, or copy that folder from another machine and point `TOTALSEG_WEIGHTS_PATH` at it.
 
 If `pip` installs a CPU-only `torch`, install the CUDA build that matches your driver from <https://pytorch.org> (we used `torch 2.11.0+cu128` with `torchvision 0.26.0+cu128`). `requirements.txt` gives minimum versions; `requirements-lock.txt` is the exact `pip freeze` of the environment that produced the reference outputs (TotalSegmentator 2.18.0, nnunetv2 2.8.1, SimpleITK 2.5.6, NumPy 2.4.2, nibabel 5.3.3, SciPy 1.17.1, torch 2.11.0+cu128). Use the lock file when the goal is to reproduce the reference numbers exactly. Stage 0 uses TotalSegmentator task 297 (`Dataset297_TotalSegmentator_total_3mm_1559subj`, trainer `nnUNetTrainer_4000epochs_NoMirroring`, fold 0) as downloaded by TotalSegmentator 2.18.0; the weight store can be relocated with the environment variable `TOTALSEG_WEIGHTS_PATH`.
 
@@ -63,6 +64,12 @@ Obtain the three releases from their official sources (MCT-LTDiag: per-patient T
 ```
 
 When the three folders share one parent and carry these names, `--raw-root <parent>` is enough. Otherwise give `--mct-root`, `--plc-root`, `--waw-root` explicitly; an explicit path always wins.
+
+Notes for a fresh download:
+
+- The PLC-CECT ZIP parts are indexed by member file name, so it does not matter how many parts the download was split into or what they are called, as long as every `ct_path`, `mask_path` and `liver_mask_path` of `patient_data.csv` exists in one of them.
+- The WAW-TACE cohort is derived automatically (four phases present, tumour masks in exactly one phase). The reference release yields 164 patients; if your copy of the release yields another number the runner stops, and `--expected-waw-cases 0` disables that check.
+- The reference outputs were produced from the releases as downloaded in September 2026. A later revision of a release can change counts.
 
 ## Run
 
@@ -119,6 +126,18 @@ Windows PowerShell uses the same options (`.\.venv\Scripts\python.exe scripts\ru
 | 2 | `prepare_hierarchical_labels.py` | `cases/` | labels in `case.json` and the manifest, `lesion_size_statistics.csv`, `lesion_size_summary.csv`, `label_schema.json` | 3 min |
 
 The runner stops at the first stage that fails. Every stage can also be started on its own with the options shown by `--help`.
+
+Skipping stage 0: to reuse our PLC geometry instead of re-estimating it (no GPU needed), copy `reference/plc_geometry.csv` to `<output-root>/manifests/plc_geometry.csv` and `reference/liver_fallback/` to `<output-root>/manifests/plc_geometry/liver_fallback/`, then add `--reuse-plc-geometry` to the runner command. Stage 0 is then omitted and stages 1-2 run as usual:
+
+```bash
+mkdir -p /data/processed/unified/manifests/plc_geometry
+cp reference/plc_geometry.csv /data/processed/unified/manifests/
+cp -r reference/liver_fallback /data/processed/unified/manifests/plc_geometry/
+python scripts/run_unified_preprocessing.py --raw-root /data/raw --output-root /data/processed/unified \
+    --workers 8 --reuse-plc-geometry
+```
+
+Platform: the reference run was made on Windows 11. The code uses only portable Python, SimpleITK and nnU-Net calls and has no Windows-specific paths, but it has not yet been executed end to end on Linux.
 
 ## Stage 0: PLC-CECT geometry recovery
 
@@ -212,7 +231,7 @@ Numbers obtained on 2026-09-24 from the current releases (also in `reference/`):
 
 Liver Dice after the selected transform (median NC / AP / DP, phases below the 0.80 gate): PLC-CECT 0.94 / 0.96 / 0.97 (16 / 6 / 3); WAW-TACE 0.96 / 0.97 / 0.97 (2 / 2 / 2, the two whole-body scans 33 and 34 whose released organ masks are inconsistent with their CT). On the nominal 1 mm grid of the release PLC-CECT appeared to contain dozens of sub-15 mm lesions; on the recovered geometry 33 of 343 components are <= 15 mm.
 
-`reference/` holds `plc_geometry.csv` (per-volume slice order and spacing), `plc_geometry_summary.json`, `dataset_manifest.csv` (one row per case with every quality field), `lesion_size_summary.csv` and `summary.json`. A rerun should reproduce the counts above exactly and the PLC spacings to within numerical noise (registration uses fixed random seeds; TotalSegmentator inference is deterministic on one GPU model but may differ in the last digit across GPU generations).
+`reference/` holds `plc_geometry.csv` (per-volume slice order and spacing), `liver_fallback/` (the 29 TotalSegmentator liver masks used where the released PLC liver masks were empty or truncated, 3 MB), `plc_geometry_summary.json`, `dataset_manifest.csv` (one row per case with every quality field), `lesion_size_summary.csv` and `summary.json`. A rerun should reproduce the counts above exactly and the PLC spacings to within numerical noise (registration uses fixed random seeds; TotalSegmentator inference is deterministic on one GPU model but may differ in the last digit across GPU generations).
 
 Checks after a run:
 

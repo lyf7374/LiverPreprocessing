@@ -125,11 +125,12 @@ def build_stage_commands(
     replace_datasets: Sequence[str] = (),
     threads_per_worker: int = 2,
     reference_scale: float = 1.0,
+    include_geometry_stage: bool = True,
 ) -> list[list[str]]:
     python = str(python_executable)
     scripts = project_root / "scripts"
     commands: list[list[str]] = []
-    if "PLC-CECT" in datasets:
+    if "PLC-CECT" in datasets and include_geometry_stage:
         commands.append(
             [
                 python,
@@ -211,6 +212,14 @@ def parse_args() -> argparse.Namespace:
         help="Population calibration factor for the PLC vertebra reference distances (stage 0).",
     )
     parser.add_argument(
+        "--reuse-plc-geometry",
+        action="store_true",
+        help=(
+            "Skip stage 0 when <output-root>/manifests/plc_geometry.csv already exists "
+            "(for example copied from reference/), instead of re-estimating the PLC geometry."
+        ),
+    )
+    parser.add_argument(
         "--expected-waw-cases",
         type=int,
         default=164,
@@ -247,6 +256,10 @@ def main() -> int:
             raise SystemExit(
                 f"Expected {args.expected_waw_cases} WAW-TACE cases, found {len(waw_patients)}"
             )
+    geometry_csv = args.output_root / "manifests" / "plc_geometry.csv"
+    reuse_geometry = bool(args.reuse_plc_geometry and geometry_csv.is_file())
+    if args.reuse_plc_geometry and not geometry_csv.is_file():
+        print(f"--reuse-plc-geometry: {geometry_csv} not found, stage 0 will run", flush=True)
     commands = build_stage_commands(
         python_executable=Path(sys.executable),
         project_root=PROJECT_ROOT,
@@ -258,7 +271,10 @@ def main() -> int:
         replace_datasets=args.replace_datasets,
         threads_per_worker=args.threads_per_worker,
         reference_scale=args.reference_scale,
+        include_geometry_stage=not reuse_geometry,
     )
+    if reuse_geometry:
+        print(f"Reusing existing PLC geometry: {geometry_csv}", flush=True)
 
     for dataset, root in dataset_roots.items():
         print(f"{dataset}: {root}", flush=True)
