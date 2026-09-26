@@ -1,0 +1,10 @@
+﻿subset,dataset,cases,lesion_positive_cases,lesions_total,lesions_0_5mm,cases_with_0_5mm,lesions_5_10mm,cases_with_5_10mm,lesions_10_15mm,cases_with_10_15mm,lesions_gt_15mm,cases_with_gt_15mm,diagnosis_control,diagnosis_HH,diagnosis_HCC,diagnosis_ICC,diagnosis_cHCC-CCA,diagnosis_metastasis,forced_train_flagged,small_lesion_patients
+train,MCT-LTDiag,144,144,200,0,0,0,0,0,0,200,144,0,17,33,30,0,64,0,0
+train,PLC-CECT,279,212,234,0,0,0,0,0,0,234,212,67,0,73,73,66,0,17,0
+train,WAW-TACE,111,111,153,0,0,0,0,0,0,153,111,0,0,111,0,0,0,0,0
+val,MCT-LTDiag,19,19,25,0,0,0,0,0,0,25,19,0,2,6,3,0,8,0,0
+val,PLC-CECT,34,26,27,0,0,0,0,0,0,27,26,8,0,8,10,8,0,0,0
+val,WAW-TACE,14,14,22,0,0,0,0,0,0,22,14,0,0,14,0,0,0,0,0
+test,MCT-LTDiag,354,354,1934,508,226,458,143,323,147,645,332,0,77,64,67,0,146,0,336
+test,PLC-CECT,48,40,82,1,1,9,4,23,12,49,36,8,0,13,16,11,0,0,14
+test,WAW-TACE,37,37,75,0,0,8,7,19,18,48,33,0,0,37,0,0,0,0,22

@@ -231,27 +231,36 @@ Without the offset a network trained on MCT-LTDiag and WAW-TACE still segmented 
 
 ## Patient-level split and size-binned evaluation
 
-`scripts/make_splits.py` produces a reproducible train / validation / test split (default 70 / 10 / 20) of a unified_v2 root and `scripts/evaluate_by_lesion_size.py` scores predicted tumour masks by lesion size. Both use the size bins of stage 2: equivalent spherical diameter of a 26-connected component on the 1 mm grid, **0-5, 5-10, 10-15 and > 15 mm**.
+`scripts/make_splits.py` produces a reproducible patient-level train / validation / test split of a unified_v2 root and `scripts/evaluate_by_lesion_size.py` scores predicted tumour masks by lesion size. Both use the size bins of stage 2: equivalent spherical diameter of a 26-connected component on the 1 mm grid, **0-5, 5-10, 10-15 and > 15 mm**.
 
 ```bash
-python scripts/make_splits.py --root /data/processed/unified --seed 0            # -> <root>/splits/unified_v2_split_seed0.{json,_cases.csv,_summary.csv}
+python scripts/make_splits.py --root /data/processed/unified --seed 0                        # small-held-out (default)
+python scripts/make_splits.py --root /data/processed/unified --seed 0 --protocol stratified  # alternative
+#   -> <root>/splits/unified_v2_<protocol>_seed0.{json,_cases.csv,_summary.csv}
 python scripts/evaluate_by_lesion_size.py --root /data/processed/unified \
-    --predictions /path/to/predictions --split /data/processed/unified/splits/unified_v2_split_seed0.json \
+    --predictions /path/to/predictions --split /data/processed/unified/splits/unified_v2_small_held_out_seed0.json \
     --subset test --out /path/to/metrics
 ```
 
-Split design:
+Two protocols, both deterministic (the same manifest, seed and options give the same subsets; the JSON records the case lists, per-label counts and options) and both patient-level (all phases and lesions of a patient stay together):
 
-- One case is one patient, so all phases and lesions of a patient stay together.
-- Iterative stratification (Sechidis et al. 2011) over the labels dataset, coarse diagnosis, lesion present / none, `has_<bin>` for each size bin and the joint `dataset:has_<bin>`. The rarest label is placed first, so the few small lesions outside MCT-LTDiag are spread across subsets in proportion; every subset then carries every bin that the data allow.
-- Deterministic: the same manifest, seed and options give the same subsets (`--seed 0` is the reference). The JSON records the case lists, the per-label counts and the options.
-- Clean evaluation subsets (default): cases with `tumour_mask_reliable = 0` or with a phase below the registration gate are forced into train, where phase dropout handles them; 19 cases in the reference split. `--no-clean-eval` disables this.
+- **small-held-out (default, the project's protocol).** The question is whether a model that only ever learns from large lesions comes to find small ones. Every patient with at least one lesion in the 0-5, 5-10 or 10-15 mm bins (`--small-bins`) is kept out of training and goes to the test subset (`--small-val-fraction`, default 0, moves a share to validation). Patients whose lesions are all > 15 mm, and lesion-negative patients, are split 80 / 10 / 10 (`--ratios`) by iterative stratification over dataset, diagnosis and lesion presence, so validation exists for model selection on large lesions and the test subset also measures large-lesion performance. The training set contains no lesion <= 15 mm (smallest training lesion in the reference split: 15.04 mm ESD).
+- **stratified.** Every stratum (dataset, coarse diagnosis, lesion present / none, `has_<bin>` for each size bin and the joint `dataset:has_<bin>`) is represented in every subset in proportion to `--ratios` (default 70 / 10 / 20), using iterative stratification (Sechidis et al. 2011) with the rarest label placed first. Use it when the model should also train on small lesions.
 
-Reference split (`reference/splits/unified_v2_split_seed0.json` with its `_cases.csv` and `_summary.csv`, seed 0): train 727, val 105, test 210 cases. Lesions / cases per size bin in the test subset: MCT-LTDiag 91/46, 57/29, 61/30, 182/101; PLC-CECT 0/0, 2/1, 3/3, 58/53; WAW-TACE 0/0, 2/1, 4/4, 47/32 (0-5, 5-10, 10-15, > 15 mm). Small lesions therefore come almost entirely from MCT-LTDiag, whose native slices are 5 mm: a sub-5 mm component there is a one- or two-slice object, and the 0-5 mm bin should be read with that in mind. PLC-CECT contains one 0-5 mm lesion in total, which stays in train.
+Clean evaluation subsets (default): cases with `tumour_mask_reliable = 0` or with a phase below the registration gate never enter validation or test. Large-only ones are forced into train, where phase dropout handles them; under small-held-out a flagged small-lesion patient can neither train nor be evaluated and is excluded (WAW-TACE 33 and 34 in the reference split). `--no-clean-eval` disables this.
+
+Reference splits (`reference/splits/`, seed 0):
+
+| Protocol | Train | Val | Test | Small-lesion patients in test | Test lesions per bin (0-5 / 5-10 / 10-15 / > 15 mm) |
+|---|---:|---:|---:|---:|---|
+| small-held-out | 534 | 67 | 439 | 372 (all) | MCT 508 / 458 / 323 / 645; PLC 1 / 9 / 23 / 49; WAW 0 / 8 / 19 / 48 |
+| stratified | 727 | 105 | 210 | 78 | MCT 91 / 57 / 61 / 182; PLC 0 / 2 / 3 / 58; WAW 0 / 2 / 4 / 47 |
+
+Under small-held-out the training set keeps 144 of the 517 MCT-LTDiag patients (the rest carry small lesions), 279 PLC-CECT and 111 WAW-TACE patients. Small lesions come almost entirely from MCT-LTDiag, whose native slices are 5 mm: a sub-5 mm component there is a one- or two-slice object, and the 0-5 mm bin should be read with that in mind; PLC-CECT contributes 33 lesions <= 15 mm and WAW-TACE 27.
 
 Evaluation rules (`evaluate_by_lesion_size.py`): predictions are binary NIfTI files `<case_id>.nii.gz` on the case grid. A ground-truth lesion counts as detected when at least `--hit-fraction` (default 0.10) of its voxels are covered by the prediction; a predicted component that touches no lesion is a false positive. Reported per size bin, overall and per dataset: lesions, detected, sensitivity with a 95 % Wilson interval, mean lesion-wise Dice (0 for a miss), false-positive components in that size range; per case: tumour Dice and false positives per case. Outputs `size_binned_metrics.json`, `size_binned_metrics.csv` and `per_lesion.csv`.
 
-Worked example (`reference/splits/example_size_binned_metrics.csv`): a deliberately small 3D U-Net (16-128 channels, 96 mm patches, 1,500 iterations on 150 of the 727 training cases, no post-processing) predicted the 210 test cases; the evaluator then gave, over all datasets, sensitivity 0.08 [0.04, 0.15] for 0-5 mm (91 lesions), 0.07 [0.03, 0.16] for 5-10 mm (61), 0.22 [0.14, 0.33] for 10-15 mm (68) and 0.67 [0.61, 0.72] for > 15 mm (287), with 31 false-positive components per case. These numbers only illustrate the output format and the size dependence; they are not a result of this repository.
+Worked example (`reference/splits/example_size_binned_metrics_stratified.csv`, stratified protocol): a deliberately small 3D U-Net (16-128 channels, 96 mm patches, 1,500 iterations on 150 of the 727 training cases, no post-processing) predicted the 210 test cases; the evaluator then gave, over all datasets, sensitivity 0.08 [0.04, 0.15] for 0-5 mm (91 lesions), 0.07 [0.03, 0.16] for 5-10 mm (61), 0.22 [0.14, 0.33] for 10-15 mm (68) and 0.67 [0.61, 0.72] for > 15 mm (287), with 31 false-positive components per case. These numbers only illustrate the output format and the size dependence; they are not a result of this repository.
 
 ## Using the output as one network input
 

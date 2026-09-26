@@ -1,5 +1,13 @@
 {
-  "name": "unified_v2_split_seed0",
+  "name": "unified_v2_stratified_seed0",
+  "protocol": "stratified",
+  "protocol_rule": "all patients split {'train': 0.7, 'val': 0.1, 'test': 0.2} with stratification over every label",
+  "small_bins": [],
+  "small_lesion_patients": {
+    "train": 0,
+    "val": 0,
+    "test": 0
+  },
   "created": "deterministic: same manifest + same seed + same options -> same split",
   "source_manifest": "D:\\LiverTumorSegmentation\\processed\\unified_v1\\dataset_manifest.csv",
   "manifest_cases": 1042,
@@ -10,7 +18,7 @@
     "test": 0.2
   },
   "clean_eval": true,
-  "clean_eval_rule": "val/test require tumour_mask_reliable = 1 and all four phases usable; others are forced into train",
+  "clean_eval_rule": "val/test require tumour_mask_reliable = 1 and all four phases usable; other large-only patients are forced into train; flagged small-lesion patients are excluded",
   "forced_train": {
     "PLC-CECT_P0046": [
       "usable_phases=AP+PVP+DP"
@@ -72,6 +80,7 @@
       "usable_phases=PVP"
     ]
   },
+  "excluded": {},
   "size_bins_mm": {
     "0_5mm": "0-5 mm",
     "5_10mm": "5-10 mm",
@@ -190,7 +199,8 @@
       "diagnosis_ICC": 67,
       "diagnosis_cHCC-CCA": 0,
       "diagnosis_metastasis": 151,
-      "forced_train_flagged": 0
+      "forced_train_flagged": 0,
+      "small_lesion_patients": 0
     },
     {
       "subset": "train",
@@ -212,7 +222,8 @@
       "diagnosis_ICC": 72,
       "diagnosis_cHCC-CCA": 60,
       "diagnosis_metastasis": 0,
-      "forced_train_flagged": 17
+      "forced_train_flagged": 17,
+      "small_lesion_patients": 0
     },
     {
       "subset": "train",
@@ -234,7 +245,8 @@
       "diagnosis_ICC": 0,
       "diagnosis_cHCC-CCA": 0,
       "diagnosis_metastasis": 0,
-      "forced_train_flagged": 2
+      "forced_train_flagged": 2,
+      "small_lesion_patients": 0
     },
     {
       "subset": "val",
@@ -256,7 +268,8 @@
       "diagnosis_ICC": 13,
       "diagnosis_cHCC-CCA": 0,
       "diagnosis_metastasis": 22,
-      "forced_train_flagged": 0
+      "forced_train_flagged": 0,
+      "small_lesion_patients": 0
     },
     {
       "subset": "val",
@@ -278,7 +291,8 @@
       "diagnosis_ICC": 7,
       "diagnosis_cHCC-CCA": 8,
       "diagnosis_metastasis": 0,
-      "forced_train_flagged": 0
+      "forced_train_flagged": 0,
+      "small_lesion_patients": 0
     },
     {
       "subset": "val",
@@ -300,7 +314,8 @@
       "diagnosis_ICC": 0,
       "diagnosis_cHCC-CCA": 0,
       "diagnosis_metastasis": 0,
-      "forced_train_flagged": 0
+      "forced_train_flagged": 0,
+      "small_lesion_patients": 0
     },
     {
       "subset": "test",
@@ -322,7 +337,8 @@
       "diagnosis_ICC": 20,
       "diagnosis_cHCC-CCA": 0,
       "diagnosis_metastasis": 45,
-      "forced_train_flagged": 0
+      "forced_train_flagged": 0,
+      "small_lesion_patients": 0
     },
     {
       "subset": "test",
@@ -344,7 +360,8 @@
       "diagnosis_ICC": 20,
       "diagnosis_cHCC-CCA": 17,
       "diagnosis_metastasis": 0,
-      "forced_train_flagged": 0
+      "forced_train_flagged": 0,
+      "small_lesion_patients": 0
     },
     {
       "subset": "test",
@@ -366,7 +383,8 @@
       "diagnosis_ICC": 0,
       "diagnosis_cHCC-CCA": 0,
       "diagnosis_metastasis": 0,
-      "forced_train_flagged": 0
+      "forced_train_flagged": 0,
+      "small_lesion_patients": 0
     }
   ],
   "subsets": {

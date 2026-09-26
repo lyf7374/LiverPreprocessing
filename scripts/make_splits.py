@@ -1,11 +1,25 @@
 """Reproducible patient-level train / validation / test split of a unified_v2 root.
 
-The split is stratified so that every evaluation stratum is represented in
-every subset in proportion: dataset, coarse diagnosis, lesion-negative cases
-and, most importantly, the presence of lesions in each size bin
-(0-5, 5-10, 10-15, > 15 mm equivalent spherical diameter) so that size-binned
-metrics can be computed on validation and test.  Small lesions are rare
-outside MCT-LTDiag, which is why plain random splitting is not enough.
+Two protocols:
+
+small-held-out (default)
+    Every patient with at least one small lesion (any lesion in the 0-5, 5-10
+    or 10-15 mm bins by default, --small-bins) is kept out of training: these
+    patients form the test subset (a fraction can go to validation with
+    --small-val-fraction).  Patients whose lesions are all > 15 mm, and
+    lesion-negative patients, are split train / val / test by --ratios
+    (default 0.80 / 0.10 / 0.10) with stratification over dataset, diagnosis
+    and lesion presence, so the test subset also measures large-lesion
+    performance.  This is the protocol for the question "does a model that
+    only ever saw large lesions learn to find small ones": the training set
+    contains no lesion <= 15 mm.
+
+stratified
+    Every stratum (dataset, coarse diagnosis, lesion-negative, presence of
+    lesions in each size bin, dataset x bin) is represented in every subset in
+    proportion to --ratios (default 0.70 / 0.10 / 0.20), so size-binned metrics
+    can be computed on validation and test while the model also trains on
+    small lesions.
 
 Algorithm: iterative stratification (Sechidis, Tsoumakas, Vlahavas 2011).
 Cases carry a set of labels; the label with the fewest unassigned cases is
@@ -16,8 +30,9 @@ order).  Everything is deterministic for a given manifest and seed.
 Evaluation subsets are "clean" by default: a case whose tumour mask was
 propagated through a failed registration (tumour_mask_reliable = 0) or that
 has a phase below the registration gate is kept out of validation and test
-and forced into train, where phase dropout handles it.  Disable with
---no-clean-eval.
+and forced into train, where phase dropout handles it.  Under small-held-out a
+flagged patient with a small lesion cannot go to train either, so it is
+excluded from all subsets.  Disable with --no-clean-eval.
 
 Outputs (in --out, default <root>/splits/):
   <name>.json          subsets, per-case labels, metadata, stratum counts
@@ -101,14 +116,28 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--root", type=Path, required=True, help="unified_v2 output root (dataset_manifest.csv inside).")
     parser.add_argument("--out", type=Path, default=None, help="Output folder (default <root>/splits).")
-    parser.add_argument("--name", default="unified_v2_split_seed0", help="Base name of the output files.")
-    parser.add_argument("--ratios", type=float, nargs=3, default=(0.70, 0.10, 0.20), metavar=("TRAIN", "VAL", "TEST"))
+    parser.add_argument("--protocol", choices=("small-held-out", "stratified"), default="small-held-out")
+    parser.add_argument("--name", default=None, help="Base name of the output files (default unified_v2_<protocol>_seed<seed>).")
+    parser.add_argument(
+        "--ratios", type=float, nargs=3, default=None, metavar=("TRAIN", "VAL", "TEST"),
+        help="Subset shares; default 0.80/0.10/0.10 for small-held-out (large-only and negative patients), 0.70/0.10/0.20 for stratified.",
+    )
+    parser.add_argument("--small-bins", nargs="+", choices=SIZE_BINS, default=["0_5mm", "5_10mm", "10_15mm"],
+                        help="Size bins whose presence makes a patient a small-lesion patient (small-held-out).")
+    parser.add_argument("--small-val-fraction", type=float, default=0.0,
+                        help="Share of small-lesion patients placed in validation instead of test (small-held-out).")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--datasets", nargs="+", default=None, help="Restrict to these datasets (default all).")
     parser.add_argument("--no-clean-eval", action="store_true", help="Allow flagged cases in validation and test.")
     args = parser.parse_args()
+    if args.ratios is None:
+        args.ratios = (0.80, 0.10, 0.10) if args.protocol == "small-held-out" else (0.70, 0.10, 0.20)
+    if args.name is None:
+        args.name = f"unified_v2_{args.protocol.replace('-', '_')}_seed{args.seed}"
     if abs(sum(args.ratios) - 1.0) > 1e-6:
         raise SystemExit("--ratios must sum to 1")
+    if not 0.0 <= args.small_val_fraction <= 1.0:
+        raise SystemExit("--small-val-fraction must be within [0, 1]")
     ratios = dict(zip(SUBSETS, args.ratios))
     out = args.out or (args.root / "splits")
     out.mkdir(parents=True, exist_ok=True)
@@ -123,26 +152,54 @@ def main() -> None:
 
     rng = random.Random(args.seed)
     forced_train: dict[str, list[str]] = {}
+    excluded: dict[str, list[str]] = {}
+    small_ids: set[str] = set()
     pool: dict[str, list[str]] = {}
+    small_pool: dict[str, list[str]] = {}
+
+    def is_small(row: dict[str, str]) -> bool:
+        return any(int(row[f"lesion_count_{b}"] or 0) > 0 for b in args.small_bins)
+
     for row in rows:
         clean, reasons = is_clean(row)
+        small = args.protocol == "small-held-out" and is_small(row)
+        if small:
+            small_ids.add(row["case_id"])
         if not clean and not args.no_clean_eval:
-            forced_train[row["case_id"]] = reasons
+            if small:
+                excluded[row["case_id"]] = reasons  # cannot train on it, cannot evaluate on it
+            else:
+                forced_train[row["case_id"]] = reasons
+        elif small:
+            small_pool[row["case_id"]] = case_labels(row)
         else:
             pool[row["case_id"]] = case_labels(row)
-    # The forced-train cases consume part of the train share so that the
-    # stratified pool still produces the requested overall proportions.
-    n_total = len(rows)
-    pool_ratios = {
-        "train": max(0.0, ratios["train"] * n_total - len(forced_train)) / len(pool),
-        "val": ratios["val"] * n_total / len(pool),
-        "test": ratios["test"] * n_total / len(pool),
-    }
+    n_total = len(rows) - len(excluded)
+    assignment: dict[str, str] = {}
+    if args.protocol == "small-held-out":
+        # Small-lesion patients: test, or val for the requested fraction.
+        if small_pool:
+            small_ratios = {"train": 0.0, "val": args.small_val_fraction, "test": 1.0 - args.small_val_fraction}
+            assignment.update(iterative_stratification(small_pool, small_ratios, rng))
+        # Large-only and negative patients by --ratios; forced-train cases take
+        # part of the train share.
+        pool_ratios = {
+            "train": max(0.0, ratios["train"] * len(pool) - len(forced_train)),
+            "val": ratios["val"] * len(pool),
+            "test": ratios["test"] * len(pool),
+        }
+    else:
+        pool_ratios = {
+            "train": max(0.0, ratios["train"] * n_total - len(forced_train)),
+            "val": ratios["val"] * n_total,
+            "test": ratios["test"] * n_total,
+        }
     total = sum(pool_ratios.values())
     pool_ratios = {k: v / total for k, v in pool_ratios.items()}
-    assignment = iterative_stratification(pool, pool_ratios, rng)
+    assignment.update(iterative_stratification(pool, pool_ratios, rng))
     for case_id in forced_train:
         assignment[case_id] = "train"
+    rows = [row for row in rows if row["case_id"] not in excluded]
 
     by_case = {row["case_id"]: row for row in rows}
     subsets = {s: sorted(c for c, a in assignment.items() if a == s) for s in SUBSETS}
@@ -165,6 +222,7 @@ def main() -> None:
             for diagnosis in ("control", "HH", "HCC", "ICC", "cHCC-CCA", "metastasis"):
                 entry[f"diagnosis_{diagnosis}"] = sum(m["diagnosis_coarse"] == diagnosis for m in members)
             entry["forced_train_flagged"] = sum(m["case_id"] in forced_train for m in members)
+            entry["small_lesion_patients"] = sum(m["case_id"] in small_ids for m in members)
             summary_rows.append(entry)
     with (out / f"{args.name}_summary.csv").open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(summary_rows[0]))
@@ -189,8 +247,9 @@ def main() -> None:
                 "sanity_pass": row["sanity_pass"],
                 "native_spacing_z_pvp_mm": row["native_spacing_z_pvp_mm"],
                 "spacing_confidence": row["spacing_confidence"],
+                "small_lesion_patient": int(case_id in small_ids),
                 "forced_train_reason": ";".join(forced_train.get(case_id, [])),
-                "stratification_labels": ";".join(pool.get(case_id, [])),
+                "stratification_labels": ";".join(pool.get(case_id, small_pool.get(case_id, []))),
             }
         )
     with (out / f"{args.name}_cases.csv").open("w", encoding="utf-8-sig", newline="") as handle:
@@ -198,19 +257,30 @@ def main() -> None:
         writer.writeheader()
         writer.writerows(case_rows)
 
+    all_labels = {**pool, **small_pool}
     label_counts = {
-        s: dict(sorted(Counter(l for c in subsets[s] for l in pool.get(c, [])).items())) for s in SUBSETS
+        s: dict(sorted(Counter(l for c in subsets[s] for l in all_labels.get(c, [])).items())) for s in SUBSETS
     }
     payload = {
         "name": args.name,
+        "protocol": args.protocol,
+        "protocol_rule": (
+            f"patients with any lesion in {args.small_bins} never train; {1 - args.small_val_fraction:.2f} of them test, "
+            f"{args.small_val_fraction:.2f} val; other patients split {ratios} with stratification"
+            if args.protocol == "small-held-out"
+            else f"all patients split {ratios} with stratification over every label"
+        ),
+        "small_bins": args.small_bins if args.protocol == "small-held-out" else [],
+        "small_lesion_patients": {s: sum(c in small_ids for c in subsets[s]) for s in SUBSETS},
         "created": "deterministic: same manifest + same seed + same options -> same split",
         "source_manifest": str(manifest_path),
-        "manifest_cases": n_total,
+        "manifest_cases": len(rows) + len(excluded),
         "seed": args.seed,
         "ratios": ratios,
         "clean_eval": not args.no_clean_eval,
-        "clean_eval_rule": "val/test require tumour_mask_reliable = 1 and all four phases usable; others are forced into train",
+        "clean_eval_rule": "val/test require tumour_mask_reliable = 1 and all four phases usable; other large-only patients are forced into train; flagged small-lesion patients are excluded",
         "forced_train": forced_train,
+        "excluded": excluded,
         "size_bins_mm": {b: BIN_LABELS[b] for b in SIZE_BINS},
         "size_definition": "equivalent spherical diameter of a 26-connected component on the 1 mm grid (lesion_size_statistics.csv)",
         "stratification_labels": "dataset, diagnosis_coarse, lesions present/none, has_<bin> and dataset:has_<bin> for each size bin",
@@ -222,7 +292,15 @@ def main() -> None:
     }
     (out / f"{args.name}.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
-    print(f"cases {n_total}: " + ", ".join(f"{s} {len(subsets[s])}" for s in SUBSETS) + f"; flagged cases forced into train: {len(forced_train)}")
+    print(
+        f"protocol {args.protocol}; cases {len(rows)}: " + ", ".join(f"{s} {len(subsets[s])}" for s in SUBSETS)
+        + f"; flagged forced into train: {len(forced_train)}; excluded: {len(excluded)}"
+        + (
+            f"; small-lesion patients val/test: {payload['small_lesion_patients']['val']}/{payload['small_lesion_patients']['test']}"
+            if args.protocol == "small-held-out"
+            else ""
+        )
+    )
     header = f"{'subset':6s} {'dataset':11s} {'cases':>5s} {'pos':>4s} " + " ".join(f"{BIN_LABELS[b]:>9s}" for b in SIZE_BINS)
     print(header)
     for entry in summary_rows:

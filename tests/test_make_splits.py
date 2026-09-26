@@ -42,6 +42,15 @@ class SplitTests(unittest.TestCase):
         for subset in SUBSETS:
             self.assertAlmostEqual(rare_counts[subset] / len(rare), ratios[subset], delta=0.06)
 
+    def test_small_pool_can_be_sent_entirely_to_test(self) -> None:
+        cases = {c: l for c, l in synthetic_cases(200, 3).items() if "has_0_5mm" in l}
+        assignment = iterative_stratification(cases, {"train": 0.0, "val": 0.0, "test": 1.0}, random.Random(0))
+        self.assertEqual(set(assignment.values()), {"test"})
+        mixed = iterative_stratification(cases, {"train": 0.0, "val": 0.2, "test": 0.8}, random.Random(0))
+        counts = Counter(mixed.values())
+        self.assertEqual(counts["train"], 0)
+        self.assertAlmostEqual(counts["test"] / len(cases), 0.8, delta=0.08)
+
     def test_labels_and_cleanliness_from_manifest_row(self) -> None:
         row = {"dataset": "PLC-CECT", "diagnosis_coarse": "HCC", "lesion_count_total": "3", "lesion_count_0_5mm": "0",
                "lesion_count_5_10mm": "1", "lesion_count_10_15mm": "0", "lesion_count_gt_15mm": "2",
