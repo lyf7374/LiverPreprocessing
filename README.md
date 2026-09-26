@@ -229,6 +229,28 @@ Without the offset a network trained on MCT-LTDiag and WAW-TACE still segmented 
 
 `case.json` records the pipeline version, reference phase, `usable_phases`, per-phase registration details (selected stage, Dice of every candidate, affine axis scales, optimiser stop conditions, errors, transform file), the native geometry of every phase, the PLC geometry provenance, the crop box, output geometry, intensity source and valid range, sanity results, liver volume and the archive members every input came from. `dataset_manifest.csv` has one row per case with the same information flattened (native slice spacing per phase, `spacing_source`, `spacing_confidence`, `intensity_valid_range_hu`, `intensity_offset_hu_recommended`, Dice and `usable_*` per phase, `tumour_mask_reliable`, `sanity_pass`, `sanity_flags`) plus the label and lesion-size columns.
 
+## Patient-level split and size-binned evaluation
+
+`scripts/make_splits.py` produces a reproducible train / validation / test split (default 70 / 10 / 20) of a unified_v2 root and `scripts/evaluate_by_lesion_size.py` scores predicted tumour masks by lesion size. Both use the size bins of stage 2: equivalent spherical diameter of a 26-connected component on the 1 mm grid, **0-5, 5-10, 10-15 and > 15 mm**.
+
+```bash
+python scripts/make_splits.py --root /data/processed/unified --seed 0            # -> <root>/splits/unified_v2_split_seed0.{json,_cases.csv,_summary.csv}
+python scripts/evaluate_by_lesion_size.py --root /data/processed/unified \
+    --predictions /path/to/predictions --split /data/processed/unified/splits/unified_v2_split_seed0.json \
+    --subset test --out /path/to/metrics
+```
+
+Split design:
+
+- One case is one patient, so all phases and lesions of a patient stay together.
+- Iterative stratification (Sechidis et al. 2011) over the labels dataset, coarse diagnosis, lesion present / none, `has_<bin>` for each size bin and the joint `dataset:has_<bin>`. The rarest label is placed first, so the few small lesions outside MCT-LTDiag are spread across subsets in proportion; every subset then carries every bin that the data allow.
+- Deterministic: the same manifest, seed and options give the same subsets (`--seed 0` is the reference). The JSON records the case lists, the per-label counts and the options.
+- Clean evaluation subsets (default): cases with `tumour_mask_reliable = 0` or with a phase below the registration gate are forced into train, where phase dropout handles them; 19 cases in the reference split. `--no-clean-eval` disables this.
+
+Reference split (`reference/splits/unified_v2_split_seed0.json` with its `_cases.csv` and `_summary.csv`, seed 0): train 727, val 105, test 210 cases. Lesions / cases per size bin in the test subset: MCT-LTDiag 91/46, 57/29, 61/30, 182/101; PLC-CECT 0/0, 2/1, 3/3, 58/53; WAW-TACE 0/0, 2/1, 4/4, 47/32 (0-5, 5-10, 10-15, > 15 mm). Small lesions therefore come almost entirely from MCT-LTDiag, whose native slices are 5 mm: a sub-5 mm component there is a one- or two-slice object, and the 0-5 mm bin should be read with that in mind. PLC-CECT contains one 0-5 mm lesion in total, which stays in train.
+
+Evaluation rules (`evaluate_by_lesion_size.py`): predictions are binary NIfTI files `<case_id>.nii.gz` on the case grid. A ground-truth lesion counts as detected when at least `--hit-fraction` (default 0.10) of its voxels are covered by the prediction; a predicted component that touches no lesion is a false positive. Reported per size bin, overall and per dataset: lesions, detected, sensitivity with a 95 % Wilson interval, mean lesion-wise Dice (0 for a miss), false-positive components in that size range; per case: tumour Dice and false positives per case. Outputs `size_binned_metrics.json`, `size_binned_metrics.csv` and `per_lesion.csv`.
+
 ## Using the output as one network input
 
 - Load the four channels, add the manifest's `intensity_offset_hu_recommended` (40 HU for PLC-CECT, see above), clip to at most [-200, 200] HU (the PLC valid range; MCT / WAW are unclipped in storage) and normalise in the loader. Everything is already 1 mm isotropic, LPS, liver-centred; array sizes differ per case, so pad or crop in the loader.
@@ -276,8 +298,10 @@ scripts/estimate_plc_geometry.py        stage 0 (download-weights / measure / so
 scripts/preprocess_multiphase_ct.py     stage 1
 scripts/prepare_hierarchical_labels.py  stage 2
 scripts/verify_unified_v2_output.py     read-only completion check
+scripts/make_splits.py                  reproducible stratified patient-level split
+scripts/evaluate_by_lesion_size.py      size-binned lesion detection / segmentation metrics
 tests/                                  unit tests (unittest)
-reference/                              outputs of the reference run
+reference/                              outputs of the reference run, incl. splits/
 requirements.txt                        minimum versions
 requirements-lock.txt                   exact versions of the reference environment
 ```
