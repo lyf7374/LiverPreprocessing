@@ -251,6 +251,8 @@ Reference split (`reference/splits/unified_v2_split_seed0.json` with its `_cases
 
 Evaluation rules (`evaluate_by_lesion_size.py`): predictions are binary NIfTI files `<case_id>.nii.gz` on the case grid. A ground-truth lesion counts as detected when at least `--hit-fraction` (default 0.10) of its voxels are covered by the prediction; a predicted component that touches no lesion is a false positive. Reported per size bin, overall and per dataset: lesions, detected, sensitivity with a 95 % Wilson interval, mean lesion-wise Dice (0 for a miss), false-positive components in that size range; per case: tumour Dice and false positives per case. Outputs `size_binned_metrics.json`, `size_binned_metrics.csv` and `per_lesion.csv`.
 
+Worked example (`reference/splits/example_size_binned_metrics.csv`): a deliberately small 3D U-Net (16-128 channels, 96 mm patches, 1,500 iterations on 150 of the 727 training cases, no post-processing) predicted the 210 test cases; the evaluator then gave, over all datasets, sensitivity 0.08 [0.04, 0.15] for 0-5 mm (91 lesions), 0.07 [0.03, 0.16] for 5-10 mm (61), 0.22 [0.14, 0.33] for 10-15 mm (68) and 0.67 [0.61, 0.72] for > 15 mm (287), with 31 false-positive components per case. These numbers only illustrate the output format and the size dependence; they are not a result of this repository.
+
 ## Using the output as one network input
 
 - Load the four channels, add the manifest's `intensity_offset_hu_recommended` (40 HU for PLC-CECT, see above), clip to at most [-200, 200] HU (the PLC valid range; MCT / WAW are unclipped in storage) and normalise in the loader. Everything is already 1 mm isotropic, LPS, liver-centred; array sizes differ per case, so pad or crop in the loader.
