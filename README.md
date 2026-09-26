@@ -260,7 +260,14 @@ Under small-held-out the training set keeps 144 of the 517 MCT-LTDiag patients (
 
 Evaluation rules (`evaluate_by_lesion_size.py`): predictions are binary NIfTI files `<case_id>.nii.gz` on the case grid. A ground-truth lesion counts as detected when at least `--hit-fraction` (default 0.10) of its voxels are covered by the prediction; a predicted component that touches no lesion is a false positive. Reported per size bin, overall and per dataset: lesions, detected, sensitivity with a 95 % Wilson interval, mean lesion-wise Dice (0 for a miss), false-positive components in that size range; per case: tumour Dice and false positives per case. Outputs `size_binned_metrics.json`, `size_binned_metrics.csv` and `per_lesion.csv`.
 
-Worked example (`reference/splits/example_size_binned_metrics_stratified.csv`, stratified protocol): a deliberately small 3D U-Net (16-128 channels, 96 mm patches, 1,500 iterations on 150 of the 727 training cases, no post-processing) predicted the 210 test cases; the evaluator then gave, over all datasets, sensitivity 0.08 [0.04, 0.15] for 0-5 mm (91 lesions), 0.07 [0.03, 0.16] for 5-10 mm (61), 0.22 [0.14, 0.33] for 10-15 mm (68) and 0.67 [0.61, 0.72] for > 15 mm (287), with 31 false-positive components per case. These numbers only illustrate the output format and the size dependence; they are not a result of this repository.
+Worked examples (`reference/splits/example_size_binned_metrics_*.csv`): a deliberately small 3D U-Net (16-128 channels, 96 mm patches, 1,500 iterations on 150 training cases, no post-processing) was trained and scored under each protocol.
+
+| Protocol (training data) | Test cases | 0-5 mm | 5-10 mm | 10-15 mm | > 15 mm | FP components / case |
+|---|---:|---|---|---|---|---:|
+| stratified (all sizes) | 210 | 0.08 [0.04, 0.15] (91) | 0.07 [0.03, 0.16] (61) | 0.22 [0.14, 0.33] (68) | 0.67 [0.61, 0.72] (287) | 31 |
+| small-held-out (> 15 mm only) | 439 | 0.10 [0.08, 0.13] (509) | 0.08 [0.06, 0.11] (475) | 0.23 [0.19, 0.28] (365) | 0.70 [0.67, 0.73] (742) | 93 |
+
+Sensitivity with 95 % Wilson interval and the number of lesions in brackets. These numbers only illustrate the output format and the size dependence; they are not a result of this repository. Small-bin sensitivities must always be read next to the false-positive columns: with 93 false-positive components per case a 10 % hit rate at 0-5 mm says little. Re-scoring the same predictions with `--min-pred-voxels 30` (a component-size floor applied identically to every case) reduces the false positives to 19 per case while every sensitivity stays the same, which shows that these small-bin hits come from larger predicted regions covering the lesion rather than from isolated speckle; a model's own confidence threshold is the other lever.
 
 ## Using the output as one network input
 

@@ -74,9 +74,17 @@ def load_mask(path: Path) -> tuple[np.ndarray, float]:
     return array, voxel_mm3
 
 
-def evaluate_case(gt: np.ndarray, pred: np.ndarray, voxel_mm3: float, hit_fraction: float) -> dict:
+def evaluate_case(gt: np.ndarray, pred: np.ndarray, voxel_mm3: float, hit_fraction: float, min_pred_voxels: int = 0) -> dict:
     gt_labels, n_gt = ndimage.label(gt, structure=STRUCTURE)
     pred_labels, n_pred = ndimage.label(pred, structure=STRUCTURE)
+    if min_pred_voxels > 1 and n_pred:
+        # Optional post-processing: drop predicted components below a size,
+        # applied identically to every case before matching.
+        sizes = np.bincount(pred_labels.ravel(), minlength=n_pred + 1)
+        keep = sizes >= min_pred_voxels
+        keep[0] = False
+        pred = keep[pred_labels]
+        pred_labels, n_pred = ndimage.label(pred, structure=STRUCTURE)
     gt_sizes = np.bincount(gt_labels.ravel(), minlength=n_gt + 1)
     pred_sizes = np.bincount(pred_labels.ravel(), minlength=n_pred + 1)
     lesions = []
@@ -131,6 +139,8 @@ def aggregate(case_results: list[dict], hit_fraction: float) -> dict:
             "false_positive_components": len(fps),
         }
     out["hit_rule"] = f">= {hit_fraction:.2f} of the lesion's voxels covered by the prediction (at least one voxel)"
+    out["lesions_total"] = sum(len(c["lesions"]) for c in case_results)
+    out["detected_total"] = sum(sum(l["detected"] for l in c["lesions"]) for c in case_results)
     return out
 
 
@@ -142,6 +152,8 @@ def main() -> None:
     parser.add_argument("--subset", default="test", help="Subset of the split to evaluate (default test).")
     parser.add_argument("--cases", nargs="*", default=None, help="Explicit case ids instead of a split.")
     parser.add_argument("--hit-fraction", type=float, default=0.10)
+    parser.add_argument("--min-pred-voxels", type=int, default=0,
+                        help="Drop predicted components smaller than this many voxels (mm3 on the 1 mm grid) before matching; 0 keeps all.")
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
@@ -165,7 +177,7 @@ def main() -> None:
         pred, _ = load_mask(pred_path)
         if pred.shape != gt.shape:
             raise SystemExit(f"{case_id}: prediction shape {pred.shape} != ground truth {gt.shape}")
-        result = evaluate_case(gt, pred, voxel_mm3, args.hit_fraction)
+        result = evaluate_case(gt, pred, voxel_mm3, args.hit_fraction, args.min_pred_voxels)
         result["case_id"] = case_id
         result["dataset"] = manifest[case_id]["dataset"]
         per_case.append(result)
@@ -177,6 +189,7 @@ def main() -> None:
         "cases_evaluated": len(per_case),
         "cases_missing_prediction": missing,
         "hit_fraction": args.hit_fraction,
+        "min_pred_voxels": args.min_pred_voxels,
         "overall": aggregate(per_case, args.hit_fraction),
         "per_dataset": {d: aggregate([c for c in per_case if c["dataset"] == d], args.hit_fraction) for d in sorted({c["dataset"] for c in per_case})},
     }
