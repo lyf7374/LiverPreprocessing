@@ -5,20 +5,25 @@ Ground truth: the binary tumour masks of a unified_v2 root; a lesion is one
 (ESD) of its volume on the 1 mm grid, binned into 0-5, 5-10, 10-15 and
 > 15 mm exactly as in lesion_size_statistics.csv.
 
-Predictions: one binary NIfTI per case, <predictions>/<case_id>.nii.gz, on
-the case's own grid (same shape as tumor_mask.nii.gz); any non-zero voxel is
-tumour.
+Predictions: one NIfTI per case, <predictions>/<case_id>.nii.gz, on the
+case's own grid (same shape as tumor_mask.nii.gz).  By default any non-zero
+voxel is tumour; for a multi-class label map give --tumour-label (e.g. 2 when
+1 is liver and 2 is tumour).
 
 Metrics, overall and per dataset, for every size bin:
   lesions            number of ground-truth lesions in the bin
   detected           lesions whose voxels are covered by the prediction by at
                      least --hit-fraction (default 0.10) of their volume
-  sensitivity        detected / lesions, with a 95 % Wilson interval
+  sensitivity        detected / lesions (= lesion-level recall), 95 % Wilson CI
+  lesion_precision   detected / (detected + false-positive components whose
+                     size falls in the bin)
+  voxel_recall       covered lesion voxels / lesion voxels of the bin
   lesion_dice_mean   Dice between each lesion and the union of the predicted
                      components that touch it (0 for a missed lesion)
-Per case: tumour Dice, number of false-positive predicted components (no
-overlap with any lesion), and their ESD distribution by bin.  Cases with no
-lesion contribute only false positives.
+And per scope (overall, per dataset): lesion sensitivity / precision / F1 over
+all sizes, voxel-level recall / precision / Dice pooled over the cases, mean
+case tumour Dice, false-positive components per case.  Cases with no lesion
+contribute only false positives.
 
 Usage:
     python evaluate_by_lesion_size.py --root <unified root> --predictions <dir> \
@@ -67,9 +72,10 @@ def wilson(k: int, n: int, z: float = 1.96) -> tuple[float | None, float | None]
     return centre - half, centre + half
 
 
-def load_mask(path: Path) -> tuple[np.ndarray, float]:
+def load_mask(path: Path, label: int | None = None) -> tuple[np.ndarray, float]:
     image = nib.load(str(path))
-    array = np.asanyarray(image.dataobj) > 0
+    data = np.asanyarray(image.dataobj)
+    array = (data == label) if label is not None else (data > 0)
     voxel_mm3 = float(np.prod(image.header.get_zooms()[:3]))
     return array, voxel_mm3
 
@@ -116,7 +122,8 @@ def evaluate_case(gt: np.ndarray, pred: np.ndarray, voxel_mm3: float, hit_fracti
     inter = int(np.logical_and(gt, pred).sum())
     denom = int(gt.sum()) + int(pred.sum())
     case_dice = 2.0 * inter / denom if denom else None
-    return {"lesions": lesions, "false_positives": false_positives, "case_dice": case_dice, "gt_voxels": int(gt.sum()), "pred_voxels": int(pred.sum())}
+    return {"lesions": lesions, "false_positives": false_positives, "case_dice": case_dice,
+            "gt_voxels": int(gt.sum()), "pred_voxels": int(pred.sum()), "tp_voxels": inter}
 
 
 def aggregate(case_results: list[dict], hit_fraction: float) -> dict:
@@ -129,15 +136,40 @@ def aggregate(case_results: list[dict], hit_fraction: float) -> dict:
         fps = [f for c in case_results for f in c["false_positives"] if f["size_bin"] == b]
         detected = sum(l["detected"] for l in lesions)
         lo, hi = wilson(detected, len(lesions))
+        gt_vox = sum(l["voxels"] for l in lesions)
+        covered_vox = sum(l["covered_fraction"] * l["voxels"] for l in lesions)
         out["bins"][b] = {
             "label": BIN_LABELS[b],
             "lesions": len(lesions),
             "detected": int(detected),
             "sensitivity": float(detected / len(lesions)) if lesions else None,
             "sensitivity_ci95": [lo, hi],
+            "lesion_precision": float(detected / (detected + len(fps))) if (detected + len(fps)) else None,
+            "voxel_recall": float(covered_vox / gt_vox) if gt_vox else None,
             "lesion_dice_mean": float(np.mean([l["lesion_dice"] for l in lesions])) if lesions else None,
             "false_positive_components": len(fps),
         }
+    all_lesions = [l for c in case_results for l in c["lesions"]]
+    all_detected = sum(l["detected"] for l in all_lesions)
+    all_fps = sum(len(c["false_positives"]) for c in case_results)
+    tp = sum(c["tp_voxels"] for c in case_results)
+    gt_total = sum(c["gt_voxels"] for c in case_results)
+    pred_total = sum(c["pred_voxels"] for c in case_results)
+    sens = all_detected / len(all_lesions) if all_lesions else None
+    prec = all_detected / (all_detected + all_fps) if (all_detected + all_fps) else None
+    out["lesion_level"] = {
+        "lesions": len(all_lesions),
+        "detected": int(all_detected),
+        "sensitivity_recall": sens,
+        "precision": prec,
+        "f1": (2 * sens * prec / (sens + prec)) if (sens and prec) else None,
+        "false_positive_components": int(all_fps),
+    }
+    out["voxel_level"] = {
+        "recall": tp / gt_total if gt_total else None,
+        "precision": tp / pred_total if pred_total else None,
+        "dice_pooled": 2 * tp / (gt_total + pred_total) if (gt_total + pred_total) else None,
+    }
     out["hit_rule"] = f">= {hit_fraction:.2f} of the lesion's voxels covered by the prediction (at least one voxel)"
     out["lesions_total"] = sum(len(c["lesions"]) for c in case_results)
     out["detected_total"] = sum(sum(l["detected"] for l in c["lesions"]) for c in case_results)
@@ -152,6 +184,8 @@ def main() -> None:
     parser.add_argument("--subset", default="test", help="Subset of the split to evaluate (default test).")
     parser.add_argument("--cases", nargs="*", default=None, help="Explicit case ids instead of a split.")
     parser.add_argument("--hit-fraction", type=float, default=0.10)
+    parser.add_argument("--tumour-label", type=int, default=None,
+                        help="Label value that means tumour in the prediction files (default: any non-zero voxel).")
     parser.add_argument("--min-pred-voxels", type=int, default=0,
                         help="Drop predicted components smaller than this many voxels (mm3 on the 1 mm grid) before matching; 0 keeps all.")
     parser.add_argument("--out", type=Path, required=True)
@@ -174,7 +208,7 @@ def main() -> None:
             missing.append(case_id)
             continue
         gt, voxel_mm3 = load_mask(args.root / "cases" / case_id / "tumor_mask.nii.gz")
-        pred, _ = load_mask(pred_path)
+        pred, _ = load_mask(pred_path, args.tumour_label)
         if pred.shape != gt.shape:
             raise SystemExit(f"{case_id}: prediction shape {pred.shape} != ground truth {gt.shape}")
         result = evaluate_case(gt, pred, voxel_mm3, args.hit_fraction, args.min_pred_voxels)
@@ -190,6 +224,7 @@ def main() -> None:
         "cases_missing_prediction": missing,
         "hit_fraction": args.hit_fraction,
         "min_pred_voxels": args.min_pred_voxels,
+        "tumour_label": args.tumour_label,
         "overall": aggregate(per_case, args.hit_fraction),
         "per_dataset": {d: aggregate([c for c in per_case if c["dataset"] == d], args.hit_fraction) for d in sorted({c["dataset"] for c in per_case})},
     }
@@ -201,8 +236,12 @@ def main() -> None:
             e = agg["bins"][b]
             rows.append({"scope": scope, "size_bin": e["label"], "lesions": e["lesions"], "detected": e["detected"],
                          "sensitivity": e["sensitivity"], "ci95_low": e["sensitivity_ci95"][0], "ci95_high": e["sensitivity_ci95"][1],
+                         "lesion_precision": e["lesion_precision"], "voxel_recall": e["voxel_recall"],
                          "lesion_dice_mean": e["lesion_dice_mean"], "false_positive_components": e["false_positive_components"],
-                         "cases": agg["cases"], "case_tumour_dice_mean": agg["case_tumour_dice_mean"], "false_positives_per_case": agg["false_positives_per_case"]})
+                         "cases": agg["cases"], "case_tumour_dice_mean": agg["case_tumour_dice_mean"], "false_positives_per_case": agg["false_positives_per_case"],
+                         "all_sizes_sensitivity_recall": agg["lesion_level"]["sensitivity_recall"], "all_sizes_precision": agg["lesion_level"]["precision"],
+                         "all_sizes_f1": agg["lesion_level"]["f1"], "voxel_recall_pooled": agg["voxel_level"]["recall"],
+                         "voxel_precision_pooled": agg["voxel_level"]["precision"], "voxel_dice_pooled": agg["voxel_level"]["dice_pooled"]})
     with (args.out / "size_binned_metrics.csv").open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
         writer.writeheader()
@@ -216,11 +255,15 @@ def main() -> None:
 
     print(f"{report['cases_evaluated']} cases; hit rule: {report['overall']['hit_rule']}")
     for scope, agg in [("overall", report["overall"])] + list(report["per_dataset"].items()):
-        print(f"== {scope}: cases {agg['cases']}, case tumour Dice {agg['case_tumour_dice_mean'] if agg['case_tumour_dice_mean'] is None else round(agg['case_tumour_dice_mean'], 3)}, FP/case {round(agg['false_positives_per_case'], 2) if agg['false_positives_per_case'] is not None else None}")
+        ll, vl = agg["lesion_level"], agg["voxel_level"]
+        fmt = lambda v, d=3: "n/a" if v is None else round(v, d)  # noqa: E731
+        print(f"== {scope}: cases {agg['cases']}, case tumour Dice {fmt(agg['case_tumour_dice_mean'])}, FP/case {fmt(agg['false_positives_per_case'], 2)}; "
+              f"lesion-level recall {fmt(ll['sensitivity_recall'])} precision {fmt(ll['precision'])} F1 {fmt(ll['f1'])}; "
+              f"voxel-level recall {fmt(vl['recall'])} precision {fmt(vl['precision'])} Dice {fmt(vl['dice_pooled'])}")
         for b in SIZE_BINS:
             e = agg["bins"][b]
             sens = "n/a" if e["sensitivity"] is None else f"{e['sensitivity']:.3f} [{e['sensitivity_ci95'][0]:.2f}, {e['sensitivity_ci95'][1]:.2f}]"
-            print(f"   {e['label']:9s} lesions {e['lesions']:4d} detected {e['detected']:4d} sensitivity {sens:22s} lesion Dice {'n/a' if e['lesion_dice_mean'] is None else round(e['lesion_dice_mean'], 3)} FP comps {e['false_positive_components']}")
+            print(f"   {e['label']:9s} lesions {e['lesions']:4d} detected {e['detected']:4d} sensitivity {sens:22s} precision {fmt(e['lesion_precision'])} voxel recall {fmt(e['voxel_recall'])} lesion Dice {fmt(e['lesion_dice_mean'])} FP comps {e['false_positive_components']}")
 
 
 if __name__ == "__main__":
