@@ -6,3 +6,6 @@ One Markdown file per experiment, written by `experiments/baselines_v2/tools/rec
 |---|---|---|---:|---|---|---|---|---|
 | 2026-09-27 | baselines_small_held_out (nnU-Net 300 ep) | small-held-out seed 0 | 439 | 0.713 | 0.413 | 0.786 | 0.54 | [2026-09-27_baselines_small_held_out.md](2026-09-27_baselines_small_held_out.md) |
 | 2026-09-27 | baselines_small_held_out (Plain 3D U-Net 300 ep) | small-held-out seed 0 | 439 | 0.709 | 0.413 | 0.797 | 0.50 | [2026-09-27_baselines_small_held_out.md](2026-09-27_baselines_small_held_out.md) |
+| 2026-09-27 | unet_synthetic_small_tumours (nnU-Net 300 ep) | small-held-out seed 0 | 439 | 0.713 | 0.413 | 0.786 | 0.54 | [2026-09-27_unet_synthetic_small_tumours.md](2026-09-27_unet_synthetic_small_tumours.md) |
+| 2026-09-27 | unet_synthetic_small_tumours (Plain 3D U-Net 300 ep) | small-held-out seed 0 | 439 | 0.709 | 0.413 | 0.797 | 0.50 | [2026-09-27_unet_synthetic_small_tumours.md](2026-09-27_unet_synthetic_small_tumours.md) |
+| 2026-09-27 | unet_synthetic_small_tumours (U-Net + synthetic small tumours) | small-held-out seed 0 | 439 | 0.704 | 0.508 | 0.583 | 1.73 | [2026-09-27_unet_synthetic_small_tumours.md](2026-09-27_unet_synthetic_small_tumours.md) |
