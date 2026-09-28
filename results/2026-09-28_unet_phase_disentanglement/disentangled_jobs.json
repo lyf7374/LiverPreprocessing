@@ -1,0 +1,1 @@
+{"variant": "disentangled", "args": "--model disentangled", "submitted": "2026-09-27T15:06:54+01:00", "train": "28984088", "after": "28984087", "predict_failed": "28984089", "predict_alt_gpushort": ["29253363", "29254119", "29254120"], "predict_cancelled_andrena": "29251713", "predict": "gpushort chain 29253363,29254119,29254120"}
