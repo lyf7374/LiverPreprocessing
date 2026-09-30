@@ -1,0 +1,1 @@
+{"variant": "ccdicece", "args": "--loss ccdicece --cc-weight 0.5", "submitted": "2026-09-27T15:06:54+01:00", "train": "28984086", "predict": "28984087", "after": "28984085", "prob_predict": ["29605549", "29605550"], "froc": "29605551", "prob_submitted": "2026-09-30T18:47:53"}

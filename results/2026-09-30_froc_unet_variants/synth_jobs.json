@@ -1,0 +1,1 @@
+{"variant": "synth", "args": "--synthetic-probability 0.5", "submitted": "2026-09-27T15:06:54+01:00", "train": "28984084", "predict": "28984085", "after": "", "prob_predict": ["29605546", "29605547"], "froc": "29605548", "prob_submitted": "2026-09-30T18:47:53"}
