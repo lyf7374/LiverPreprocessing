@@ -1,0 +1,445 @@
+{
+  "overall": {
+    "cases": 105,
+    "bins": {
+      "0-5 mm": {
+        "lesions": 53,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.05849056603773584,
+          "2.0": 0.11320754716981132,
+          "4.0": 0.1320754716981132,
+          "8.0": 0.2632677639502208
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.1417603372139703,
+        "fp_per_case_range": [
+          0.9809523809523809,
+          12.123809523809523
+        ]
+      },
+      "5-10 mm": {
+        "lesions": 58,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.1560344827586207,
+          "2.0": 0.20689655172413793,
+          "4.0": 0.3793103448275862,
+          "8.0": 0.45348495964783564
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.2989315847395451,
+        "fp_per_case_range": [
+          0.9809523809523809,
+          12.123809523809523
+        ]
+      },
+      "10-15 mm": {
+        "lesions": 40,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.455,
+          "2.0": 0.575,
+          "4.0": 0.625,
+          "8.0": 0.6738297872340425
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.5822074468085107,
+        "fp_per_case_range": [
+          0.9809523809523809,
+          12.123809523809523
+        ]
+      },
+      "> 15 mm": {
+        "lesions": 154,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.8383116883116883,
+          "2.0": 0.911873840445269,
+          "4.0": 0.9285714285714286,
+          "8.0": 0.9542415031776734
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.9082496151265149,
+        "fp_per_case_range": [
+          0.9809523809523809,
+          12.123809523809523
+        ]
+      },
+      "5-15 mm": {
+        "lesions": 98,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.27806122448979587,
+          "2.0": 0.35714285714285715,
+          "4.0": 0.47959183673469385,
+          "8.0": 0.5434216239687364
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.4145543855840208,
+        "fp_per_case_range": [
+          0.9809523809523809,
+          12.123809523809523
+        ]
+      },
+      "all sizes": {
+        "lesions": 305,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.5227868852459016,
+          "2.0": 0.594847775175644,
+          "4.0": 0.6459016393442623,
+          "8.0": 0.7021695151726544
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.6164264537346156,
+        "fp_per_case_range": [
+          0.9809523809523809,
+          12.123809523809523
+        ]
+      }
+    }
+  },
+  "MCT-LTDiag": {
+    "cases": 54,
+    "bins": {
+      "0-5 mm": {
+        "lesions": 53,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.09433962264150944,
+          "2.0": 0.1320754716981132,
+          "4.0": 0.17056603773584905,
+          "8.0": 0.313893653516295
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.1777186963979417,
+        "fp_per_case_range": [
+          0.5185185185185185,
+          9.296296296296296
+        ]
+      },
+      "5-10 mm": {
+        "lesions": 57,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.21052631578947367,
+          "2.0": 0.3216374269005847,
+          "4.0": 0.43859649122807015,
+          "8.0": 0.5023923444976076
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.368288144603934,
+        "fp_per_case_range": [
+          0.5185185185185185,
+          9.296296296296296
+        ]
+      },
+      "10-15 mm": {
+        "lesions": 37,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.5783783783783784,
+          "2.0": 0.6216216216216216,
+          "4.0": 0.6486486486486487,
+          "8.0": 0.7297297297297297
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.6445945945945946,
+        "fp_per_case_range": [
+          0.5185185185185185,
+          9.296296296296296
+        ]
+      },
+      "> 15 mm": {
+        "lesions": 106,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.8716981132075472,
+          "2.0": 0.9150943396226415,
+          "4.0": 0.9269811320754717,
+          "8.0": 0.9528301886792453
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.9166509433962264,
+        "fp_per_case_range": [
+          0.5185185185185185,
+          9.296296296296296
+        ]
+      },
+      "5-15 mm": {
+        "lesions": 94,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.3553191489361702,
+          "2.0": 0.43971631205673756,
+          "4.0": 0.5212765957446809,
+          "8.0": 0.5918762088974855
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.4770470664087686,
+        "fp_per_case_range": [
+          0.5185185185185185,
+          9.296296296296296
+        ]
+      },
+      "all sizes": {
+        "lesions": 253,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.51699604743083,
+          "2.0": 0.5744400527009222,
+          "4.0": 0.6177865612648221,
+          "8.0": 0.6848724398131513
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.5985237753024314,
+        "fp_per_case_range": [
+          0.5185185185185185,
+          9.296296296296296
+        ]
+      }
+    }
+  },
+  "PLC-CECT": {
+    "cases": 34,
+    "bins": {
+      "0-5 mm": {
+        "lesions": 0,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": null,
+          "2.0": null,
+          "4.0": null,
+          "8.0": null
+        },
+        "mean_sensitivity_over_measured_fp_rates": null,
+        "fp_per_case_range": null
+      },
+      "5-10 mm": {
+        "lesions": 0,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": null,
+          "2.0": null,
+          "4.0": null,
+          "8.0": null
+        },
+        "mean_sensitivity_over_measured_fp_rates": null,
+        "fp_per_case_range": null
+      },
+      "10-15 mm": {
+        "lesions": 1,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": null,
+          "2.0": 0.0,
+          "4.0": 0.0,
+          "8.0": 0.0
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.0,
+        "fp_per_case_range": [
+          1.6470588235294117,
+          15.205882352941176
+        ]
+      },
+      "> 15 mm": {
+        "lesions": 27,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": null,
+          "2.0": 0.898148148148148,
+          "4.0": 1.0,
+          "8.0": 1.0
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.9660493827160493,
+        "fp_per_case_range": [
+          1.6470588235294117,
+          15.205882352941176
+        ]
+      },
+      "5-15 mm": {
+        "lesions": 1,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": null,
+          "2.0": 0.0,
+          "4.0": 0.0,
+          "8.0": 0.0
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.0,
+        "fp_per_case_range": [
+          1.6470588235294117,
+          15.205882352941176
+        ]
+      },
+      "all sizes": {
+        "lesions": 28,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": null,
+          "2.0": 0.8660714285714285,
+          "4.0": 0.9642857142857143,
+          "8.0": 0.9642857142857143
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.9315476190476191,
+        "fp_per_case_range": [
+          1.6470588235294117,
+          15.205882352941176
+        ]
+      }
+    }
+  },
+  "WAW-TACE": {
+    "cases": 17,
+    "bins": {
+      "0-5 mm": {
+        "lesions": 0,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": null,
+          "2.0": null,
+          "4.0": null,
+          "8.0": null
+        },
+        "mean_sensitivity_over_measured_fp_rates": null,
+        "fp_per_case_range": null
+      },
+      "5-10 mm": {
+        "lesions": 1,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.0,
+          "2.0": 0.0,
+          "4.0": 0.0,
+          "8.0": 0.0
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.0,
+        "fp_per_case_range": [
+          0.7647058823529411,
+          14.941176470588236
+        ]
+      },
+      "10-15 mm": {
+        "lesions": 2,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.5,
+          "2.0": 0.5,
+          "4.0": 0.5,
+          "8.0": 0.5
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.5,
+        "fp_per_case_range": [
+          0.7647058823529411,
+          14.941176470588236
+        ]
+      },
+      "> 15 mm": {
+        "lesions": 21,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.8571428571428571,
+          "2.0": 0.9047619047619048,
+          "4.0": 0.9047619047619048,
+          "8.0": 0.9175824175824175
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.896062271062271,
+        "fp_per_case_range": [
+          0.7647058823529411,
+          14.941176470588236
+        ]
+      },
+      "5-15 mm": {
+        "lesions": 3,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.3333333333333333,
+          "2.0": 0.3333333333333333,
+          "4.0": 0.3333333333333333,
+          "8.0": 0.3333333333333333
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.3333333333333333,
+        "fp_per_case_range": [
+          0.7647058823529411,
+          14.941176470588236
+        ]
+      },
+      "all sizes": {
+        "lesions": 24,
+        "sensitivity_at_fp_per_case": {
+          "0.125": null,
+          "0.25": null,
+          "0.5": null,
+          "1.0": 0.7916666666666666,
+          "2.0": 0.8333333333333334,
+          "4.0": 0.8333333333333334,
+          "8.0": 0.844551282051282
+        },
+        "mean_sensitivity_over_measured_fp_rates": 0.8257211538461539,
+        "fp_per_case_range": [
+          0.7647058823529411,
+          14.941176470588236
+        ]
+      }
+    }
+  },
+  "hit_rule": ">= 0.10 of the lesion's voxels covered",
+  "thresholds": [
+    0.02,
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    0.98
+  ]
+}

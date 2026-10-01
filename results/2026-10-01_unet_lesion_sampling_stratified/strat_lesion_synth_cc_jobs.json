@@ -1,0 +1,1 @@
+{"variant": "strat_lesion_synth_cc", "args": "--sampling lesion --ignore-fragments-below 10 --synthetic-probability 0.5 --loss ccdicece --cc-weight 0.5", "submitted": "2026-10-01T02:07:43+01:00", "train": "29669796", "predict": "29669797", "after": "29669795"}
