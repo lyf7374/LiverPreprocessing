@@ -1,0 +1,1 @@
+{"variant": "strat_lesion", "args": "--sampling lesion --ignore-fragments-below 10", "submitted": "2026-10-01T02:07:43+01:00", "train": "29669794", "predict": "29669795", "after": ""}
