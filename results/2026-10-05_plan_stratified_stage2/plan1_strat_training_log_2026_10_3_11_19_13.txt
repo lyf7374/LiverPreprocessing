@@ -1,0 +1,2353 @@
+Starting... 
+2026-10-03 11:19:13.517350: {'DATA_FD': '/data/scratch/qs260029/multiphase_route23/plan_repro/nnUNet_raw_data_base/nnUNet_raw_data/Task521_HCC_strat',
+ 'LESION_SAMPLING': True,
+ 'LIVER_LABEL': 2,
+ 'MAX_EPOCHS': 300,
+ 'MODE': 'train',
+ 'NUM_ALL_CLASSES': 3,
+ 'NUM_LESION_CLASSES': 1,
+ 'TASK_ID': 521,
+ 'VALIDATION_COMMON': {'class_channel_dict': {'benign': [2],
+                                              'each_class': [3],
+                                              'malig': [1],
+                                              'tumor_non_cyst': [0]},
+                       'class_names': ['tumour'],
+                       'combine_label_idx': [1],
+                       'compute_sens_on_classes': [1],
+                       'malig_benign_cyst_groups': [[1], [], []],
+                       'save_npz': True},
+ 'cfg': 'hcc_plan1',
+ 'continue_training': False,
+ 'data_fd': '/data/scratch/qs260029/multiphase_route23/plan_repro/nnUNet_raw_data_base/nnUNet_raw_data/Task521_HCC_strat',
+ 'data_loader': {'fg_force_lesion': True,
+                 'fg_prob_continuous': True,
+                 'ignore_class_label': 100,
+                 'lesion_instance_seg': True,
+                 'lesion_sampling': True,
+                 'max_neg_lesion_size_mm3': 0,
+                 'min_train_lesion_size': 10,
+                 'num_lesion_classes': 1,
+                 'num_lesion_classes_in_annot': 1,
+                 'oversample_foreground_percent': 0.33,
+                 'preprocess_mask': True,
+                 'type': 'DataLoader3D_Inst'},
+ 'deterministic': False,
+ 'disable_next_stage_pred': False,
+ 'disable_postprocessing_on_folds': True,
+ 'disable_saving': False,
+ 'exp_name': 'hcc_plan1_strat',
+ 'experiment': <function experiment at 0x1515851a7ec0>,
+ 'find_lr': False,
+ 'fold': 0,
+ 'fp32': False,
+ 'gpu': 0,
+ 'ignore_class_label': 100,
+ 'lesion_instance_seg': True,
+ 'mask_emb_dim': 64,
+ 'mode': 'train',
+ 'model': {'add_anchor_query': False,
+           'components': ('seg',),
+           'ignore_class_label': 100,
+           'liver_label': 2,
+           'loss': {},
+           'mask_emb_dim': 64,
+           'nnunet_deep_supervision': False,
+           'num_all_classes': 3,
+           'num_lesion_classes': 1,
+           'pixel_decoder': 'fpn',
+           'prediction_stride': 1,
+           'seg': {'conv_layers': 0, 'ft_dim': 64, 'loss': {'weight': 2}},
+           'type': 'PLAN'},
+ 'my_online_val': True,
+ 'network': '3d_fullres',
+ 'network_trainer': 'panoSegTrainer',
+ 'npz': False,
+ 'num_all_classes': 3,
+ 'num_lesion_classes': 1,
+ 'optimizer': {'backbone_multiplier': 1,
+               'backbone_name_exclude': ('fpn', 'emb'),
+               'backbone_name_include': ('unet.',),
+               'fix_unet_epoch': 0,
+               'initial_lr': 0.0001,
+               'max_num_epochs': 300,
+               'method': 'RAdam'},
+ 'p': 'nnUNetPlansv2.1',
+ 'pretrained_weights': None,
+ 'results_dir': '/data/scratch/qs260029/multiphase_route23/plan_repro/results/hcc_plan1_strat',
+ 'seg_pretrain_dir': None,
+ 'split_file': 'splits_final.pkl',
+ 'task': 521,
+ 'use_compressed_data': False,
+ 'use_simplified_train_folder': True,
+ 'val_disable_overwrite': True,
+ 'val_folder': 'validation_raw',
+ 'valbest': False,
+ 'validation': {'all_in_gpu': 'None',
+                'cascade_trainer_class_name': 'nnUNetTrainerV2CascadeFullRes',
+                'cfg': 'hcc_plan1',
+                'chk': 'model_final_checkpoint',
+                'class_channel_dict': {'benign': [2],
+                                       'each_class': [3],
+                                       'malig': [1],
+                                       'tumor_non_cyst': [0]},
+                'class_names': ['tumour'],
+                'combine_label_idx': [1],
+                'compute_sens_on_classes': [1],
+                'det_lesion_volume_th': 113,
+                'disable_mixed_precision': False,
+                'disable_tta': False,
+                'folders': [('/data/scratch/qs260029/multiphase_route23/plan_repro/nnUNet_raw_data_base/nnUNet_raw_data/Task521_HCC_strat/imagesVal',
+                             '/data/scratch/qs260029/multiphase_route23/plan_repro/results/hcc_plan1_strat/predictions_val'),
+                            ('/data/scratch/qs260029/multiphase_route23/plan_repro/nnUNet_raw_data_base/nnUNet_raw_data/Task521_HCC_strat/imagesTs',
+                             '/data/scratch/qs260029/multiphase_route23/plan_repro/results/hcc_plan1_strat/predictions_test')],
+                'folds': ['0'],
+                'input_folder': None,
+                'lesion_volume_th': 25,
+                'lowres_segmentations': 'None',
+                'malig_benign_cyst_groups': [[1], [], []],
+                'mode': 'normal',
+                'model': '3d_fullres',
+                'num_parts': 1,
+                'num_threads_nifti_save': 2,
+                'num_threads_preprocessing': 6,
+                'output_folder': None,
+                'overwrite_existing': False,
+                'part_id': 0,
+                'plans_identifier': 'nnUNetPlansv2.1',
+                'remove_lesion_outside_liver': 3,
+                'save_npz': True,
+                'step_size': 0.5,
+                'task_name': 'nnUNetPlansv2.1',
+                'torch_interpolate': False,
+                'trainer_class_name': 'panoSegTrainer',
+                'use_sliding_window': True,
+                'verbose': False},
+ 'validation_folders': <function validation_folders at 0x1515851a7f60>,
+ 'validation_only': False} 
+2026-10-03 11:19:15.737734: Using splits from existing split file: /data/scratch/qs260029/multiphase_route23/plan_repro/nnUNet_preprocessed/Task521_HCC_strat/splits_final.pkl 
+2026-10-03 11:19:15.739046: The split file contains 1 splits. 
+2026-10-03 11:19:15.739218: Desired fold for training: 0 
+2026-10-03 11:19:15.739357: This split has 708 training and 105 validation cases. 
+2026-10-03 11:20:27.806459: TRAINING KEYS:
+ odict_keys(['MCT-LTDiag_230218a1', 'MCT-LTDiag_230218a2', 'MCT-LTDiag_230218a3', 'MCT-LTDiag_230218a4', 'MCT-LTDiag_230218a5', 'MCT-LTDiag_230218a7', 'MCT-LTDiag_230218a8', 'MCT-LTDiag_230218a9', 'MCT-LTDiag_230218b10', 'MCT-LTDiag_230218b2', 'MCT-LTDiag_230218b5', 'MCT-LTDiag_230218b7', 'MCT-LTDiag_230218c1', 'MCT-LTDiag_230218c3', 'MCT-LTDiag_230218c4', 'MCT-LTDiag_230218c6', 'MCT-LTDiag_230218c7', 'MCT-LTDiag_230218c8', 'MCT-LTDiag_230312a1', 'MCT-LTDiag_230312a11', 'MCT-LTDiag_230312a13', 'MCT-LTDiag_230312a14', 'MCT-LTDiag_230312a2', 'MCT-LTDiag_230312a4', 'MCT-LTDiag_230312a5', 'MCT-LTDiag_230312a6', 'MCT-LTDiag_230312a7', 'MCT-LTDiag_230312a8', 'MCT-LTDiag_230408a1', 'MCT-LTDiag_230408a11', 'MCT-LTDiag_230408a12', 'MCT-LTDiag_230408a13', 'MCT-LTDiag_230408a3', 'MCT-LTDiag_230408a4', 'MCT-LTDiag_230408a8', 'MCT-LTDiag_230408a9', 'MCT-LTDiag_230525a1', 'MCT-LTDiag_230525a3', 'MCT-LTDiag_230525a4', 'MCT-LTDiag_230525b10', 'MCT-LTDiag_230525b2', 'MCT-LTDiag_230525b3', 'MCT-LTDiag_230525b6', 'MCT-LTDiag_230525b8', 'MCT-LTDiag_230525c1', 'MCT-LTDiag_230525c10', 'MCT-LTDiag_230525c2', 'MCT-LTDiag_230525c4', 'MCT-LTDiag_230525c5', 'MCT-LTDiag_230525c7', 'MCT-LTDiag_230525d2', 'MCT-LTDiag_230525d5', 'MCT-LTDiag_230525d7', 'MCT-LTDiag_230816b02', 'MCT-LTDiag_230816b04', 'MCT-LTDiag_230816b05', 'MCT-LTDiag_230816b08', 'MCT-LTDiag_230816b09', 'MCT-LTDiag_230816b10', 'MCT-LTDiag_230816b12', 'MCT-LTDiag_230816b14', 'MCT-LTDiag_230816b15', 'MCT-LTDiag_230906d02', 'MCT-LTDiag_230906d03', 'MCT-LTDiag_230906d04', 'MCT-LTDiag_230906d05', 'MCT-LTDiag_230906d07', 'MCT-LTDiag_230906d08', 'MCT-LTDiag_230906d10', 'MCT-LTDiag_230906d11', 'MCT-LTDiag_230906d12', 'MCT-LTDiag_230906d13', 'MCT-LTDiag_230906d14', 'MCT-LTDiag_230906d15', 'MCT-LTDiag_231025c04', 'MCT-LTDiag_231025c05', 'MCT-LTDiag_231025c07', 'MCT-LTDiag_231025c08', 'MCT-LTDiag_231025c10', 'MCT-LTDiag_231025c11', 'MCT-LTDiag_231025c12', 'MCT-LTDiag_231025c13', 'MCT-LTDiag_231025c15', 'MCT-LTDiag_231025c17', 'MCT-LTDiag_231025c18', 'MCT-LTDiag_231025c19', 'MCT-LTDiag_231025c21', 'MCT-LTDiag_231025c22', 'MCT-LTDiag_231025c23', 'MCT-LTDiag_231025c24', 'MCT-LTDiag_231025c25', 'MCT-LTDiag_231025c26', 'MCT-LTDiag_231025c27', 'MCT-LTDiag_231025c28', 'MCT-LTDiag_231025c32', 'MCT-LTDiag_231025c34', 'MCT-LTDiag_231025c35', 'MCT-LTDiag_231109b02', 'MCT-LTDiag_231109b03', 'MCT-LTDiag_231109b04', 'MCT-LTDiag_231109b05', 'MCT-LTDiag_231109b06', 'MCT-LTDiag_231109b07', 'MCT-LTDiag_231109b08', 'MCT-LTDiag_231109b09', 'MCT-LTDiag_231109b11', 'MCT-LTDiag_231109b12', 'MCT-LTDiag_231109b13', 'MCT-LTDiag_231109b15', 'MCT-LTDiag_231109b16', 'MCT-LTDiag_231109b17', 'MCT-LTDiag_231109b19', 'MCT-LTDiag_231206d01', 'MCT-LTDiag_231206d02', 'MCT-LTDiag_231206d03', 'MCT-LTDiag_231206d05', 'MCT-LTDiag_231206d06', 'MCT-LTDiag_231206d07', 'MCT-LTDiag_231206d10', 'MCT-LTDiag_231206d12', 'MCT-LTDiag_231206d13', 'MCT-LTDiag_231206d14', 'MCT-LTDiag_231206d15', 'MCT-LTDiag_231206d16', 'MCT-LTDiag_231206d18', 'MCT-LTDiag_231206d19', 'MCT-LTDiag_231206d20', 'MCT-LTDiag_240112d17', 'MCT-LTDiag_240112d24', 'MCT-LTDiag_240112d25', 'MCT-LTDiag_240112d26', 'MCT-LTDiag_240112d27', 'MCT-LTDiag_240112d28', 'MCT-LTDiag_240112d29', 'MCT-LTDiag_240112d30', 'MCT-LTDiag_240112d31', 'MCT-LTDiag_240112d32', 'MCT-LTDiag_240112d33', 'MCT-LTDiag_240112d38', 'MCT-LTDiag_240112d39', 'MCT-LTDiag_240112d41', 'MCT-LTDiag_240112d43', 'MCT-LTDiag_240112d44', 'MCT-LTDiag_240122d22', 'MCT-LTDiag_240122d45', 'MCT-LTDiag_240122d46', 'MCT-LTDiag_240122d49', 'MCT-LTDiag_240122d51', 'MCT-LTDiag_240122d52', 'MCT-LTDiag_240122d53', 'MCT-LTDiag_240122d54', 'MCT-LTDiag_240122d57', 'MCT-LTDiag_240122d58', 'MCT-LTDiag_240122d59', 'MCT-LTDiag_240122d61', 'MCT-LTDiag_240122d63', 'MCT-LTDiag_240122d65', 'MCT-LTDiag_240122d66', 'MCT-LTDiag_240122d67', 'MCT-LTDiag_240122d71', 'MCT-LTDiag_240122d72', 'MCT-LTDiag_240122d73', 'MCT-LTDiag_240122d74', 'MCT-LTDiag_240122d75', 'MCT-LTDiag_240229c01', 'MCT-LTDiag_240229c02', 'MCT-LTDiag_240229c03', 'MCT-LTDiag_240229c05', 'MCT-LTDiag_240229c07', 'MCT-LTDiag_240229c08', 'MCT-LTDiag_240229c09', 'MCT-LTDiag_240229c10', 'MCT-LTDiag_240229c15', 'MCT-LTDiag_240229c16', 'MCT-LTDiag_240229c17', 'MCT-LTDiag_240229c18', 'MCT-LTDiag_240229c19', 'MCT-LTDiag_240229c20', 'MCT-LTDiag_240229c22', 'MCT-LTDiag_240229c23', 'MCT-LTDiag_240229c25', 'MCT-LTDiag_240229c26', 'MCT-LTDiag_240229c27', 'MCT-LTDiag_240229c28', 'MCT-LTDiag_240229c29', 'MCT-LTDiag_240229c31', 'MCT-LTDiag_240229c32', 'MCT-LTDiag_240229c34', 'MCT-LTDiag_240229c36', 'MCT-LTDiag_240229c37', 'MCT-LTDiag_240229c38', 'MCT-LTDiag_240229c40', 'MCT-LTDiag_240229c41', 'MCT-LTDiag_240229c43', 'MCT-LTDiag_240229c44', 'MCT-LTDiag_240229c45', 'MCT-LTDiag_240504a09', 'MCT-LTDiag_240504a10', 'MCT-LTDiag_240504a11', 'MCT-LTDiag_240504a13', 'MCT-LTDiag_240504a15', 'MCT-LTDiag_240504b03', 'MCT-LTDiag_240504b04', 'MCT-LTDiag_240504b06', 'MCT-LTDiag_240504b07', 'MCT-LTDiag_240504b08', 'MCT-LTDiag_240504b09', 'MCT-LTDiag_240504b10', 'MCT-LTDiag_240504b11', 'MCT-LTDiag_240504b12', 'MCT-LTDiag_240504b13', 'MCT-LTDiag_240504b14', 'MCT-LTDiag_240504b16', 'MCT-LTDiag_240504b17', 'MCT-LTDiag_240504b18', 'MCT-LTDiag_240504b20', 'MCT-LTDiag_240504b22', 'MCT-LTDiag_240504b23', 'MCT-LTDiag_240504b24', 'MCT-LTDiag_240504b25', 'MCT-LTDiag_240504b28', 'MCT-LTDiag_240504b29', 'MCT-LTDiag_240504b30', 'MCT-LTDiag_240504b31', 'MCT-LTDiag_240504b32', 'MCT-LTDiag_240504b33', 'MCT-LTDiag_240504b36', 'MCT-LTDiag_240504b37', 'MCT-LTDiag_240504b38', 'MCT-LTDiag_240504b39', 'MCT-LTDiag_240504b40', 'MCT-LTDiag_240504b41', 'MCT-LTDiag_240504b42', 'MCT-LTDiag_240504b44', 'MCT-LTDiag_240504b45', 'MCT-LTDiag_240504b46', 'MCT-LTDiag_240504b47', 'MCT-LTDiag_240504b48', 'MCT-LTDiag_240504b49', 'MCT-LTDiag_240504b50', 'MCT-LTDiag_240504e02', 'MCT-LTDiag_240504e03', 'MCT-LTDiag_240504e04', 'MCT-LTDiag_240504e05', 'MCT-LTDiag_240504e06', 'MCT-LTDiag_240504e07', 'MCT-LTDiag_240504e11', 'MCT-LTDiag_240504e12', 'MCT-LTDiag_240504e13', 'MCT-LTDiag_240504e14', 'MCT-LTDiag_240504e15', 'MCT-LTDiag_240504e16', 'MCT-LTDiag_240504e18', 'MCT-LTDiag_240504e19', 'MCT-LTDiag_240504e20', 'MCT-LTDiag_240504e22', 'MCT-LTDiag_240504e23', 'MCT-LTDiag_240504e24', 'MCT-LTDiag_240504e25', 'MCT-LTDiag_240504e27', 'MCT-LTDiag_240504e28', 'MCT-LTDiag_240504e29', 'MCT-LTDiag_240504e32', 'MCT-LTDiag_240504e34', 'MCT-LTDiag_240504e35', 'MCT-LTDiag_240504e39', 'MCT-LTDiag_240504e41', 'MCT-LTDiag_240504e43', 'MCT-LTDiag_240504e45', 'MCT-LTDiag_240504e47', 'MCT-LTDiag_240504e48', 'MCT-LTDiag_240504e49', 'MCT-LTDiag_240504e50', 'MCT-LTDiag_240620a04', 'MCT-LTDiag_240620a05', 'MCT-LTDiag_240620a06', 'MCT-LTDiag_240620a07', 'MCT-LTDiag_240620a08', 'MCT-LTDiag_240620a11', 'MCT-LTDiag_240620a12', 'MCT-LTDiag_240620a14', 'MCT-LTDiag_240620a16', 'MCT-LTDiag_240620a17', 'MCT-LTDiag_240620a18', 'MCT-LTDiag_240620a19', 'MCT-LTDiag_240620a20', 'MCT-LTDiag_240620a22', 'MCT-LTDiag_240620a23', 'MCT-LTDiag_240620a24', 'MCT-LTDiag_240620a25', 'MCT-LTDiag_240620a26', 'MCT-LTDiag_240620a28', 'MCT-LTDiag_240620a29', 'MCT-LTDiag_240620a30', 'MCT-LTDiag_240620a31', 'MCT-LTDiag_240620a32', 'MCT-LTDiag_240620a33', 'MCT-LTDiag_240620a34', 'MCT-LTDiag_240620a35', 'MCT-LTDiag_240620a36', 'MCT-LTDiag_240620a37', 'MCT-LTDiag_240620a38', 'MCT-LTDiag_240620a39', 'MCT-LTDiag_240620a40', 'MCT-LTDiag_240620a42', 'MCT-LTDiag_240620a45', 'MCT-LTDiag_240620a46', 'MCT-LTDiag_240620a47', 'MCT-LTDiag_240620a48', 'MCT-LTDiag_240620a49', 'MCT-LTDiag_240620a50', 'MCT-LTDiag_240620a52', 'MCT-LTDiag_240620a57', 'MCT-LTDiag_240620a59', 'MCT-LTDiag_240620a60', 'MCT-LTDiag_240620a62', 'MCT-LTDiag_240620a64', 'MCT-LTDiag_240620a65', 'MCT-LTDiag_240722e100', 'MCT-LTDiag_240722e102', 'MCT-LTDiag_240722e103', 'MCT-LTDiag_240722e104', 'MCT-LTDiag_240722e51', 'MCT-LTDiag_240722e52', 'MCT-LTDiag_240722e56', 'MCT-LTDiag_240722e57', 'MCT-LTDiag_240722e60', 'MCT-LTDiag_240722e61', 'MCT-LTDiag_240722e62', 'MCT-LTDiag_240722e63', 'MCT-LTDiag_240722e64', 'MCT-LTDiag_240722e65', 'MCT-LTDiag_240722e66', 'MCT-LTDiag_240722e69', 'MCT-LTDiag_240722e70', 'MCT-LTDiag_240722e71', 'MCT-LTDiag_240722e73', 'MCT-LTDiag_240722e74', 'MCT-LTDiag_240722e76', 'MCT-LTDiag_240722e77', 'MCT-LTDiag_240722e78', 'MCT-LTDiag_240722e79', 'MCT-LTDiag_240722e80', 'MCT-LTDiag_240722e81', 'MCT-LTDiag_240722e82', 'MCT-LTDiag_240722e83', 'MCT-LTDiag_240722e84', 'MCT-LTDiag_240722e85', 'MCT-LTDiag_240722e86', 'MCT-LTDiag_240722e88', 'MCT-LTDiag_240722e90', 'MCT-LTDiag_240722e91', 'MCT-LTDiag_240722e93', 'MCT-LTDiag_240722e94', 'MCT-LTDiag_240722e95', 'MCT-LTDiag_240722e96', 'MCT-LTDiag_240722e97', 'PLC-CECT_P0001', 'PLC-CECT_P0002', 'PLC-CECT_P0003', 'PLC-CECT_P0004', 'PLC-CECT_P0005', 'PLC-CECT_P0007', 'PLC-CECT_P0008', 'PLC-CECT_P0009', 'PLC-CECT_P0012', 'PLC-CECT_P0013', 'PLC-CECT_P0014', 'PLC-CECT_P0015', 'PLC-CECT_P0016', 'PLC-CECT_P0017', 'PLC-CECT_P0020', 'PLC-CECT_P0021', 'PLC-CECT_P0022', 'PLC-CECT_P0024', 'PLC-CECT_P0025', 'PLC-CECT_P0026', 'PLC-CECT_P0027', 'PLC-CECT_P0028', 'PLC-CECT_P0029', 'PLC-CECT_P0030', 'PLC-CECT_P0031', 'PLC-CECT_P0034', 'PLC-CECT_P0035', 'PLC-CECT_P0037', 'PLC-CECT_P0038', 'PLC-CECT_P0039', 'PLC-CECT_P0040', 'PLC-CECT_P0041', 'PLC-CECT_P0042', 'PLC-CECT_P0043', 'PLC-CECT_P0044', 'PLC-CECT_P0045', 'PLC-CECT_P0047', 'PLC-CECT_P0048', 'PLC-CECT_P0054', 'PLC-CECT_P0058', 'PLC-CECT_P0059', 'PLC-CECT_P0063', 'PLC-CECT_P0064', 'PLC-CECT_P0066', 'PLC-CECT_P0067', 'PLC-CECT_P0068', 'PLC-CECT_P0072', 'PLC-CECT_P0073', 'PLC-CECT_P0076', 'PLC-CECT_P0077', 'PLC-CECT_P0078', 'PLC-CECT_P0080', 'PLC-CECT_P0081', 'PLC-CECT_P0084', 'PLC-CECT_P0085', 'PLC-CECT_P0086', 'PLC-CECT_P0090', 'PLC-CECT_P0093', 'PLC-CECT_P0095', 'PLC-CECT_P0096', 'PLC-CECT_P0097', 'PLC-CECT_P0098', 'PLC-CECT_P0099', 'PLC-CECT_P0100', 'PLC-CECT_P0101', 'PLC-CECT_P0102', 'PLC-CECT_P0106', 'PLC-CECT_P0108', 'PLC-CECT_P0109', 'PLC-CECT_P0111', 'PLC-CECT_P0113', 'PLC-CECT_P0114', 'PLC-CECT_P0115', 'PLC-CECT_P0116', 'PLC-CECT_P0118', 'PLC-CECT_P0119', 'PLC-CECT_P0120', 'PLC-CECT_P0121', 'PLC-CECT_P0122', 'PLC-CECT_P0124', 'PLC-CECT_P0125', 'PLC-CECT_P0126', 'PLC-CECT_P0128', 'PLC-CECT_P0129', 'PLC-CECT_P0130', 'PLC-CECT_P0131', 'PLC-CECT_P0132', 'PLC-CECT_P0133', 'PLC-CECT_P0134', 'PLC-CECT_P0135', 'PLC-CECT_P0136', 'PLC-CECT_P0139', 'PLC-CECT_P0141', 'PLC-CECT_P0142', 'PLC-CECT_P0144', 'PLC-CECT_P0146', 'PLC-CECT_P0148', 'PLC-CECT_P0149', 'PLC-CECT_P0150', 'PLC-CECT_P0151', 'PLC-CECT_P0153', 'PLC-CECT_P0156', 'PLC-CECT_P0157', 'PLC-CECT_P0158', 'PLC-CECT_P0159', 'PLC-CECT_P0162', 'PLC-CECT_P0163', 'PLC-CECT_P0164', 'PLC-CECT_P0165', 'PLC-CECT_P0166', 'PLC-CECT_P0167', 'PLC-CECT_P0168', 'PLC-CECT_P0169', 'PLC-CECT_P0170', 'PLC-CECT_P0172', 'PLC-CECT_P0177', 'PLC-CECT_P0178', 'PLC-CECT_P0179', 'PLC-CECT_P0181', 'PLC-CECT_P0182', 'PLC-CECT_P0183', 'PLC-CECT_P0184', 'PLC-CECT_P0185', 'PLC-CECT_P0188', 'PLC-CECT_P0189', 'PLC-CECT_P0190', 'PLC-CECT_P0191', 'PLC-CECT_P0192', 'PLC-CECT_P0194', 'PLC-CECT_P0196', 'PLC-CECT_P0200', 'PLC-CECT_P0202', 'PLC-CECT_P0204', 'PLC-CECT_P0205', 'PLC-CECT_P0206', 'PLC-CECT_P0207', 'PLC-CECT_P0210', 'PLC-CECT_P0212', 'PLC-CECT_P0213', 'PLC-CECT_P0215', 'PLC-CECT_P0216', 'PLC-CECT_P0217', 'PLC-CECT_P0218', 'PLC-CECT_P0219', 'PLC-CECT_P0220', 'PLC-CECT_P0221', 'PLC-CECT_P0223', 'PLC-CECT_P0224', 'PLC-CECT_P0225', 'PLC-CECT_P0227', 'PLC-CECT_P0228', 'PLC-CECT_P0229', 'PLC-CECT_P0230', 'PLC-CECT_P0231', 'PLC-CECT_P0232', 'PLC-CECT_P0234', 'PLC-CECT_P0235', 'PLC-CECT_P0236', 'PLC-CECT_P0237', 'PLC-CECT_P0238', 'PLC-CECT_P0240', 'PLC-CECT_P0241', 'PLC-CECT_P0243', 'PLC-CECT_P0244', 'PLC-CECT_P0245', 'PLC-CECT_P0246', 'PLC-CECT_P0247', 'PLC-CECT_P0249', 'PLC-CECT_P0251', 'PLC-CECT_P0252', 'PLC-CECT_P0254', 'PLC-CECT_P0258', 'PLC-CECT_P0259', 'PLC-CECT_P0261', 'PLC-CECT_P0263', 'PLC-CECT_P0265', 'PLC-CECT_P0266', 'PLC-CECT_P0267', 'PLC-CECT_P0268', 'PLC-CECT_P0270', 'PLC-CECT_P0271', 'PLC-CECT_P0273', 'PLC-CECT_P0276', 'PLC-CECT_P0277', 'PLC-CECT_P0278', 'PLC-CECT_P0279', 'PLC-CECT_P0280', 'PLC-CECT_P0281', 'PLC-CECT_P0282', 'PLC-CECT_P0283', 'PLC-CECT_P0284', 'PLC-CECT_P0286', 'PLC-CECT_P0287', 'PLC-CECT_P0288', 'PLC-CECT_P0289', 'PLC-CECT_P0291', 'PLC-CECT_P0293', 'PLC-CECT_P0294', 'PLC-CECT_P0296', 'PLC-CECT_P0297', 'PLC-CECT_P0299', 'PLC-CECT_P0300', 'PLC-CECT_P0301', 'PLC-CECT_P0302', 'PLC-CECT_P0303', 'PLC-CECT_P0305', 'PLC-CECT_P0306', 'PLC-CECT_P0307', 'PLC-CECT_P0310', 'PLC-CECT_P0311', 'PLC-CECT_P0312', 'PLC-CECT_P0313', 'PLC-CECT_P0315', 'PLC-CECT_P0316', 'PLC-CECT_P0317', 'PLC-CECT_P0318', 'PLC-CECT_P0319', 'PLC-CECT_P0321', 'PLC-CECT_P0322', 'PLC-CECT_P0323', 'PLC-CECT_P0325', 'PLC-CECT_P0326', 'PLC-CECT_P0327', 'PLC-CECT_P0328', 'PLC-CECT_P0329', 'PLC-CECT_P0331', 'PLC-CECT_P0335', 'PLC-CECT_P0338', 'PLC-CECT_P0339', 'PLC-CECT_P0343', 'PLC-CECT_P0345', 'PLC-CECT_P0346', 'PLC-CECT_P0347', 'PLC-CECT_P0348', 'PLC-CECT_P0349', 'PLC-CECT_P0351', 'PLC-CECT_P0352', 'PLC-CECT_P0354', 'PLC-CECT_P0355', 'PLC-CECT_P0357', 'PLC-CECT_P0358', 'WAW-TACE_10', 'WAW-TACE_101', 'WAW-TACE_102', 'WAW-TACE_104', 'WAW-TACE_115', 'WAW-TACE_118', 'WAW-TACE_119', 'WAW-TACE_125', 'WAW-TACE_126', 'WAW-TACE_142', 'WAW-TACE_144', 'WAW-TACE_149', 'WAW-TACE_15', 'WAW-TACE_150', 'WAW-TACE_158', 'WAW-TACE_167', 'WAW-TACE_168', 'WAW-TACE_171', 'WAW-TACE_18', 'WAW-TACE_184', 'WAW-TACE_188', 'WAW-TACE_19', 'WAW-TACE_190', 'WAW-TACE_192', 'WAW-TACE_20', 'WAW-TACE_23', 'WAW-TACE_29', 'WAW-TACE_3', 'WAW-TACE_304', 'WAW-TACE_31', 'WAW-TACE_315', 'WAW-TACE_324', 'WAW-TACE_326', 'WAW-TACE_327', 'WAW-TACE_328', 'WAW-TACE_332', 'WAW-TACE_333', 'WAW-TACE_334', 'WAW-TACE_335', 'WAW-TACE_337', 'WAW-TACE_338', 'WAW-TACE_342', 'WAW-TACE_343', 'WAW-TACE_344', 'WAW-TACE_345', 'WAW-TACE_347', 'WAW-TACE_349', 'WAW-TACE_350', 'WAW-TACE_353', 'WAW-TACE_356', 'WAW-TACE_366', 'WAW-TACE_369', 'WAW-TACE_373', 'WAW-TACE_379', 'WAW-TACE_38', 'WAW-TACE_380', 'WAW-TACE_381', 'WAW-TACE_382', 'WAW-TACE_383', 'WAW-TACE_388', 'WAW-TACE_39', 'WAW-TACE_390', 'WAW-TACE_399', 'WAW-TACE_404', 'WAW-TACE_437', 'WAW-TACE_438', 'WAW-TACE_440', 'WAW-TACE_443', 'WAW-TACE_446', 'WAW-TACE_447', 'WAW-TACE_450', 'WAW-TACE_452', 'WAW-TACE_453', 'WAW-TACE_455', 'WAW-TACE_456', 'WAW-TACE_460', 'WAW-TACE_463', 'WAW-TACE_474', 'WAW-TACE_477', 'WAW-TACE_483', 'WAW-TACE_485', 'WAW-TACE_491', 'WAW-TACE_503', 'WAW-TACE_508', 'WAW-TACE_515', 'WAW-TACE_517', 'WAW-TACE_518', 'WAW-TACE_521', 'WAW-TACE_522', 'WAW-TACE_524', 'WAW-TACE_527', 'WAW-TACE_537', 'WAW-TACE_539', 'WAW-TACE_54', 'WAW-TACE_540', 'WAW-TACE_543', 'WAW-TACE_57', 'WAW-TACE_58', 'WAW-TACE_62', 'WAW-TACE_63', 'WAW-TACE_67', 'WAW-TACE_69', 'WAW-TACE_72', 'WAW-TACE_73', 'WAW-TACE_80', 'WAW-TACE_91', 'WAW-TACE_92', 'WAW-TACE_94', 'WAW-TACE_95', 'WAW-TACE_96']) 
+2026-10-03 11:20:27.808557: VALIDATION KEYS:
+ odict_keys(['MCT-LTDiag_230218b1', 'MCT-LTDiag_230218b6', 'MCT-LTDiag_230218b9', 'MCT-LTDiag_230312a9', 'MCT-LTDiag_230408a5', 'MCT-LTDiag_230408a6', 'MCT-LTDiag_230525a2', 'MCT-LTDiag_230525a5', 'MCT-LTDiag_230525c9', 'MCT-LTDiag_230525d8', 'MCT-LTDiag_230525d9', 'MCT-LTDiag_230816b01', 'MCT-LTDiag_230816b03', 'MCT-LTDiag_230816b06', 'MCT-LTDiag_230816b07', 'MCT-LTDiag_230816b11', 'MCT-LTDiag_231025c09', 'MCT-LTDiag_231025c14', 'MCT-LTDiag_231025c29', 'MCT-LTDiag_231206d08', 'MCT-LTDiag_240112d11', 'MCT-LTDiag_240112d36', 'MCT-LTDiag_240112d42', 'MCT-LTDiag_240122d47', 'MCT-LTDiag_240122d48', 'MCT-LTDiag_240122d55', 'MCT-LTDiag_240122d60', 'MCT-LTDiag_240122d62', 'MCT-LTDiag_240122d64', 'MCT-LTDiag_240122d69', 'MCT-LTDiag_240229c04', 'MCT-LTDiag_240229c12', 'MCT-LTDiag_240229c13', 'MCT-LTDiag_240229c24', 'MCT-LTDiag_240229c30', 'MCT-LTDiag_240229c47', 'MCT-LTDiag_240504a14', 'MCT-LTDiag_240504b01', 'MCT-LTDiag_240504e08', 'MCT-LTDiag_240504e10', 'MCT-LTDiag_240504e26', 'MCT-LTDiag_240504e33', 'MCT-LTDiag_240504e36', 'MCT-LTDiag_240620a01', 'MCT-LTDiag_240620a10', 'MCT-LTDiag_240620a27', 'MCT-LTDiag_240620a41', 'MCT-LTDiag_240620a43', 'MCT-LTDiag_240620a51', 'MCT-LTDiag_240620a63', 'MCT-LTDiag_240722e67', 'MCT-LTDiag_240722e72', 'MCT-LTDiag_240722e87', 'MCT-LTDiag_240722e89', 'PLC-CECT_P0006', 'PLC-CECT_P0010', 'PLC-CECT_P0032', 'PLC-CECT_P0033', 'PLC-CECT_P0036', 'PLC-CECT_P0052', 'PLC-CECT_P0056', 'PLC-CECT_P0057', 'PLC-CECT_P0075', 'PLC-CECT_P0088', 'PLC-CECT_P0094', 'PLC-CECT_P0104', 'PLC-CECT_P0107', 'PLC-CECT_P0123', 'PLC-CECT_P0143', 'PLC-CECT_P0160', 'PLC-CECT_P0174', 'PLC-CECT_P0186', 'PLC-CECT_P0198', 'PLC-CECT_P0203', 'PLC-CECT_P0208', 'PLC-CECT_P0222', 'PLC-CECT_P0226', 'PLC-CECT_P0250', 'PLC-CECT_P0253', 'PLC-CECT_P0269', 'PLC-CECT_P0292', 'PLC-CECT_P0298', 'PLC-CECT_P0332', 'PLC-CECT_P0353', 'PLC-CECT_P0356', 'PLC-CECT_P0359', 'PLC-CECT_P0360', 'PLC-CECT_P0361', 'WAW-TACE_2', 'WAW-TACE_330', 'WAW-TACE_351', 'WAW-TACE_358', 'WAW-TACE_370', 'WAW-TACE_385', 'WAW-TACE_405', 'WAW-TACE_434', 'WAW-TACE_436', 'WAW-TACE_492', 'WAW-TACE_53', 'WAW-TACE_533', 'WAW-TACE_59', 'WAW-TACE_61', 'WAW-TACE_66', 'WAW-TACE_7', 'WAW-TACE_98']) 
+2026-10-03 11:20:27.998595: lr: 0.0001 
+2026-10-03 11:20:40.510012: Unable to plot network architecture: 
+2026-10-03 11:20:40.510196: No module named 'hiddenlayer' 
+2026-10-03 11:20:40.510295: 
+printing the network instead:
+ 
+2026-10-03 11:20:40.510377: PLAN(
+  (unet): Generic_UNet(
+    (conv_blocks_context): ModuleList(
+      (0): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv3d(4, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+            (instnorm): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+          (1): ConvDropoutNormNonlin(
+            (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+            (instnorm): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (1): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1))
+            (instnorm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+          (1): ConvDropoutNormNonlin(
+            (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+            (instnorm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (2): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1))
+            (instnorm): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+          (1): ConvDropoutNormNonlin(
+            (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+            (instnorm): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (3): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv3d(128, 256, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1))
+            (instnorm): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+          (1): ConvDropoutNormNonlin(
+            (conv): Conv3d(256, 256, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+            (instnorm): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (4): StackedConvLayers(
+        (blocks): Sequential(
+          (0): ConvDropoutNormNonlin(
+            (conv): Conv3d(256, 320, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1))
+            (instnorm): InstanceNorm3d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+          (1): ConvDropoutNormNonlin(
+            (conv): Conv3d(320, 320, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+            (instnorm): InstanceNorm3d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+          )
+        )
+      )
+      (5): Sequential(
+        (0): StackedConvLayers(
+          (blocks): Sequential(
+            (0): ConvDropoutNormNonlin(
+              (conv): Conv3d(320, 320, kernel_size=(3, 3, 3), stride=(1, 2, 2), padding=(1, 1, 1))
+              (instnorm): InstanceNorm3d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+              (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+            )
+          )
+        )
+        (1): StackedConvLayers(
+          (blocks): Sequential(
+            (0): ConvDropoutNormNonlin(
+              (conv): Conv3d(320, 320, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+              (instnorm): InstanceNorm3d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+              (lrelu): LeakyReLU(negative_slope=0.01, inplace=True)
+            )
+          )
+        )
+      )
+    )
+    (td): ModuleList()
+    (fpn): BasePixelDecoder(
+      (adapter_1): Conv3d(
+        32, 64, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (layer_1): Conv3d(
+        64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (adapter_2): Conv3d(
+        64, 64, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (layer_2): Conv3d(
+        64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (adapter_3): Conv3d(
+        128, 64, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (layer_3): Conv3d(
+        64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (adapter_4): Conv3d(
+        256, 64, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (layer_4): Conv3d(
+        64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (adapter_5): Conv3d(
+        320, 64, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (layer_5): Conv3d(
+        64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (layer_6): Conv3d(
+        320, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False
+        (norm): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+      )
+      (mask_features): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+    )
+  )
+  (seg_head): SegHead(
+    (emb_norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+    (pred): Sequential(
+      (0): Conv3d(64, 3, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+    )
+    (criterion): DC_and_CE_loss(
+      (ce): RobustCrossEntropyLoss()
+      (dc): SoftDiceLoss()
+    )
+  )
+) 
+2026-10-03 11:20:40.514422: 
+ 
+2026-10-03 11:20:40.514667: 	epoch:  0 
+2026-10-03 11:25:09.705507: train loss : 0.3119: seg_CE= 0.9733, seg_DC= -0.6614 
+2026-10-03 11:25:50.445434: validation loss: -0.3048: seg_CE= 0.5356, seg_DC= -0.8404 
+2026-10-03 11:25:50.450264: Average global foreground Dice: [0.3288, 0.8521] val_metric 0.3288 val_metric_MA 0.3288 
+2026-10-03 11:25:50.550826: lesion-wise sens 0.2483 prec 0.0318 clsf acc 1.0000, val_metric 0.4267 
+2026-10-03 11:25:50.551095: sens of each class [0.2483] and size [0.0, 0.0, 0.122, 0.7045] 
+2026-10-03 11:25:51.075986: lr: 0.0001 
+2026-10-03 11:25:51.091261: saving checkpoint... 
+2026-10-03 11:25:51.599238: done, saving took 0.52 seconds 
+2026-10-03 11:25:51.664001: 	epoch:  1 
+2026-10-03 11:29:51.969252: train loss : -0.3752: seg_CE= 0.5636, seg_DC= -0.9388 
+2026-10-03 11:30:10.378772: validation loss: -0.4753: seg_CE= 0.5090, seg_DC= -0.9842 
+2026-10-03 11:30:10.391945: Average global foreground Dice: [0.4533, 0.872] val_metric 0.4533 val_metric_MA 0.3288 
+2026-10-03 11:30:10.920395: lr: 9.9e-05 
+2026-10-03 11:30:10.962249: saving checkpoint... 
+2026-10-03 11:30:11.524948: done, saving took 0.60 seconds 
+2026-10-03 11:30:11.635899: 	epoch:  2 
+2026-10-03 11:34:27.934604: train loss : -0.4662: seg_CE= 0.5183, seg_DC= -0.9845 
+2026-10-03 11:34:55.024857: validation loss: -0.6112: seg_CE= 0.4180, seg_DC= -1.0292 
+2026-10-03 11:34:55.038872: Average global foreground Dice: [0.5046, 0.8877] val_metric 0.5046 val_metric_MA 0.3413 
+2026-10-03 11:34:55.071866: lesion-wise sens 0.2857 prec 0.1129 clsf acc 1.0000, val_metric 0.4662 
+2026-10-03 11:34:55.072178: sens of each class [0.2857] and size [0.0, 0.1111, 0.2745, 0.7255] 
+2026-10-03 11:34:55.419730: lr: 9.9e-05 
+2026-10-03 11:34:55.435519: saving checkpoint... 
+2026-10-03 11:34:55.953720: done, saving took 0.53 seconds 
+2026-10-03 11:34:56.027023: 	epoch:  3 
+2026-10-03 11:39:24.872896: train loss : -0.5434: seg_CE= 0.4783, seg_DC= -1.0217 
+2026-10-03 11:39:40.282578: validation loss: -0.5342: seg_CE= 0.5086, seg_DC= -1.0428 
+2026-10-03 11:39:40.291512: Average global foreground Dice: [0.4418, 0.8767] val_metric 0.4418 val_metric_MA 0.3576 
+2026-10-03 11:39:40.739979: lr: 9.9e-05 
+2026-10-03 11:39:40.760186: saving checkpoint... 
+2026-10-03 11:39:41.306461: done, saving took 0.57 seconds 
+2026-10-03 11:39:41.384791: 	epoch:  4 
+2026-10-03 11:43:45.564777: train loss : -0.5554: seg_CE= 0.4965, seg_DC= -1.0519 
+2026-10-03 11:44:11.138893: validation loss: -0.7681: seg_CE= 0.3465, seg_DC= -1.1145 
+2026-10-03 11:44:11.146358: Average global foreground Dice: [0.6173, 0.9067] val_metric 0.6173 val_metric_MA 0.366 
+2026-10-03 11:44:11.184922: lesion-wise sens 0.3385 prec 0.1610 clsf acc 1.0000, val_metric 0.4998 
+2026-10-03 11:44:11.185228: sens of each class [0.3385] and size [0.027, 0.1154, 0.2692, 0.8333] 
+2026-10-03 11:44:11.681573: lr: 9.8e-05 
+2026-10-03 11:44:11.717431: saving checkpoint... 
+2026-10-03 11:44:12.232259: done, saving took 0.55 seconds 
+2026-10-03 11:44:12.386015: 	epoch:  5 
+2026-10-03 11:48:40.090021: train loss : -0.6378: seg_CE= 0.4290, seg_DC= -1.0668 
+2026-10-03 11:48:58.943497: validation loss: -0.7086: seg_CE= 0.3583, seg_DC= -1.0669 
+2026-10-03 11:48:58.970892: Average global foreground Dice: [0.4714, 0.9107] val_metric 0.4714 val_metric_MA 0.3911 
+2026-10-03 11:48:59.784472: lr: 9.8e-05 
+2026-10-03 11:48:59.830021: saving checkpoint... 
+2026-10-03 11:49:00.424119: done, saving took 0.64 seconds 
+2026-10-03 11:49:00.601689: 	epoch:  6 
+2026-10-03 11:53:05.728081: train loss : -0.6935: seg_CE= 0.4178, seg_DC= -1.1113 
+2026-10-03 11:53:27.903115: validation loss: -0.6997: seg_CE= 0.4238, seg_DC= -1.1236 
+2026-10-03 11:53:27.903690: Average global foreground Dice: [0.5981, 0.8908] val_metric 0.5981 val_metric_MA 0.3992 
+2026-10-03 11:53:27.934369: lesion-wise sens 0.4559 prec 0.1115 clsf acc 1.0000, val_metric 0.5225 
+2026-10-03 11:53:27.934681: sens of each class [0.4559] and size [0.0, 0.1538, 0.303, 0.9057] 
+2026-10-03 11:53:28.262296: lr: 9.8e-05 
+2026-10-03 11:53:28.277692: saving checkpoint... 
+2026-10-03 11:53:28.744370: done, saving took 0.48 seconds 
+2026-10-03 11:53:28.815667: 	epoch:  7 
+2026-10-03 11:57:38.711218: train loss : -0.6316: seg_CE= 0.4355, seg_DC= -1.0671 
+2026-10-03 11:57:52.792812: validation loss: -0.7029: seg_CE= 0.3878, seg_DC= -1.0907 
+2026-10-03 11:57:52.805657: Average global foreground Dice: [0.6104, 0.9017] val_metric 0.6104 val_metric_MA 0.4191 
+2026-10-03 11:57:53.234102: lr: 9.8e-05 
+2026-10-03 11:57:53.250559: saving checkpoint... 
+2026-10-03 11:57:53.816213: done, saving took 0.58 seconds 
+2026-10-03 11:57:53.988626: 	epoch:  8 
+2026-10-03 12:01:56.421542: train loss : -0.7069: seg_CE= 0.3993, seg_DC= -1.1062 
+2026-10-03 12:02:17.255656: validation loss: -0.8713: seg_CE= 0.3351, seg_DC= -1.2064 
+2026-10-03 12:02:17.261695: Average global foreground Dice: [0.6454, 0.9166] val_metric 0.6454 val_metric_MA 0.4382 
+2026-10-03 12:02:17.299782: lesion-wise sens 0.3580 prec 0.1611 clsf acc 1.0000, val_metric 0.5064 
+2026-10-03 12:02:17.300092: sens of each class [0.358] and size [0.0, 0.0556, 0.3, 0.8448] 
+2026-10-03 12:02:18.403724: lr: 9.7e-05 
+2026-10-03 12:02:18.460939: saving checkpoint... 
+2026-10-03 12:02:19.027866: done, saving took 0.62 seconds 
+2026-10-03 12:02:19.189703: 	epoch:  9 
+2026-10-03 12:06:09.713008: train loss : -0.7736: seg_CE= 0.3672, seg_DC= -1.1408 
+2026-10-03 12:06:29.481503: validation loss: -0.8660: seg_CE= 0.3356, seg_DC= -1.2016 
+2026-10-03 12:06:29.492784: Average global foreground Dice: [0.5943, 0.9188] val_metric 0.5943 val_metric_MA 0.4589 
+2026-10-03 12:06:30.198049: lr: 9.7e-05 
+2026-10-03 12:06:30.213970: saving checkpoint... 
+2026-10-03 12:06:30.728939: done, saving took 0.53 seconds 
+2026-10-03 12:06:30.888808: 	epoch:  10 
+2026-10-03 12:11:03.706897: train loss : -0.6963: seg_CE= 0.4139, seg_DC= -1.1102 
+2026-10-03 12:11:24.149921: validation loss: -0.7885: seg_CE= 0.3783, seg_DC= -1.1668 
+2026-10-03 12:11:24.157603: Average global foreground Dice: [0.6215, 0.9048] val_metric 0.6215 val_metric_MA 0.4725 
+2026-10-03 12:11:24.187448: lesion-wise sens 0.3956 prec 0.1702 clsf acc 1.0000, val_metric 0.5219 
+2026-10-03 12:11:24.187742: sens of each class [0.3956] and size [0.0, 0.0698, 0.3913, 0.9107] 
+2026-10-03 12:11:24.542249: lr: 9.7e-05 
+2026-10-03 12:11:24.558602: saving checkpoint... 
+2026-10-03 12:11:25.107269: done, saving took 0.56 seconds 
+2026-10-03 12:11:25.182586: 	epoch:  11 
+2026-10-03 12:15:57.416363: train loss : -0.7669: seg_CE= 0.3716, seg_DC= -1.1386 
+2026-10-03 12:16:16.633811: validation loss: -0.8945: seg_CE= 0.2965, seg_DC= -1.1910 
+2026-10-03 12:16:16.646849: Average global foreground Dice: [0.6665, 0.9181] val_metric 0.6665 val_metric_MA 0.4874 
+2026-10-03 12:16:17.380338: lr: 9.6e-05 
+2026-10-03 12:16:17.396473: saving checkpoint... 
+2026-10-03 12:16:17.918179: done, saving took 0.54 seconds 
+2026-10-03 12:16:18.008400: 	epoch:  12 
+2026-10-03 12:20:28.968791: train loss : -0.8164: seg_CE= 0.3517, seg_DC= -1.1681 
+2026-10-03 12:20:56.711102: validation loss: -0.7462: seg_CE= 0.4258, seg_DC= -1.1720 
+2026-10-03 12:20:56.716424: Average global foreground Dice: [0.6097, 0.9046] val_metric 0.6097 val_metric_MA 0.5053 
+2026-10-03 12:20:56.744407: lesion-wise sens 0.4511 prec 0.0972 clsf acc 1.0000, val_metric 0.5161 
+2026-10-03 12:20:56.744722: sens of each class [0.4511] and size [0.0, 0.1765, 0.4242, 0.8776] 
+2026-10-03 12:20:57.354013: lr: 9.6e-05 
+2026-10-03 12:20:57.369527: saving checkpoint... 
+2026-10-03 12:20:57.891776: done, saving took 0.54 seconds 
+2026-10-03 12:20:57.964459: 	epoch:  13 
+2026-10-03 12:24:56.443302: train loss : -0.8409: seg_CE= 0.3525, seg_DC= -1.1934 
+2026-10-03 12:25:13.898481: validation loss: -0.9751: seg_CE= 0.2823, seg_DC= -1.2574 
+2026-10-03 12:25:13.904441: Average global foreground Dice: [0.6699, 0.9233] val_metric 0.6699 val_metric_MA 0.5157 
+2026-10-03 12:25:14.580300: lr: 9.6e-05 
+2026-10-03 12:25:14.609066: saving checkpoint... 
+2026-10-03 12:25:15.085500: done, saving took 0.50 seconds 
+2026-10-03 12:25:15.227930: 	epoch:  14 
+2026-10-03 12:29:26.770258: train loss : -0.8563: seg_CE= 0.3249, seg_DC= -1.1812 
+2026-10-03 12:29:46.595359: validation loss: -0.8432: seg_CE= 0.3769, seg_DC= -1.2201 
+2026-10-03 12:29:46.600659: Average global foreground Dice: [0.5965, 0.9235] val_metric 0.5965 val_metric_MA 0.5311 
+2026-10-03 12:29:46.635129: lesion-wise sens 0.4581 prec 0.1360 clsf acc 1.0000, val_metric 0.5314 
+2026-10-03 12:29:46.635440: sens of each class [0.4581] and size [0.0588, 0.1333, 0.4884, 0.9167] 
+2026-10-03 12:29:47.298822: lr: 9.5e-05 
+2026-10-03 12:29:47.315559: saving checkpoint... 
+2026-10-03 12:29:47.836361: done, saving took 0.54 seconds 
+2026-10-03 12:29:47.926791: 	epoch:  15 
+2026-10-03 12:34:00.025845: train loss : -0.8242: seg_CE= 0.3511, seg_DC= -1.1753 
+2026-10-03 12:34:17.404314: validation loss: -0.8441: seg_CE= 0.3517, seg_DC= -1.1958 
+2026-10-03 12:34:17.425138: Average global foreground Dice: [0.7037, 0.9082] val_metric 0.7037 val_metric_MA 0.5377 
+2026-10-03 12:34:17.872004: lr: 9.5e-05 
+2026-10-03 12:34:17.899834: saving checkpoint... 
+2026-10-03 12:34:18.436641: done, saving took 0.56 seconds 
+2026-10-03 12:34:18.519905: 	epoch:  16 
+2026-10-03 12:38:27.671729: train loss : -0.8752: seg_CE= 0.3234, seg_DC= -1.1986 
+2026-10-03 12:38:53.407204: validation loss: -0.9213: seg_CE= 0.2821, seg_DC= -1.2034 
+2026-10-03 12:38:53.412708: Average global foreground Dice: [0.6484, 0.9189] val_metric 0.6484 val_metric_MA 0.5543 
+2026-10-03 12:38:53.455595: lesion-wise sens 0.4490 prec 0.1645 clsf acc 1.0000, val_metric 0.5378 
+2026-10-03 12:38:53.455889: sens of each class [0.449] and size [0.0, 0.1556, 0.7321, 0.9091] 
+2026-10-03 12:38:53.881985: lr: 9.5e-05 
+2026-10-03 12:38:53.897506: saving checkpoint... 
+2026-10-03 12:38:54.420345: done, saving took 0.54 seconds 
+2026-10-03 12:38:54.494787: 	epoch:  17 
+2026-10-03 12:43:25.056708: train loss : -0.8814: seg_CE= 0.3401, seg_DC= -1.2215 
+2026-10-03 12:43:43.886472: validation loss: -0.9276: seg_CE= 0.2844, seg_DC= -1.2120 
+2026-10-03 12:43:43.908860: Average global foreground Dice: [0.7057, 0.9229] val_metric 0.7057 val_metric_MA 0.5637 
+2026-10-03 12:43:44.707903: lr: 9.5e-05 
+2026-10-03 12:43:44.728859: saving checkpoint... 
+2026-10-03 12:43:45.325717: done, saving took 0.62 seconds 
+2026-10-03 12:43:45.471716: 	epoch:  18 
+2026-10-03 12:48:03.004384: train loss : -0.9260: seg_CE= 0.3104, seg_DC= -1.2364 
+2026-10-03 12:48:26.384914: validation loss: -0.9905: seg_CE= 0.2783, seg_DC= -1.2689 
+2026-10-03 12:48:26.405166: Average global foreground Dice: [0.7239, 0.9299] val_metric 0.7239 val_metric_MA 0.5779 
+2026-10-03 12:48:26.434346: lesion-wise sens 0.4588 prec 0.1843 clsf acc 1.0000, val_metric 0.5477 
+2026-10-03 12:48:26.434646: sens of each class [0.4588] and size [0.0735, 0.2727, 0.7241, 0.9623] 
+2026-10-03 12:48:26.835352: lr: 9.4e-05 
+2026-10-03 12:48:26.852383: saving checkpoint... 
+2026-10-03 12:48:27.330073: done, saving took 0.49 seconds 
+2026-10-03 12:48:27.396619: 	epoch:  19 
+2026-10-03 12:52:51.899658: train loss : -0.9085: seg_CE= 0.3181, seg_DC= -1.2266 
+2026-10-03 12:53:10.067357: validation loss: -0.9174: seg_CE= 0.3313, seg_DC= -1.2487 
+2026-10-03 12:53:10.072779: Average global foreground Dice: [0.721, 0.9202] val_metric 0.721 val_metric_MA 0.5925 
+2026-10-03 12:53:10.757300: lr: 9.4e-05 
+2026-10-03 12:53:10.773134: saving checkpoint... 
+2026-10-03 12:53:11.316370: done, saving took 0.56 seconds 
+2026-10-03 12:53:11.397316: 	epoch:  20 
+2026-10-03 12:57:26.143640: train loss : -0.8377: seg_CE= 0.3629, seg_DC= -1.2006 
+2026-10-03 12:57:51.790792: validation loss: -1.0059: seg_CE= 0.2665, seg_DC= -1.2723 
+2026-10-03 12:57:51.797631: Average global foreground Dice: [0.7438, 0.9281] val_metric 0.7438 val_metric_MA 0.6053 
+2026-10-03 12:57:51.845806: lesion-wise sens 0.4731 prec 0.1804 clsf acc 1.0000, val_metric 0.5511 
+2026-10-03 12:57:51.846141: sens of each class [0.4731] and size [0.0392, 0.0455, 0.6889, 0.9184] 
+2026-10-03 12:57:52.356771: lr: 9.4e-05 
+2026-10-03 12:57:52.373142: saving checkpoint... 
+2026-10-03 12:57:52.904687: done, saving took 0.55 seconds 
+2026-10-03 12:57:52.996158: 	epoch:  21 
+2026-10-03 13:02:20.576646: train loss : -0.9367: seg_CE= 0.3133, seg_DC= -1.2500 
+2026-10-03 13:02:35.242995: validation loss: -0.8214: seg_CE= 0.4366, seg_DC= -1.2579 
+2026-10-03 13:02:35.254603: Average global foreground Dice: [0.5916, 0.9063] val_metric 0.5916 val_metric_MA 0.6192 
+2026-10-03 13:02:35.622806: lr: 9.3e-05 
+2026-10-03 13:02:35.623095: 	epoch:  22 
+2026-10-03 13:06:52.795812: train loss : -0.9645: seg_CE= 0.3035, seg_DC= -1.2680 
+2026-10-03 13:07:17.186977: validation loss: -1.0243: seg_CE= 0.2597, seg_DC= -1.2840 
+2026-10-03 13:07:17.191881: Average global foreground Dice: [0.6692, 0.9342] val_metric 0.6692 val_metric_MA 0.6164 
+2026-10-03 13:07:17.219627: lesion-wise sens 0.5367 prec 0.1646 clsf acc 1.0000, val_metric 0.5671 
+2026-10-03 13:07:17.219961: sens of each class [0.5367] and size [0.0222, 0.2667, 0.8364, 0.8511] 
+2026-10-03 13:07:17.791616: lr: 9.3e-05 
+2026-10-03 13:07:17.808570: saving checkpoint... 
+2026-10-03 13:07:18.330861: done, saving took 0.54 seconds 
+2026-10-03 13:07:18.400782: 	epoch:  23 
+2026-10-03 13:11:37.622195: train loss : -0.9421: seg_CE= 0.2894, seg_DC= -1.2315 
+2026-10-03 13:11:56.826462: validation loss: -0.8772: seg_CE= 0.3487, seg_DC= -1.2259 
+2026-10-03 13:11:56.831877: Average global foreground Dice: [0.5882, 0.9229] val_metric 0.5882 val_metric_MA 0.6217 
+2026-10-03 13:11:57.262879: lr: 9.3e-05 
+2026-10-03 13:11:57.263161: 	epoch:  24 
+2026-10-03 13:16:07.990254: train loss : -0.9293: seg_CE= 0.3109, seg_DC= -1.2402 
+2026-10-03 13:16:32.062823: validation loss: -0.9853: seg_CE= 0.2755, seg_DC= -1.2608 
+2026-10-03 13:16:32.069852: Average global foreground Dice: [0.7666, 0.9245] val_metric 0.7666 val_metric_MA 0.6183 
+2026-10-03 13:16:32.094944: lesion-wise sens 0.4774 prec 0.2328 clsf acc 1.0000, val_metric 0.5701 
+2026-10-03 13:16:32.095240: sens of each class [0.4774] and size [0.0638, 0.25, 0.5857, 0.86] 
+2026-10-03 13:16:32.484940: lr: 9.2e-05 
+2026-10-03 13:16:32.485226: saving scheduled checkpoint file... 
+2026-10-03 13:16:32.501142: saving checkpoint... 
+2026-10-03 13:16:33.015802: done, saving took 0.53 seconds 
+2026-10-03 13:16:33.083513: done 
+2026-10-03 13:16:33.098714: saving checkpoint... 
+2026-10-03 13:16:33.523999: done, saving took 0.44 seconds 
+2026-10-03 13:16:33.601583: 	epoch:  25 
+2026-10-03 13:20:37.959446: train loss : -0.9633: seg_CE= 0.3007, seg_DC= -1.2640 
+2026-10-03 13:20:52.733436: validation loss: -1.0196: seg_CE= 0.3193, seg_DC= -1.3389 
+2026-10-03 13:20:52.739529: Average global foreground Dice: [0.7154, 0.9209] val_metric 0.7154 val_metric_MA 0.6332 
+2026-10-03 13:20:53.369845: lr: 9.2e-05 
+2026-10-03 13:20:53.395263: saving checkpoint... 
+2026-10-03 13:20:53.949669: done, saving took 0.58 seconds 
+2026-10-03 13:20:54.095013: 	epoch:  26 
+2026-10-03 13:25:18.517758: train loss : -0.9276: seg_CE= 0.3225, seg_DC= -1.2501 
+2026-10-03 13:25:39.040113: validation loss: -1.0038: seg_CE= 0.2818, seg_DC= -1.2856 
+2026-10-03 13:25:39.040801: Average global foreground Dice: [0.6003, 0.9278] val_metric 0.6003 val_metric_MA 0.6414 
+2026-10-03 13:25:39.108500: lesion-wise sens 0.5417 prec 0.2441 clsf acc 1.0000, val_metric 0.5952 
+2026-10-03 13:25:39.108814: sens of each class [0.5417] and size [0.0, 0.1489, 0.6974, 0.88] 
+2026-10-03 13:25:39.750956: lr: 9.2e-05 
+2026-10-03 13:25:39.751206: 	epoch:  27 
+2026-10-03 13:29:54.893450: train loss : -0.9832: seg_CE= 0.2875, seg_DC= -1.2707 
+2026-10-03 13:30:13.487828: validation loss: -0.9867: seg_CE= 0.3033, seg_DC= -1.2900 
+2026-10-03 13:30:13.495718: Average global foreground Dice: [0.6969, 0.9166] val_metric 0.6969 val_metric_MA 0.6373 
+2026-10-03 13:30:14.141142: lr: 9.2e-05 
+2026-10-03 13:30:14.191287: saving checkpoint... 
+2026-10-03 13:30:14.686699: done, saving took 0.55 seconds 
+2026-10-03 13:30:14.836412: 	epoch:  28 
+2026-10-03 13:34:40.978928: train loss : -0.9719: seg_CE= 0.3044, seg_DC= -1.2763 
+2026-10-03 13:35:02.048573: validation loss: -0.9787: seg_CE= 0.2820, seg_DC= -1.2608 
+2026-10-03 13:35:02.060313: Average global foreground Dice: [0.6801, 0.9318] val_metric 0.6801 val_metric_MA 0.6432 
+2026-10-03 13:35:02.089339: lesion-wise sens 0.4790 prec 0.1891 clsf acc 1.0000, val_metric 0.5561 
+2026-10-03 13:35:02.089661: sens of each class [0.479] and size [0.0, 0.2973, 0.587, 0.875] 
+2026-10-03 13:35:02.506058: lr: 9.1e-05 
+2026-10-03 13:35:02.521827: saving checkpoint... 
+2026-10-03 13:35:03.077049: done, saving took 0.57 seconds 
+2026-10-03 13:35:03.152909: 	epoch:  29 
+2026-10-03 13:39:15.857502: train loss : -1.0053: seg_CE= 0.2669, seg_DC= -1.2721 
+2026-10-03 13:39:33.139669: validation loss: -1.0027: seg_CE= 0.2792, seg_DC= -1.2818 
+2026-10-03 13:39:33.147667: Average global foreground Dice: [0.7257, 0.9271] val_metric 0.7257 val_metric_MA 0.6469 
+2026-10-03 13:39:33.820126: lr: 9.1e-05 
+2026-10-03 13:39:33.854712: saving checkpoint... 
+2026-10-03 13:39:34.444984: done, saving took 0.62 seconds 
+2026-10-03 13:39:34.519228: 	epoch:  30 
+2026-10-03 13:43:34.820183: train loss : -1.0062: seg_CE= 0.2899, seg_DC= -1.2961 
+2026-10-03 13:43:56.395477: validation loss: -1.0312: seg_CE= 0.2616, seg_DC= -1.2928 
+2026-10-03 13:43:56.401569: Average global foreground Dice: [0.7201, 0.929] val_metric 0.7201 val_metric_MA 0.6548 
+2026-10-03 13:43:56.433605: lesion-wise sens 0.5607 prec 0.2143 clsf acc 1.0000, val_metric 0.5917 
+2026-10-03 13:43:56.433877: sens of each class [0.5607] and size [0.0256, 0.3684, 0.7213, 0.9474] 
+2026-10-03 13:43:56.877941: lr: 9.1e-05 
+2026-10-03 13:43:56.893854: saving checkpoint... 
+2026-10-03 13:43:57.433321: done, saving took 0.56 seconds 
+2026-10-03 13:43:57.514660: 	epoch:  31 
+2026-10-03 13:47:59.613710: train loss : -1.0050: seg_CE= 0.2899, seg_DC= -1.2949 
+2026-10-03 13:48:19.320745: validation loss: -1.0111: seg_CE= 0.2970, seg_DC= -1.3081 
+2026-10-03 13:48:19.325667: Average global foreground Dice: [0.6961, 0.9204] val_metric 0.6961 val_metric_MA 0.6613 
+2026-10-03 13:48:19.743463: lr: 9e-05 
+2026-10-03 13:48:19.789232: saving checkpoint... 
+2026-10-03 13:48:20.488626: done, saving took 0.74 seconds 
+2026-10-03 13:48:20.635071: 	epoch:  32 
+2026-10-03 13:52:52.330490: train loss : -1.0142: seg_CE= 0.2715, seg_DC= -1.2857 
+2026-10-03 13:53:17.478058: validation loss: -1.1420: seg_CE= 0.2419, seg_DC= -1.3839 
+2026-10-03 13:53:17.483122: Average global foreground Dice: [0.7058, 0.9426] val_metric 0.7058 val_metric_MA 0.6648 
+2026-10-03 13:53:17.512458: lesion-wise sens 0.5569 prec 0.2076 clsf acc 1.0000, val_metric 0.5882 
+2026-10-03 13:53:17.512796: sens of each class [0.5569] and size [0.0, 0.1765, 0.6944, 0.9538] 
+2026-10-03 13:53:17.931405: lr: 9e-05 
+2026-10-03 13:53:17.946944: saving checkpoint... 
+2026-10-03 13:53:18.483418: done, saving took 0.55 seconds 
+2026-10-03 13:53:18.559034: 	epoch:  33 
+2026-10-03 13:57:07.892704: train loss : -0.9764: seg_CE= 0.3058, seg_DC= -1.2822 
+2026-10-03 13:57:25.244076: validation loss: -1.0593: seg_CE= 0.2393, seg_DC= -1.2986 
+2026-10-03 13:57:25.249478: Average global foreground Dice: [0.7402, 0.9318] val_metric 0.7402 val_metric_MA 0.6689 
+2026-10-03 13:57:25.739085: lr: 9e-05 
+2026-10-03 13:57:25.781408: saving checkpoint... 
+2026-10-03 13:57:26.451284: done, saving took 0.71 seconds 
+2026-10-03 13:57:26.570835: 	epoch:  34 
+2026-10-03 14:01:57.834957: train loss : -1.0232: seg_CE= 0.2860, seg_DC= -1.3092 
+2026-10-03 14:02:20.802180: validation loss: -0.9918: seg_CE= 0.2604, seg_DC= -1.2522 
+2026-10-03 14:02:20.808176: Average global foreground Dice: [0.7167, 0.9294] val_metric 0.7167 val_metric_MA 0.676 
+2026-10-03 14:02:20.856995: lesion-wise sens 0.4423 prec 0.1786 clsf acc 1.0000, val_metric 0.5403 
+2026-10-03 14:02:20.857325: sens of each class [0.4423] and size [0.1186, 0.26, 0.5476, 0.8596] 
+2026-10-03 14:02:21.347621: lr: 8.9e-05 
+2026-10-03 14:02:21.367183: saving checkpoint... 
+2026-10-03 14:02:21.930268: done, saving took 0.58 seconds 
+2026-10-03 14:02:22.008426: 	epoch:  35 
+2026-10-03 14:06:52.097365: train loss : -1.0482: seg_CE= 0.2768, seg_DC= -1.3250 
+2026-10-03 14:07:09.574747: validation loss: -1.1429: seg_CE= 0.2260, seg_DC= -1.3689 
+2026-10-03 14:07:09.581287: Average global foreground Dice: [0.7414, 0.9418] val_metric 0.7414 val_metric_MA 0.6801 
+2026-10-03 14:07:10.164324: lr: 8.9e-05 
+2026-10-03 14:07:10.183509: saving checkpoint... 
+2026-10-03 14:07:10.705509: done, saving took 0.54 seconds 
+2026-10-03 14:07:10.786468: 	epoch:  36 
+2026-10-03 14:11:27.946902: train loss : -1.0829: seg_CE= 0.2569, seg_DC= -1.3399 
+2026-10-03 14:11:47.797678: validation loss: -0.9844: seg_CE= 0.3335, seg_DC= -1.3180 
+2026-10-03 14:11:47.803692: Average global foreground Dice: [0.7299, 0.9188] val_metric 0.7299 val_metric_MA 0.6862 
+2026-10-03 14:11:47.831635: lesion-wise sens 0.5128 prec 0.2141 clsf acc 1.0000, val_metric 0.5757 
+2026-10-03 14:11:47.831931: sens of each class [0.5128] and size [0.0465, 0.4375, 0.6, 0.8704] 
+2026-10-03 14:11:48.714627: lr: 8.9e-05 
+2026-10-03 14:11:48.733039: saving checkpoint... 
+2026-10-03 14:11:49.236666: done, saving took 0.52 seconds 
+2026-10-03 14:11:49.310684: 	epoch:  37 
+2026-10-03 14:16:09.085028: train loss : -1.0751: seg_CE= 0.2568, seg_DC= -1.3318 
+2026-10-03 14:16:29.697508: validation loss: -1.0280: seg_CE= 0.2848, seg_DC= -1.3128 
+2026-10-03 14:16:29.702352: Average global foreground Dice: [0.6788, 0.9342] val_metric 0.6788 val_metric_MA 0.6906 
+2026-10-03 14:16:30.153162: lr: 8.9e-05 
+2026-10-03 14:16:30.153637: 	epoch:  38 
+2026-10-03 14:20:45.100687: train loss : -0.9981: seg_CE= 0.2987, seg_DC= -1.2968 
+2026-10-03 14:21:08.677541: validation loss: -1.1150: seg_CE= 0.2576, seg_DC= -1.3726 
+2026-10-03 14:21:08.683224: Average global foreground Dice: [0.8209, 0.9334] val_metric 0.8209 val_metric_MA 0.6894 
+2026-10-03 14:21:08.716494: lesion-wise sens 0.5610 prec 0.2228 clsf acc 1.0000, val_metric 0.5946 
+2026-10-03 14:21:08.719577: sens of each class [0.561] and size [0.1887, 0.4286, 0.6471, 0.9107] 
+2026-10-03 14:21:09.291502: lr: 8.8e-05 
+2026-10-03 14:21:09.328992: saving checkpoint... 
+2026-10-03 14:21:09.857427: done, saving took 0.57 seconds 
+2026-10-03 14:21:10.001778: 	epoch:  39 
+2026-10-03 14:25:34.831820: train loss : -1.0098: seg_CE= 0.2964, seg_DC= -1.3061 
+2026-10-03 14:25:50.845406: validation loss: -1.0705: seg_CE= 0.2562, seg_DC= -1.3267 
+2026-10-03 14:25:50.850306: Average global foreground Dice: [0.7209, 0.9313] val_metric 0.7209 val_metric_MA 0.7026 
+2026-10-03 14:25:51.510303: lr: 8.8e-05 
+2026-10-03 14:25:51.542446: saving checkpoint... 
+2026-10-03 14:25:52.098770: done, saving took 0.59 seconds 
+2026-10-03 14:25:52.197961: 	epoch:  40 
+2026-10-03 14:29:58.331053: train loss : -1.0408: seg_CE= 0.2717, seg_DC= -1.3126 
+2026-10-03 14:30:18.680441: validation loss: -0.9963: seg_CE= 0.2924, seg_DC= -1.2887 
+2026-10-03 14:30:18.698032: Average global foreground Dice: [0.5936, 0.929] val_metric 0.5936 val_metric_MA 0.7044 
+2026-10-03 14:30:18.732145: lesion-wise sens 0.4756 prec 0.2042 clsf acc 1.0000, val_metric 0.5599 
+2026-10-03 14:30:18.732466: sens of each class [0.4756] and size [0.0526, 0.3056, 0.6176, 0.7857] 
+2026-10-03 14:30:19.193270: lr: 8.8e-05 
+2026-10-03 14:30:19.193577: 	epoch:  41 
+2026-10-03 14:34:28.587014: train loss : -1.0488: seg_CE= 0.2575, seg_DC= -1.3064 
+2026-10-03 14:34:47.742070: validation loss: -1.1172: seg_CE= 0.2302, seg_DC= -1.3474 
+2026-10-03 14:34:47.751293: Average global foreground Dice: [0.6942, 0.9443] val_metric 0.6942 val_metric_MA 0.6933 
+2026-10-03 14:34:48.487329: lr: 8.7e-05 
+2026-10-03 14:34:48.487630: 	epoch:  42 
+2026-10-03 14:39:35.149336: train loss : -1.0260: seg_CE= 0.2755, seg_DC= -1.3015 
+2026-10-03 14:39:53.871786: validation loss: -1.1066: seg_CE= 0.2254, seg_DC= -1.3320 
+2026-10-03 14:39:53.876486: Average global foreground Dice: [0.7714, 0.9427] val_metric 0.7714 val_metric_MA 0.6934 
+2026-10-03 14:39:53.902508: lesion-wise sens 0.5917 prec 0.2462 clsf acc 1.0000, val_metric 0.6126 
+2026-10-03 14:39:53.902842: sens of each class [0.5917] and size [0.0698, 0.5455, 0.7174, 0.9787] 
+2026-10-03 14:39:54.264520: lr: 8.7e-05 
+2026-10-03 14:39:54.264820: 	epoch:  43 
+2026-10-03 14:44:01.037087: train loss : -1.1033: seg_CE= 0.2465, seg_DC= -1.3499 
+2026-10-03 14:44:21.412495: validation loss: -1.0462: seg_CE= 0.2580, seg_DC= -1.3042 
+2026-10-03 14:44:21.417449: Average global foreground Dice: [0.6845, 0.9409] val_metric 0.6845 val_metric_MA 0.7012 
+2026-10-03 14:44:21.909026: lr: 8.7e-05 
+2026-10-03 14:44:21.909310: 	epoch:  44 
+2026-10-03 14:48:57.807599: train loss : -0.9907: seg_CE= 0.2860, seg_DC= -1.2767 
+2026-10-03 14:49:16.844716: validation loss: -1.0071: seg_CE= 0.2675, seg_DC= -1.2746 
+2026-10-03 14:49:16.852037: Average global foreground Dice: [0.6862, 0.9392] val_metric 0.6862 val_metric_MA 0.6995 
+2026-10-03 14:49:16.907940: lesion-wise sens 0.5235 prec 0.2367 clsf acc 1.0000, val_metric 0.5867 
+2026-10-03 14:49:16.908256: sens of each class [0.5235] and size [0.0357, 0.25, 0.7021, 0.7797] 
+2026-10-03 14:49:17.370813: lr: 8.6e-05 
+2026-10-03 14:49:17.371109: 	epoch:  45 
+2026-10-03 14:53:55.677163: train loss : -1.1007: seg_CE= 0.2452, seg_DC= -1.3459 
+2026-10-03 14:54:09.192793: validation loss: -1.1216: seg_CE= 0.2397, seg_DC= -1.3613 
+2026-10-03 14:54:09.198116: Average global foreground Dice: [0.8035, 0.9391] val_metric 0.8035 val_metric_MA 0.6982 
+2026-10-03 14:54:09.654613: lr: 8.6e-05 
+2026-10-03 14:54:09.680660: saving checkpoint... 
+2026-10-03 14:54:10.213278: done, saving took 0.56 seconds 
+2026-10-03 14:54:10.290333: 	epoch:  46 
+2026-10-03 14:58:46.098367: train loss : -1.0203: seg_CE= 0.2679, seg_DC= -1.2882 
+2026-10-03 14:59:05.554850: validation loss: -1.0674: seg_CE= 0.2448, seg_DC= -1.3122 
+2026-10-03 14:59:05.559885: Average global foreground Dice: [0.7083, 0.9367] val_metric 0.7083 val_metric_MA 0.7087 
+2026-10-03 14:59:05.586353: lesion-wise sens 0.5235 prec 0.1874 clsf acc 1.0000, val_metric 0.5703 
+2026-10-03 14:59:05.586679: sens of each class [0.5235] and size [0.0682, 0.3448, 0.6842, 0.8475] 
+2026-10-03 14:59:05.992527: lr: 8.6e-05 
+2026-10-03 14:59:05.992786: 	epoch:  47 
+2026-10-03 15:03:46.788181: train loss : -1.0715: seg_CE= 0.2614, seg_DC= -1.3328 
+2026-10-03 15:04:04.453120: validation loss: -1.1162: seg_CE= 0.2660, seg_DC= -1.3822 
+2026-10-03 15:04:04.462143: Average global foreground Dice: [0.7221, 0.9401] val_metric 0.7221 val_metric_MA 0.7087 
+2026-10-03 15:04:05.274300: lr: 8.5e-05 
+2026-10-03 15:04:05.302849: saving checkpoint... 
+2026-10-03 15:04:05.900411: done, saving took 0.63 seconds 
+2026-10-03 15:04:05.982559: 	epoch:  48 
+2026-10-03 15:08:15.633407: train loss : -1.0487: seg_CE= 0.2732, seg_DC= -1.3219 
+2026-10-03 15:08:38.335414: validation loss: -1.1499: seg_CE= 0.2542, seg_DC= -1.4041 
+2026-10-03 15:08:38.346547: Average global foreground Dice: [0.7894, 0.9386] val_metric 0.7894 val_metric_MA 0.71 
+2026-10-03 15:08:38.373483: lesion-wise sens 0.5968 prec 0.3163 clsf acc 1.0000, val_metric 0.6377 
+2026-10-03 15:08:38.373790: sens of each class [0.5968] and size [0.027, 0.3562, 0.84, 0.9206] 
+2026-10-03 15:08:38.740030: lr: 8.5e-05 
+2026-10-03 15:08:38.755431: saving checkpoint... 
+2026-10-03 15:08:39.262003: done, saving took 0.52 seconds 
+2026-10-03 15:08:39.342536: 	epoch:  49 
+2026-10-03 15:12:38.073850: train loss : -1.1337: seg_CE= 0.2272, seg_DC= -1.3609 
+2026-10-03 15:12:56.658968: validation loss: -1.1056: seg_CE= 0.2439, seg_DC= -1.3495 
+2026-10-03 15:12:56.669073: Average global foreground Dice: [0.7414, 0.9368] val_metric 0.7414 val_metric_MA 0.718 
+2026-10-03 15:12:57.573385: lr: 8.5e-05 
+2026-10-03 15:12:57.573686: saving scheduled checkpoint file... 
+2026-10-03 15:12:57.590520: saving checkpoint... 
+2026-10-03 15:12:58.086474: done, saving took 0.51 seconds 
+2026-10-03 15:12:58.239865: done 
+2026-10-03 15:12:58.268050: saving checkpoint... 
+2026-10-03 15:12:58.837673: done, saving took 0.60 seconds 
+2026-10-03 15:12:58.947614: 	epoch:  50 
+2026-10-03 15:17:03.038350: train loss : -1.0821: seg_CE= 0.2407, seg_DC= -1.3228 
+2026-10-03 15:17:25.146596: validation loss: -1.0969: seg_CE= 0.2656, seg_DC= -1.3625 
+2026-10-03 15:17:25.152992: Average global foreground Dice: [0.6892, 0.932] val_metric 0.6892 val_metric_MA 0.7203 
+2026-10-03 15:17:25.185521: lesion-wise sens 0.5385 prec 0.2679 clsf acc 1.0000, val_metric 0.6021 
+2026-10-03 15:17:25.185827: sens of each class [0.5385] and size [0.0488, 0.3438, 0.775, 0.8393] 
+2026-10-03 15:17:25.690145: lr: 8.5e-05 
+2026-10-03 15:17:25.690472: 	epoch:  51 
+2026-10-03 15:21:38.678130: train loss : -1.1392: seg_CE= 0.2305, seg_DC= -1.3697 
+2026-10-03 15:21:57.579301: validation loss: -1.1920: seg_CE= 0.2497, seg_DC= -1.4417 
+2026-10-03 15:21:57.588721: Average global foreground Dice: [0.7754, 0.9375] val_metric 0.7754 val_metric_MA 0.7172 
+2026-10-03 15:21:58.166146: lr: 8.4e-05 
+2026-10-03 15:21:58.183649: saving checkpoint... 
+2026-10-03 15:21:58.705645: done, saving took 0.54 seconds 
+2026-10-03 15:21:58.857634: 	epoch:  52 
+2026-10-03 15:25:58.108446: train loss : -1.0799: seg_CE= 0.2540, seg_DC= -1.3339 
+2026-10-03 15:26:17.844608: validation loss: -1.1895: seg_CE= 0.2156, seg_DC= -1.4051 
+2026-10-03 15:26:17.849519: Average global foreground Dice: [0.786, 0.9435] val_metric 0.786 val_metric_MA 0.723 
+2026-10-03 15:26:17.874338: lesion-wise sens 0.5916 prec 0.3284 clsf acc 1.0000, val_metric 0.64 
+2026-10-03 15:26:17.874652: sens of each class [0.5916] and size [0.0727, 0.55, 0.8333, 0.963] 
+2026-10-03 15:26:18.302192: lr: 8.4e-05 
+2026-10-03 15:26:18.317859: saving checkpoint... 
+2026-10-03 15:26:18.842984: done, saving took 0.54 seconds 
+2026-10-03 15:26:18.922248: 	epoch:  53 
+2026-10-03 15:30:21.648035: train loss : -1.1052: seg_CE= 0.2361, seg_DC= -1.3413 
+2026-10-03 15:30:41.127976: validation loss: -1.1081: seg_CE= 0.2212, seg_DC= -1.3294 
+2026-10-03 15:30:41.137693: Average global foreground Dice: [0.7459, 0.9396] val_metric 0.7459 val_metric_MA 0.7293 
+2026-10-03 15:30:41.624950: lr: 8.4e-05 
+2026-10-03 15:30:41.642154: saving checkpoint... 
+2026-10-03 15:30:42.236154: done, saving took 0.61 seconds 
+2026-10-03 15:30:42.338019: 	epoch:  54 
+2026-10-03 15:34:43.393420: train loss : -1.1230: seg_CE= 0.2267, seg_DC= -1.3497 
+2026-10-03 15:35:03.031618: validation loss: -1.1209: seg_CE= 0.2379, seg_DC= -1.3588 
+2026-10-03 15:35:03.036425: Average global foreground Dice: [0.7875, 0.9379] val_metric 0.7875 val_metric_MA 0.731 
+2026-10-03 15:35:03.061517: lesion-wise sens 0.6087 prec 0.2730 clsf acc 1.0000, val_metric 0.6272 
+2026-10-03 15:35:03.061841: sens of each class [0.6087] and size [0.0263, 0.6667, 0.7826, 0.8864] 
+2026-10-03 15:35:03.567804: lr: 8.3e-05 
+2026-10-03 15:35:03.583952: saving checkpoint... 
+2026-10-03 15:35:04.090556: done, saving took 0.52 seconds 
+2026-10-03 15:35:04.245668: 	epoch:  55 
+2026-10-03 15:39:24.072086: train loss : -1.1172: seg_CE= 0.2248, seg_DC= -1.3420 
+2026-10-03 15:39:44.747547: validation loss: -1.1352: seg_CE= 0.2548, seg_DC= -1.3900 
+2026-10-03 15:39:44.762721: Average global foreground Dice: [0.7963, 0.9341] val_metric 0.7963 val_metric_MA 0.7366 
+2026-10-03 15:39:46.834714: lr: 8.3e-05 
+2026-10-03 15:39:46.891726: saving checkpoint... 
+2026-10-03 15:39:47.558260: done, saving took 0.72 seconds 
+2026-10-03 15:39:47.658436: 	epoch:  56 
+2026-10-03 15:44:19.433588: train loss : -1.1690: seg_CE= 0.1974, seg_DC= -1.3664 
+2026-10-03 15:44:42.428728: validation loss: -1.1053: seg_CE= 0.2554, seg_DC= -1.3607 
+2026-10-03 15:44:42.434390: Average global foreground Dice: [0.7619, 0.9311] val_metric 0.7619 val_metric_MA 0.7426 
+2026-10-03 15:44:42.468222: lesion-wise sens 0.5701 prec 0.1867 clsf acc 1.0000, val_metric 0.5856 
+2026-10-03 15:44:42.468527: sens of each class [0.5701] and size [0.1475, 0.4667, 0.8478, 0.9259] 
+2026-10-03 15:44:43.306617: lr: 8.3e-05 
+2026-10-03 15:44:43.342197: saving checkpoint... 
+2026-10-03 15:44:43.865789: done, saving took 0.56 seconds 
+2026-10-03 15:44:44.009184: 	epoch:  57 
+2026-10-03 15:49:05.829852: train loss : -1.1150: seg_CE= 0.2198, seg_DC= -1.3348 
+2026-10-03 15:49:22.376107: validation loss: -1.1897: seg_CE= 0.2091, seg_DC= -1.3988 
+2026-10-03 15:49:22.381340: Average global foreground Dice: [0.8123, 0.944] val_metric 0.8123 val_metric_MA 0.7445 
+2026-10-03 15:49:22.853038: lr: 8.2e-05 
+2026-10-03 15:49:22.890743: saving checkpoint... 
+2026-10-03 15:49:23.476846: done, saving took 0.62 seconds 
+2026-10-03 15:49:23.570735: 	epoch:  58 
+2026-10-03 15:53:32.660634: train loss : -1.1285: seg_CE= 0.2456, seg_DC= -1.3742 
+2026-10-03 15:53:54.625242: validation loss: -1.1545: seg_CE= 0.2585, seg_DC= -1.4130 
+2026-10-03 15:53:54.630111: Average global foreground Dice: [0.7646, 0.9311] val_metric 0.7646 val_metric_MA 0.7513 
+2026-10-03 15:53:54.667357: lesion-wise sens 0.6029 prec 0.2299 clsf acc 1.0000, val_metric 0.6109 
+2026-10-03 15:53:54.667655: sens of each class [0.6029] and size [0.0213, 0.5532, 0.7742, 0.9623] 
+2026-10-03 15:53:55.237250: lr: 8.2e-05 
+2026-10-03 15:53:55.281051: saving checkpoint... 
+2026-10-03 15:53:55.890018: done, saving took 0.65 seconds 
+2026-10-03 15:53:56.134714: 	epoch:  59 
+2026-10-03 15:59:02.296897: train loss : -1.1311: seg_CE= 0.2068, seg_DC= -1.3379 
+2026-10-03 15:59:17.128223: validation loss: -1.2227: seg_CE= 0.2195, seg_DC= -1.4422 
+2026-10-03 15:59:17.133079: Average global foreground Dice: [0.8323, 0.9384] val_metric 0.8323 val_metric_MA 0.7526 
+2026-10-03 15:59:17.510508: lr: 8.2e-05 
+2026-10-03 15:59:17.527815: saving checkpoint... 
+2026-10-03 15:59:18.070243: done, saving took 0.56 seconds 
+2026-10-03 15:59:18.174129: 	epoch:  60 
+2026-10-03 16:03:54.073298: train loss : -1.1129: seg_CE= 0.2512, seg_DC= -1.3641 
+2026-10-03 16:04:14.275259: validation loss: -1.1591: seg_CE= 0.2129, seg_DC= -1.3720 
+2026-10-03 16:04:14.280144: Average global foreground Dice: [0.7307, 0.9436] val_metric 0.7307 val_metric_MA 0.7606 
+2026-10-03 16:04:14.322798: lesion-wise sens 0.5471 prec 0.2500 clsf acc 1.0000, val_metric 0.599 
+2026-10-03 16:04:14.323271: sens of each class [0.5471] and size [0.0, 0.1892, 0.8298, 0.8545] 
+2026-10-03 16:04:14.826249: lr: 8.1e-05 
+2026-10-03 16:04:14.826596: 	epoch:  61 
+2026-10-03 16:08:49.591680: train loss : -1.1572: seg_CE= 0.2428, seg_DC= -1.4000 
+2026-10-03 16:09:04.057211: validation loss: -1.1486: seg_CE= 0.2259, seg_DC= -1.3745 
+2026-10-03 16:09:04.066587: Average global foreground Dice: [0.7852, 0.9402] val_metric 0.7852 val_metric_MA 0.7576 
+2026-10-03 16:09:04.532401: lr: 8.1e-05 
+2026-10-03 16:09:04.532699: 	epoch:  62 
+2026-10-03 16:13:17.622719: train loss : -1.1579: seg_CE= 0.2157, seg_DC= -1.3736 
+2026-10-03 16:13:41.877633: validation loss: -1.2326: seg_CE= 0.2013, seg_DC= -1.4339 
+2026-10-03 16:13:41.882249: Average global foreground Dice: [0.827, 0.9444] val_metric 0.827 val_metric_MA 0.7604 
+2026-10-03 16:13:41.914187: lesion-wise sens 0.6631 prec 0.2033 clsf acc 1.0000, val_metric 0.6221 
+2026-10-03 16:13:41.916700: sens of each class [0.6631] and size [0.0323, 0.5778, 0.7647, 0.9667] 
+2026-10-03 16:13:42.274535: lr: 8.1e-05 
+2026-10-03 16:13:42.290364: saving checkpoint... 
+2026-10-03 16:13:42.808470: done, saving took 0.53 seconds 
+2026-10-03 16:13:42.881696: 	epoch:  63 
+2026-10-03 16:17:29.187075: train loss : -1.1455: seg_CE= 0.2211, seg_DC= -1.3667 
+2026-10-03 16:17:47.654998: validation loss: -1.1267: seg_CE= 0.2228, seg_DC= -1.3495 
+2026-10-03 16:17:47.660275: Average global foreground Dice: [0.7689, 0.9393] val_metric 0.7689 val_metric_MA 0.767 
+2026-10-03 16:17:48.092344: lr: 8.1e-05 
+2026-10-03 16:17:48.109851: saving checkpoint... 
+2026-10-03 16:17:48.607160: done, saving took 0.51 seconds 
+2026-10-03 16:17:48.711097: 	epoch:  64 
+2026-10-03 16:21:43.103759: train loss : -1.1804: seg_CE= 0.2055, seg_DC= -1.3859 
+2026-10-03 16:22:05.806661: validation loss: -1.2025: seg_CE= 0.1956, seg_DC= -1.3981 
+2026-10-03 16:22:05.812500: Average global foreground Dice: [0.7647, 0.951] val_metric 0.7647 val_metric_MA 0.7672 
+2026-10-03 16:22:05.845947: lesion-wise sens 0.5521 prec 0.2830 clsf acc 1.0000, val_metric 0.6117 
+2026-10-03 16:22:05.846403: sens of each class [0.5521] and size [0.1064, 0.4583, 0.6905, 0.9] 
+2026-10-03 16:22:06.253983: lr: 8e-05 
+2026-10-03 16:22:06.254286: 	epoch:  65 
+2026-10-03 16:26:58.852150: train loss : -1.1033: seg_CE= 0.2529, seg_DC= -1.3562 
+2026-10-03 16:27:16.290245: validation loss: -1.2039: seg_CE= 0.2057, seg_DC= -1.4096 
+2026-10-03 16:27:16.309661: Average global foreground Dice: [0.8255, 0.9427] val_metric 0.8255 val_metric_MA 0.767 
+2026-10-03 16:27:16.749068: lr: 8e-05 
+2026-10-03 16:27:16.767762: saving checkpoint... 
+2026-10-03 16:27:17.316998: done, saving took 0.57 seconds 
+2026-10-03 16:27:17.557811: 	epoch:  66 
+2026-10-03 16:31:29.778293: train loss : -1.1671: seg_CE= 0.2112, seg_DC= -1.3783 
+2026-10-03 16:31:51.778851: validation loss: -1.1220: seg_CE= 0.2613, seg_DC= -1.3833 
+2026-10-03 16:31:51.784883: Average global foreground Dice: [0.7469, 0.9332] val_metric 0.7469 val_metric_MA 0.7728 
+2026-10-03 16:31:51.831717: lesion-wise sens 0.6519 prec 0.3343 clsf acc 1.0000, val_metric 0.6621 
+2026-10-03 16:31:51.832036: sens of each class [0.6519] and size [0.1026, 0.4737, 0.9024, 0.9365] 
+2026-10-03 16:31:52.619244: lr: 8e-05 
+2026-10-03 16:31:52.619526: 	epoch:  67 
+2026-10-03 16:35:43.218230: train loss : -1.1537: seg_CE= 0.2198, seg_DC= -1.3735 
+2026-10-03 16:35:59.931452: validation loss: -1.1483: seg_CE= 0.2315, seg_DC= -1.3798 
+2026-10-03 16:35:59.941884: Average global foreground Dice: [0.7541, 0.9374] val_metric 0.7541 val_metric_MA 0.7702 
+2026-10-03 16:36:00.407534: lr: 7.9e-05 
+2026-10-03 16:36:00.407876: 	epoch:  68 
+2026-10-03 16:40:23.578262: train loss : -1.1668: seg_CE= 0.2111, seg_DC= -1.3779 
+2026-10-03 16:40:45.038917: validation loss: -1.1476: seg_CE= 0.2212, seg_DC= -1.3688 
+2026-10-03 16:40:45.044890: Average global foreground Dice: [0.8229, 0.9399] val_metric 0.8229 val_metric_MA 0.7686 
+2026-10-03 16:40:45.073238: lesion-wise sens 0.5795 prec 0.2974 clsf acc 1.0000, val_metric 0.6256 
+2026-10-03 16:40:45.073558: sens of each class [0.5795] and size [0.0682, 0.4706, 0.9412, 0.9149] 
+2026-10-03 16:40:45.486608: lr: 7.9e-05 
+2026-10-03 16:40:45.504285: saving checkpoint... 
+2026-10-03 16:40:46.073760: done, saving took 0.59 seconds 
+2026-10-03 16:40:46.175901: 	epoch:  69 
+2026-10-03 16:45:03.206905: train loss : -1.1779: seg_CE= 0.2179, seg_DC= -1.3958 
+2026-10-03 16:45:17.529767: validation loss: -1.1080: seg_CE= 0.2161, seg_DC= -1.3242 
+2026-10-03 16:45:17.535237: Average global foreground Dice: [0.7719, 0.9437] val_metric 0.7719 val_metric_MA 0.774 
+2026-10-03 16:45:18.436730: lr: 7.9e-05 
+2026-10-03 16:45:18.437134: 	epoch:  70 
+2026-10-03 16:49:46.650825: train loss : -1.1875: seg_CE= 0.2028, seg_DC= -1.3903 
+2026-10-03 16:50:09.741543: validation loss: -1.1660: seg_CE= 0.2112, seg_DC= -1.3772 
+2026-10-03 16:50:09.750281: Average global foreground Dice: [0.7742, 0.9449] val_metric 0.7742 val_metric_MA 0.7738 
+2026-10-03 16:50:09.775889: lesion-wise sens 0.5471 prec 0.2140 clsf acc 1.0000, val_metric 0.587 
+2026-10-03 16:50:09.776195: sens of each class [0.5471] and size [0.0208, 0.35, 0.7021, 0.9455] 
+2026-10-03 16:50:10.171825: lr: 7.8e-05 
+2026-10-03 16:50:10.172101: 	epoch:  71 
+2026-10-03 16:54:27.958280: train loss : -1.1708: seg_CE= 0.2061, seg_DC= -1.3769 
+2026-10-03 16:54:44.984191: validation loss: -1.1491: seg_CE= 0.2531, seg_DC= -1.4023 
+2026-10-03 16:54:44.990656: Average global foreground Dice: [0.7516, 0.9324] val_metric 0.7516 val_metric_MA 0.7739 
+2026-10-03 16:54:45.391361: lr: 7.8e-05 
+2026-10-03 16:54:45.391667: 	epoch:  72 
+2026-10-03 16:59:09.044927: train loss : -1.1813: seg_CE= 0.2192, seg_DC= -1.4004 
+2026-10-03 16:59:33.116935: validation loss: -1.2142: seg_CE= 0.2092, seg_DC= -1.4234 
+2026-10-03 16:59:33.123234: Average global foreground Dice: [0.8002, 0.9474] val_metric 0.8002 val_metric_MA 0.7716 
+2026-10-03 16:59:33.147081: lesion-wise sens 0.5670 prec 0.3303 clsf acc 1.0000, val_metric 0.6324 
+2026-10-03 16:59:33.147375: sens of each class [0.567] and size [0.0408, 0.4545, 0.7917, 0.9434] 
+2026-10-03 16:59:33.782971: lr: 7.8e-05 
+2026-10-03 16:59:33.801279: saving checkpoint... 
+2026-10-03 16:59:34.296157: done, saving took 0.51 seconds 
+2026-10-03 16:59:34.371310: 	epoch:  73 
+2026-10-03 17:03:57.199546: train loss : -1.2093: seg_CE= 0.1867, seg_DC= -1.3960 
+2026-10-03 17:04:12.656949: validation loss: -1.0944: seg_CE= 0.2443, seg_DC= -1.3387 
+2026-10-03 17:04:12.664282: Average global foreground Dice: [0.7972, 0.9416] val_metric 0.7972 val_metric_MA 0.7745 
+2026-10-03 17:04:13.513243: lr: 7.7e-05 
+2026-10-03 17:04:13.530278: saving checkpoint... 
+2026-10-03 17:04:14.085050: done, saving took 0.57 seconds 
+2026-10-03 17:04:14.160216: 	epoch:  74 
+2026-10-03 17:08:22.311847: train loss : -1.1758: seg_CE= 0.2169, seg_DC= -1.3927 
+2026-10-03 17:08:45.961128: validation loss: -1.1953: seg_CE= 0.2592, seg_DC= -1.4546 
+2026-10-03 17:08:45.966106: Average global foreground Dice: [0.7839, 0.9254] val_metric 0.7839 val_metric_MA 0.7768 
+2026-10-03 17:08:45.993457: lesion-wise sens 0.6193 prec 0.2389 clsf acc 1.0000, val_metric 0.6194 
+2026-10-03 17:08:45.993844: sens of each class [0.6193] and size [0.093, 0.4412, 0.8649, 0.9355] 
+2026-10-03 17:08:46.347729: lr: 7.7e-05 
+2026-10-03 17:08:46.348023: saving scheduled checkpoint file... 
+2026-10-03 17:08:46.363366: saving checkpoint... 
+2026-10-03 17:08:46.859029: done, saving took 0.51 seconds 
+2026-10-03 17:08:46.928775: done 
+2026-10-03 17:08:46.943775: saving checkpoint... 
+2026-10-03 17:08:47.367709: done, saving took 0.44 seconds 
+2026-10-03 17:08:47.434027: 	epoch:  75 
+2026-10-03 17:12:49.315281: train loss : -1.1888: seg_CE= 0.2068, seg_DC= -1.3957 
+2026-10-03 17:13:06.227465: validation loss: -1.2549: seg_CE= 0.1946, seg_DC= -1.4495 
+2026-10-03 17:13:06.242167: Average global foreground Dice: [0.781, 0.9475] val_metric 0.781 val_metric_MA 0.7775 
+2026-10-03 17:13:06.686674: lr: 7.7e-05 
+2026-10-03 17:13:06.732853: saving checkpoint... 
+2026-10-03 17:13:07.229339: done, saving took 0.54 seconds 
+2026-10-03 17:13:07.308095: 	epoch:  76 
+2026-10-03 17:17:17.497345: train loss : -1.1259: seg_CE= 0.2256, seg_DC= -1.3515 
+2026-10-03 17:17:39.697606: validation loss: -1.1537: seg_CE= 0.2242, seg_DC= -1.3779 
+2026-10-03 17:17:39.698172: Average global foreground Dice: [0.7856, 0.9385] val_metric 0.7856 val_metric_MA 0.7778 
+2026-10-03 17:17:39.761224: lesion-wise sens 0.6432 prec 0.3247 clsf acc 1.0000, val_metric 0.656 
+2026-10-03 17:17:39.761569: sens of each class [0.6432] and size [0.069, 0.4091, 0.7647, 0.9655] 
+2026-10-03 17:17:40.266345: lr: 7.7e-05 
+2026-10-03 17:17:40.302412: saving checkpoint... 
+2026-10-03 17:17:40.927481: done, saving took 0.66 seconds 
+2026-10-03 17:17:41.015355: 	epoch:  77 
+2026-10-03 17:21:36.053077: train loss : -1.1953: seg_CE= 0.1901, seg_DC= -1.3854 
+2026-10-03 17:21:53.400178: validation loss: -1.2329: seg_CE= 0.2024, seg_DC= -1.4353 
+2026-10-03 17:21:53.404597: Average global foreground Dice: [0.8059, 0.9442] val_metric 0.8059 val_metric_MA 0.7786 
+2026-10-03 17:21:53.947437: lr: 7.6e-05 
+2026-10-03 17:21:53.966375: saving checkpoint... 
+2026-10-03 17:21:54.562268: done, saving took 0.61 seconds 
+2026-10-03 17:21:54.691864: 	epoch:  78 
+2026-10-03 17:26:12.198945: train loss : -1.1175: seg_CE= 0.2598, seg_DC= -1.3772 
+2026-10-03 17:26:30.340590: validation loss: -1.1651: seg_CE= 0.2587, seg_DC= -1.4238 
+2026-10-03 17:26:30.354925: Average global foreground Dice: [0.7505, 0.9322] val_metric 0.7505 val_metric_MA 0.7813 
+2026-10-03 17:26:30.384556: lesion-wise sens 0.5127 prec 0.3519 clsf acc 1.0000, val_metric 0.6215 
+2026-10-03 17:26:30.384871: sens of each class [0.5127] and size [0.0, 0.1818, 0.7636, 0.8947] 
+2026-10-03 17:26:30.883849: lr: 7.6e-05 
+2026-10-03 17:26:30.884133: 	epoch:  79 
+2026-10-03 17:30:41.509097: train loss : -1.1815: seg_CE= 0.2046, seg_DC= -1.3861 
+2026-10-03 17:31:02.945322: validation loss: -1.1121: seg_CE= 0.2374, seg_DC= -1.3495 
+2026-10-03 17:31:02.965827: Average global foreground Dice: [0.7661, 0.9383] val_metric 0.7661 val_metric_MA 0.7783 
+2026-10-03 17:31:03.443091: lr: 7.6e-05 
+2026-10-03 17:31:03.443379: 	epoch:  80 
+2026-10-03 17:35:56.613287: train loss : -1.2078: seg_CE= 0.1966, seg_DC= -1.4044 
+2026-10-03 17:36:17.172074: validation loss: -1.2299: seg_CE= 0.2065, seg_DC= -1.4364 
+2026-10-03 17:36:17.182895: Average global foreground Dice: [0.7978, 0.9442] val_metric 0.7978 val_metric_MA 0.777 
+2026-10-03 17:36:17.209414: lesion-wise sens 0.6122 prec 0.3662 clsf acc 1.0000, val_metric 0.6595 
+2026-10-03 17:36:17.209769: sens of each class [0.6122] and size [0.0426, 0.4571, 0.8545, 0.9322] 
+2026-10-03 17:36:17.670552: lr: 7.5e-05 
+2026-10-03 17:36:17.670842: 	epoch:  81 
+2026-10-03 17:40:40.750980: train loss : -1.1465: seg_CE= 0.2113, seg_DC= -1.3578 
+2026-10-03 17:40:57.088521: validation loss: -1.1974: seg_CE= 0.1937, seg_DC= -1.3911 
+2026-10-03 17:40:57.094200: Average global foreground Dice: [0.828, 0.9459] val_metric 0.828 val_metric_MA 0.7791 
+2026-10-03 17:40:57.495141: lr: 7.5e-05 
+2026-10-03 17:40:57.512284: saving checkpoint... 
+2026-10-03 17:40:58.076300: done, saving took 0.58 seconds 
+2026-10-03 17:40:58.166633: 	epoch:  82 
+2026-10-03 17:44:57.262119: train loss : -1.1925: seg_CE= 0.2052, seg_DC= -1.3977 
+2026-10-03 17:45:17.502655: validation loss: -1.1043: seg_CE= 0.2171, seg_DC= -1.3215 
+2026-10-03 17:45:17.507821: Average global foreground Dice: [0.8194, 0.9403] val_metric 0.8194 val_metric_MA 0.784 
+2026-10-03 17:45:17.562494: lesion-wise sens 0.5226 prec 0.2381 clsf acc 1.0000, val_metric 0.5869 
+2026-10-03 17:45:17.562823: sens of each class [0.5226] and size [0.0217, 0.5, 0.6774, 0.9545] 
+2026-10-03 17:45:18.191953: lr: 7.5e-05 
+2026-10-03 17:45:18.207344: saving checkpoint... 
+2026-10-03 17:45:18.739785: done, saving took 0.55 seconds 
+2026-10-03 17:45:18.816315: 	epoch:  83 
+2026-10-03 17:49:33.118150: train loss : -1.2066: seg_CE= 0.2030, seg_DC= -1.4096 
+2026-10-03 17:49:50.747277: validation loss: -1.2880: seg_CE= 0.1869, seg_DC= -1.4749 
+2026-10-03 17:49:50.752204: Average global foreground Dice: [0.7955, 0.9508] val_metric 0.7955 val_metric_MA 0.7875 
+2026-10-03 17:49:51.169540: lr: 7.4e-05 
+2026-10-03 17:49:51.187795: saving checkpoint... 
+2026-10-03 17:49:51.748881: done, saving took 0.58 seconds 
+2026-10-03 17:49:51.837853: 	epoch:  84 
+2026-10-03 17:53:58.813050: train loss : -1.1511: seg_CE= 0.2062, seg_DC= -1.3573 
+2026-10-03 17:54:23.502054: validation loss: -1.2439: seg_CE= 0.1812, seg_DC= -1.4251 
+2026-10-03 17:54:23.509539: Average global foreground Dice: [0.8212, 0.945] val_metric 0.8212 val_metric_MA 0.7883 
+2026-10-03 17:54:23.589647: lesion-wise sens 0.6526 prec 0.2912 clsf acc 1.0000, val_metric 0.6479 
+2026-10-03 17:54:23.589982: sens of each class [0.6526] and size [0.0345, 0.537, 0.78, 0.9649] 
+2026-10-03 17:54:24.527450: lr: 7.4e-05 
+2026-10-03 17:54:24.575960: saving checkpoint... 
+2026-10-03 17:54:25.084890: done, saving took 0.56 seconds 
+2026-10-03 17:54:25.326433: 	epoch:  85 
+2026-10-03 17:59:04.525611: train loss : -1.1904: seg_CE= 0.2064, seg_DC= -1.3968 
+2026-10-03 17:59:22.763319: validation loss: -1.1941: seg_CE= 0.2356, seg_DC= -1.4298 
+2026-10-03 17:59:22.771250: Average global foreground Dice: [0.7686, 0.9416] val_metric 0.7686 val_metric_MA 0.7916 
+2026-10-03 17:59:23.232919: lr: 7.4e-05 
+2026-10-03 17:59:23.233216: 	epoch:  86 
+2026-10-03 18:04:10.671077: train loss : -1.1759: seg_CE= 0.2111, seg_DC= -1.3870 
+2026-10-03 18:04:30.096305: validation loss: -1.1883: seg_CE= 0.2161, seg_DC= -1.4044 
+2026-10-03 18:04:30.100976: Average global foreground Dice: [0.8066, 0.942] val_metric 0.8066 val_metric_MA 0.7893 
+2026-10-03 18:04:30.125238: lesion-wise sens 0.6875 prec 0.2787 clsf acc 1.0000, val_metric 0.6554 
+2026-10-03 18:04:30.125556: sens of each class [0.6875] and size [0.0357, 0.6207, 0.8529, 0.9623] 
+2026-10-03 18:04:30.524240: lr: 7.3e-05 
+2026-10-03 18:04:30.524521: 	epoch:  87 
+2026-10-03 18:08:34.448126: train loss : -1.1539: seg_CE= 0.2215, seg_DC= -1.3754 
+2026-10-03 18:08:53.215898: validation loss: -1.2305: seg_CE= 0.2035, seg_DC= -1.4340 
+2026-10-03 18:08:53.221366: Average global foreground Dice: [0.8018, 0.9469] val_metric 0.8018 val_metric_MA 0.7911 
+2026-10-03 18:08:53.923850: lr: 7.3e-05 
+2026-10-03 18:08:53.949731: saving checkpoint... 
+2026-10-03 18:08:54.543510: done, saving took 0.62 seconds 
+2026-10-03 18:08:54.661641: 	epoch:  88 
+2026-10-03 18:13:15.662470: train loss : -1.1845: seg_CE= 0.2145, seg_DC= -1.3991 
+2026-10-03 18:13:36.784671: validation loss: -1.2187: seg_CE= 0.2164, seg_DC= -1.4351 
+2026-10-03 18:13:36.789847: Average global foreground Dice: [0.8065, 0.9466] val_metric 0.8065 val_metric_MA 0.7921 
+2026-10-03 18:13:36.815820: lesion-wise sens 0.5714 prec 0.3649 clsf acc 1.0000, val_metric 0.6454 
+2026-10-03 18:13:36.816106: sens of each class [0.5714] and size [0.0426, 0.439, 0.8205, 0.9455] 
+2026-10-03 18:13:37.234339: lr: 7.3e-05 
+2026-10-03 18:13:37.250170: saving checkpoint... 
+2026-10-03 18:13:37.769296: done, saving took 0.53 seconds 
+2026-10-03 18:13:37.891356: 	epoch:  89 
+2026-10-03 18:17:44.429640: train loss : -1.1954: seg_CE= 0.1909, seg_DC= -1.3863 
+2026-10-03 18:18:00.612176: validation loss: -1.1840: seg_CE= 0.1960, seg_DC= -1.3801 
+2026-10-03 18:18:00.616793: Average global foreground Dice: [0.8434, 0.9468] val_metric 0.8434 val_metric_MA 0.7936 
+2026-10-03 18:18:01.177744: lr: 7.3e-05 
+2026-10-03 18:18:01.212955: saving checkpoint... 
+2026-10-03 18:18:01.789421: done, saving took 0.61 seconds 
+2026-10-03 18:18:01.867320: 	epoch:  90 
+2026-10-03 18:22:17.279028: train loss : -1.2151: seg_CE= 0.1907, seg_DC= -1.4058 
+2026-10-03 18:22:35.589732: validation loss: -1.2261: seg_CE= 0.2006, seg_DC= -1.4267 
+2026-10-03 18:22:35.595710: Average global foreground Dice: [0.8189, 0.9467] val_metric 0.8189 val_metric_MA 0.7985 
+2026-10-03 18:22:35.633364: lesion-wise sens 0.6880 prec 0.2696 clsf acc 1.0000, val_metric 0.6525 
+2026-10-03 18:22:35.633689: sens of each class [0.688] and size [0.0, 0.5909, 0.8462, 0.9623] 
+2026-10-03 18:22:36.285686: lr: 7.2e-05 
+2026-10-03 18:22:36.305249: saving checkpoint... 
+2026-10-03 18:22:36.841856: done, saving took 0.56 seconds 
+2026-10-03 18:22:36.929037: 	epoch:  91 
+2026-10-03 18:27:03.027425: train loss : -1.2384: seg_CE= 0.1881, seg_DC= -1.4266 
+2026-10-03 18:27:22.237360: validation loss: -1.2185: seg_CE= 0.1895, seg_DC= -1.4080 
+2026-10-03 18:27:22.242427: Average global foreground Dice: [0.7855, 0.9485] val_metric 0.7855 val_metric_MA 0.8006 
+2026-10-03 18:27:23.206321: lr: 7.2e-05 
+2026-10-03 18:27:23.206615: 	epoch:  92 
+2026-10-03 18:31:51.878265: train loss : -1.1596: seg_CE= 0.2361, seg_DC= -1.3958 
+2026-10-03 18:32:14.102225: validation loss: -1.1389: seg_CE= 0.2403, seg_DC= -1.3792 
+2026-10-03 18:32:14.107198: Average global foreground Dice: [0.8113, 0.9368] val_metric 0.8113 val_metric_MA 0.7991 
+2026-10-03 18:32:14.134584: lesion-wise sens 0.7009 prec 0.2130 clsf acc 1.0000, val_metric 0.6379 
+2026-10-03 18:32:14.134872: sens of each class [0.7009] and size [0.0556, 0.3333, 0.6389, 0.9825] 
+2026-10-03 18:32:14.718386: lr: 7.2e-05 
+2026-10-03 18:32:14.718671: 	epoch:  93 
+2026-10-03 18:36:29.304271: train loss : -1.2326: seg_CE= 0.1951, seg_DC= -1.4277 
+2026-10-03 18:36:49.126511: validation loss: -1.2803: seg_CE= 0.2170, seg_DC= -1.4973 
+2026-10-03 18:36:49.127115: Average global foreground Dice: [0.8058, 0.9441] val_metric 0.8058 val_metric_MA 0.8003 
+2026-10-03 18:36:49.557534: lr: 7.1e-05 
+2026-10-03 18:36:49.587954: saving checkpoint... 
+2026-10-03 18:36:50.288321: done, saving took 0.73 seconds 
+2026-10-03 18:36:50.452805: 	epoch:  94 
+2026-10-03 18:41:01.077705: train loss : -1.1826: seg_CE= 0.1982, seg_DC= -1.3808 
+2026-10-03 18:41:23.003947: validation loss: -1.2261: seg_CE= 0.2080, seg_DC= -1.4341 
+2026-10-03 18:41:23.008904: Average global foreground Dice: [0.7807, 0.9468] val_metric 0.7807 val_metric_MA 0.8009 
+2026-10-03 18:41:23.074931: lesion-wise sens 0.6034 prec 0.3684 clsf acc 1.0000, val_metric 0.6573 
+2026-10-03 18:41:23.075281: sens of each class [0.6034] and size [0.0526, 0.4167, 0.7907, 0.9474] 
+2026-10-03 18:41:23.754332: lr: 7.1e-05 
+2026-10-03 18:41:23.754647: 	epoch:  95 
+2026-10-03 18:45:36.392570: train loss : -1.2240: seg_CE= 0.1932, seg_DC= -1.4172 
+2026-10-03 18:45:53.725967: validation loss: -1.2184: seg_CE= 0.1812, seg_DC= -1.3996 
+2026-10-03 18:45:53.741418: Average global foreground Dice: [0.7907, 0.9507] val_metric 0.7907 val_metric_MA 0.7988 
+2026-10-03 18:45:54.736027: lr: 7.1e-05 
+2026-10-03 18:45:54.736360: 	epoch:  96 
+2026-10-03 18:50:37.687633: train loss : -1.2019: seg_CE= 0.1918, seg_DC= -1.3937 
+2026-10-03 18:50:56.426532: validation loss: -1.2008: seg_CE= 0.2313, seg_DC= -1.4321 
+2026-10-03 18:50:56.434784: Average global foreground Dice: [0.8233, 0.9362] val_metric 0.8233 val_metric_MA 0.798 
+2026-10-03 18:50:56.471220: lesion-wise sens 0.6043 prec 0.2710 clsf acc 1.0000, val_metric 0.6251 
+2026-10-03 18:50:56.471558: sens of each class [0.6043] and size [0.05, 0.55, 0.72, 0.9298] 
+2026-10-03 18:50:56.875020: lr: 7e-05 
+2026-10-03 18:50:56.875340: 	epoch:  97 
+2026-10-03 18:55:21.278198: train loss : -1.2442: seg_CE= 0.1831, seg_DC= -1.4273 
+2026-10-03 18:55:35.867825: validation loss: -1.2887: seg_CE= 0.1825, seg_DC= -1.4712 
+2026-10-03 18:55:35.872979: Average global foreground Dice: [0.8059, 0.9464] val_metric 0.8059 val_metric_MA 0.8006 
+2026-10-03 18:55:36.313975: lr: 7e-05 
+2026-10-03 18:55:36.331805: saving checkpoint... 
+2026-10-03 18:55:36.943841: done, saving took 0.63 seconds 
+2026-10-03 18:55:37.027520: 	epoch:  98 
+2026-10-03 19:00:14.424819: train loss : -1.2143: seg_CE= 0.1946, seg_DC= -1.4089 
+2026-10-03 19:00:37.117731: validation loss: -1.2011: seg_CE= 0.2021, seg_DC= -1.4032 
+2026-10-03 19:00:37.120037: Average global foreground Dice: [0.7918, 0.9482] val_metric 0.7918 val_metric_MA 0.8011 
+2026-10-03 19:00:37.193364: lesion-wise sens 0.6186 prec 0.4062 clsf acc 1.0000, val_metric 0.6749 
+2026-10-03 19:00:37.193679: sens of each class [0.6186] and size [0.1026, 0.5, 0.8542, 0.9286] 
+2026-10-03 19:00:37.606394: lr: 7e-05 
+2026-10-03 19:00:37.606676: 	epoch:  99 
+2026-10-03 19:05:07.489284: train loss : -1.1853: seg_CE= 0.2057, seg_DC= -1.3911 
+2026-10-03 19:05:20.810629: validation loss: -1.1864: seg_CE= 0.2366, seg_DC= -1.4230 
+2026-10-03 19:05:20.811247: Average global foreground Dice: [0.7952, 0.9325] val_metric 0.7952 val_metric_MA 0.8002 
+2026-10-03 19:05:21.252939: lr: 6.9e-05 
+2026-10-03 19:05:21.253236: saving scheduled checkpoint file... 
+2026-10-03 19:05:21.270645: saving checkpoint... 
+2026-10-03 19:05:21.813499: done, saving took 0.56 seconds 
+2026-10-03 19:05:21.915604: done 
+2026-10-03 19:05:21.915864: 	epoch:  100 
+2026-10-03 19:09:33.995920: train loss : -1.1989: seg_CE= 0.2021, seg_DC= -1.4010 
+2026-10-03 19:09:55.524070: validation loss: -1.2009: seg_CE= 0.2219, seg_DC= -1.4228 
+2026-10-03 19:09:55.531556: Average global foreground Dice: [0.7465, 0.9449] val_metric 0.7465 val_metric_MA 0.7997 
+2026-10-03 19:09:55.569031: lesion-wise sens 0.6517 prec 0.3285 clsf acc 1.0000, val_metric 0.6601 
+2026-10-03 19:09:55.569365: sens of each class [0.6517] and size [0.0, 0.4878, 0.8727, 0.9412] 
+2026-10-03 19:09:56.489860: lr: 6.9e-05 
+2026-10-03 19:09:56.490184: 	epoch:  101 
+2026-10-03 19:14:15.917905: train loss : -1.2289: seg_CE= 0.1929, seg_DC= -1.4218 
+2026-10-03 19:14:33.895706: validation loss: -1.2627: seg_CE= 0.1777, seg_DC= -1.4404 
+2026-10-03 19:14:33.911919: Average global foreground Dice: [0.7976, 0.9497] val_metric 0.7976 val_metric_MA 0.7943 
+2026-10-03 19:14:34.411170: lr: 6.9e-05 
+2026-10-03 19:14:34.411524: 	epoch:  102 
+2026-10-03 19:19:06.321956: train loss : -1.2134: seg_CE= 0.2053, seg_DC= -1.4187 
+2026-10-03 19:19:26.464737: validation loss: -1.2309: seg_CE= 0.2234, seg_DC= -1.4543 
+2026-10-03 19:19:26.475252: Average global foreground Dice: [0.8102, 0.9491] val_metric 0.8102 val_metric_MA 0.7947 
+2026-10-03 19:19:26.511990: lesion-wise sens 0.6039 prec 0.3994 clsf acc 1.0000, val_metric 0.6677 
+2026-10-03 19:19:26.512305: sens of each class [0.6039] and size [0.1765, 0.6279, 0.85, 0.9286] 
+2026-10-03 19:19:27.202410: lr: 6.8e-05 
+2026-10-03 19:19:27.202713: 	epoch:  103 
+2026-10-03 19:23:59.789076: train loss : -1.2678: seg_CE= 0.1854, seg_DC= -1.4532 
+2026-10-03 19:24:18.789653: validation loss: -1.2809: seg_CE= 0.1943, seg_DC= -1.4752 
+2026-10-03 19:24:18.797129: Average global foreground Dice: [0.8072, 0.9466] val_metric 0.8072 val_metric_MA 0.7962 
+2026-10-03 19:24:19.351303: lr: 6.8e-05 
+2026-10-03 19:24:19.351595: 	epoch:  104 
+2026-10-03 19:28:57.310831: train loss : -1.2031: seg_CE= 0.1985, seg_DC= -1.4016 
+2026-10-03 19:29:14.662240: validation loss: -1.1326: seg_CE= 0.2286, seg_DC= -1.3612 
+2026-10-03 19:29:14.668867: Average global foreground Dice: [0.7786, 0.9346] val_metric 0.7786 val_metric_MA 0.7973 
+2026-10-03 19:29:14.694879: lesion-wise sens 0.5730 prec 0.3400 clsf acc 1.0000, val_metric 0.6377 
+2026-10-03 19:29:14.695178: sens of each class [0.573] and size [0.0667, 0.4783, 0.8108, 0.94] 
+2026-10-03 19:29:15.085096: lr: 6.8e-05 
+2026-10-03 19:29:15.085402: 	epoch:  105 
+2026-10-03 19:33:30.681089: train loss : -1.2343: seg_CE= 0.1957, seg_DC= -1.4300 
+2026-10-03 19:33:48.234010: validation loss: -1.2011: seg_CE= 0.2181, seg_DC= -1.4192 
+2026-10-03 19:33:48.234625: Average global foreground Dice: [0.8322, 0.9412] val_metric 0.8322 val_metric_MA 0.7955 
+2026-10-03 19:33:48.685131: lr: 6.8e-05 
+2026-10-03 19:33:48.685517: 	epoch:  106 
+2026-10-03 19:38:26.495368: train loss : -1.2480: seg_CE= 0.1810, seg_DC= -1.4291 
+2026-10-03 19:38:47.927679: validation loss: -1.2262: seg_CE= 0.1945, seg_DC= -1.4207 
+2026-10-03 19:38:47.934603: Average global foreground Dice: [0.8181, 0.9485] val_metric 0.8181 val_metric_MA 0.7991 
+2026-10-03 19:38:47.982358: lesion-wise sens 0.5421 prec 0.3355 clsf acc 1.0000, val_metric 0.6259 
+2026-10-03 19:38:47.982664: sens of each class [0.5421] and size [0.0417, 0.4259, 0.7667, 0.9483] 
+2026-10-03 19:38:48.412176: lr: 6.7e-05 
+2026-10-03 19:38:48.412455: 	epoch:  107 
+2026-10-03 19:42:44.179946: train loss : -1.2245: seg_CE= 0.1962, seg_DC= -1.4207 
+2026-10-03 19:43:06.952585: validation loss: -1.2318: seg_CE= 0.1962, seg_DC= -1.4280 
+2026-10-03 19:43:06.965117: Average global foreground Dice: [0.8025, 0.9481] val_metric 0.8025 val_metric_MA 0.801 
+2026-10-03 19:43:07.870601: lr: 6.7e-05 
+2026-10-03 19:43:07.895581: saving checkpoint... 
+2026-10-03 19:43:08.478156: done, saving took 0.61 seconds 
+2026-10-03 19:43:08.624624: 	epoch:  108 
+2026-10-03 19:47:35.469334: train loss : -1.2715: seg_CE= 0.1873, seg_DC= -1.4588 
+2026-10-03 19:47:53.610940: validation loss: -1.2370: seg_CE= 0.2039, seg_DC= -1.4410 
+2026-10-03 19:47:53.628661: Average global foreground Dice: [0.8157, 0.9411] val_metric 0.8157 val_metric_MA 0.8012 
+2026-10-03 19:47:53.673664: lesion-wise sens 0.6743 prec 0.3980 clsf acc 1.0000, val_metric 0.6907 
+2026-10-03 19:47:53.673991: sens of each class [0.6743] and size [0.1111, 0.4722, 0.9091, 0.9661] 
+2026-10-03 19:47:54.624659: lr: 6.7e-05 
+2026-10-03 19:47:54.640941: saving checkpoint... 
+2026-10-03 19:47:55.162384: done, saving took 0.54 seconds 
+2026-10-03 19:47:55.264044: 	epoch:  109 
+2026-10-03 19:52:10.154668: train loss : -1.2015: seg_CE= 0.2014, seg_DC= -1.4029 
+2026-10-03 19:52:30.077953: validation loss: -1.2193: seg_CE= 0.2104, seg_DC= -1.4297 
+2026-10-03 19:52:30.115542: Average global foreground Dice: [0.8045, 0.9481] val_metric 0.8045 val_metric_MA 0.8026 
+2026-10-03 19:52:30.620916: lr: 6.6e-05 
+2026-10-03 19:52:30.638779: saving checkpoint... 
+2026-10-03 19:52:31.197504: done, saving took 0.58 seconds 
+2026-10-03 19:52:31.285974: 	epoch:  110 
+2026-10-03 19:57:12.585161: train loss : -1.1758: seg_CE= 0.2206, seg_DC= -1.3964 
+2026-10-03 19:57:34.889483: validation loss: -1.1592: seg_CE= 0.2273, seg_DC= -1.3865 
+2026-10-03 19:57:34.895908: Average global foreground Dice: [0.7882, 0.9403] val_metric 0.7882 val_metric_MA 0.8028 
+2026-10-03 19:57:34.946719: lesion-wise sens 0.5521 prec 0.3500 clsf acc 1.0000, val_metric 0.634 
+2026-10-03 19:57:34.947059: sens of each class [0.5521] and size [0.0, 0.4444, 0.9189, 0.9412] 
+2026-10-03 19:57:35.350306: lr: 6.6e-05 
+2026-10-03 19:57:35.350626: 	epoch:  111 
+2026-10-03 20:01:32.195407: train loss : -1.2125: seg_CE= 0.1991, seg_DC= -1.4116 
+2026-10-03 20:01:49.420763: validation loss: -1.2361: seg_CE= 0.1837, seg_DC= -1.4199 
+2026-10-03 20:01:49.421383: Average global foreground Dice: [0.8252, 0.948] val_metric 0.8252 val_metric_MA 0.8014 
+2026-10-03 20:01:49.889080: lr: 6.6e-05 
+2026-10-03 20:01:49.912881: saving checkpoint... 
+2026-10-03 20:01:50.435426: done, saving took 0.55 seconds 
+2026-10-03 20:01:50.634722: 	epoch:  112 
+2026-10-03 20:06:20.204103: train loss : -1.2780: seg_CE= 0.1864, seg_DC= -1.4644 
+2026-10-03 20:06:39.874400: validation loss: -1.2559: seg_CE= 0.2097, seg_DC= -1.4655 
+2026-10-03 20:06:39.881096: Average global foreground Dice: [0.8155, 0.9494] val_metric 0.8155 val_metric_MA 0.8037 
+2026-10-03 20:06:39.914524: lesion-wise sens 0.6048 prec 0.3837 clsf acc 1.0000, val_metric 0.6628 
+2026-10-03 20:06:39.914999: sens of each class [0.6048] and size [0.0536, 0.5962, 0.8261, 0.9821] 
+2026-10-03 20:06:40.304529: lr: 6.5e-05 
+2026-10-03 20:06:40.320337: saving checkpoint... 
+2026-10-03 20:06:40.889934: done, saving took 0.59 seconds 
+2026-10-03 20:06:40.969980: 	epoch:  113 
+2026-10-03 20:10:53.293717: train loss : -1.2465: seg_CE= 0.2024, seg_DC= -1.4489 
+2026-10-03 20:11:08.638506: validation loss: -1.2586: seg_CE= 0.2090, seg_DC= -1.4675 
+2026-10-03 20:11:08.647198: Average global foreground Dice: [0.7894, 0.9492] val_metric 0.7894 val_metric_MA 0.8049 
+2026-10-03 20:11:09.149534: lr: 6.5e-05 
+2026-10-03 20:11:09.149851: 	epoch:  114 
+2026-10-03 20:15:07.230378: train loss : -1.2220: seg_CE= 0.1863, seg_DC= -1.4083 
+2026-10-03 20:15:27.926115: validation loss: -1.2519: seg_CE= 0.2110, seg_DC= -1.4629 
+2026-10-03 20:15:27.938967: Average global foreground Dice: [0.8034, 0.9489] val_metric 0.8034 val_metric_MA 0.8034 
+2026-10-03 20:15:27.968692: lesion-wise sens 0.6389 prec 0.3636 clsf acc 1.0000, val_metric 0.6675 
+2026-10-03 20:15:27.969022: sens of each class [0.6389] and size [0.0, 0.2917, 0.825, 0.9286] 
+2026-10-03 20:15:28.671073: lr: 6.5e-05 
+2026-10-03 20:15:28.671403: 	epoch:  115 
+2026-10-03 20:19:58.128561: train loss : -1.2798: seg_CE= 0.1909, seg_DC= -1.4707 
+2026-10-03 20:20:20.883907: validation loss: -1.2743: seg_CE= 0.1813, seg_DC= -1.4556 
+2026-10-03 20:20:20.898248: Average global foreground Dice: [0.8044, 0.9485] val_metric 0.8044 val_metric_MA 0.8034 
+2026-10-03 20:20:21.709295: lr: 6.4e-05 
+2026-10-03 20:20:21.709727: 	epoch:  116 
+2026-10-03 20:24:13.128437: train loss : -1.2565: seg_CE= 0.1995, seg_DC= -1.4560 
+2026-10-03 20:24:36.216900: validation loss: -1.2361: seg_CE= 0.1884, seg_DC= -1.4245 
+2026-10-03 20:24:36.225888: Average global foreground Dice: [0.7966, 0.9497] val_metric 0.7966 val_metric_MA 0.8035 
+2026-10-03 20:24:36.292652: lesion-wise sens 0.5897 prec 0.3548 clsf acc 1.0000, val_metric 0.6482 
+2026-10-03 20:24:36.292998: sens of each class [0.5897] and size [0.0625, 0.5238, 0.9153, 0.9792] 
+2026-10-03 20:24:37.012803: lr: 6.4e-05 
+2026-10-03 20:24:37.013130: 	epoch:  117 
+2026-10-03 20:29:17.220457: train loss : -1.1947: seg_CE= 0.2074, seg_DC= -1.4021 
+2026-10-03 20:29:37.175620: validation loss: -1.2573: seg_CE= 0.2131, seg_DC= -1.4704 
+2026-10-03 20:29:37.176229: Average global foreground Dice: [0.8479, 0.9425] val_metric 0.8479 val_metric_MA 0.8028 
+2026-10-03 20:29:37.836144: lr: 6.4e-05 
+2026-10-03 20:29:37.866619: saving checkpoint... 
+2026-10-03 20:29:38.352044: done, saving took 0.52 seconds 
+2026-10-03 20:29:38.501520: 	epoch:  118 
+2026-10-03 20:34:10.234001: train loss : -1.2404: seg_CE= 0.1844, seg_DC= -1.4248 
+2026-10-03 20:34:28.487199: validation loss: -1.2789: seg_CE= 0.1780, seg_DC= -1.4569 
+2026-10-03 20:34:28.500823: Average global foreground Dice: [0.8539, 0.9491] val_metric 0.8539 val_metric_MA 0.8073 
+2026-10-03 20:34:28.533689: lesion-wise sens 0.6963 prec 0.3817 clsf acc 1.0000, val_metric 0.6927 
+2026-10-03 20:34:28.534243: sens of each class [0.6963] and size [0.037, 0.5263, 0.9, 0.9592] 
+2026-10-03 20:34:29.135054: lr: 6.3e-05 
+2026-10-03 20:34:29.168535: saving checkpoint... 
+2026-10-03 20:34:29.828978: done, saving took 0.69 seconds 
+2026-10-03 20:34:29.918799: 	epoch:  119 
+2026-10-03 20:38:35.075554: train loss : -1.2558: seg_CE= 0.1780, seg_DC= -1.4338 
+2026-10-03 20:38:51.671955: validation loss: -1.2046: seg_CE= 0.1675, seg_DC= -1.3721 
+2026-10-03 20:38:51.686742: Average global foreground Dice: [0.7804, 0.9558] val_metric 0.7804 val_metric_MA 0.812 
+2026-10-03 20:38:52.186787: lr: 6.3e-05 
+2026-10-03 20:38:52.187101: 	epoch:  120 
+2026-10-03 20:42:57.389475: train loss : -1.2312: seg_CE= 0.2007, seg_DC= -1.4320 
+2026-10-03 20:43:18.441761: validation loss: -1.2696: seg_CE= 0.2022, seg_DC= -1.4718 
+2026-10-03 20:43:18.452708: Average global foreground Dice: [0.8059, 0.9476] val_metric 0.8059 val_metric_MA 0.8088 
+2026-10-03 20:43:18.489712: lesion-wise sens 0.6839 prec 0.3148 clsf acc 1.0000, val_metric 0.6662 
+2026-10-03 20:43:18.490035: sens of each class [0.6839] and size [0.0385, 0.5667, 0.7458, 0.9661] 
+2026-10-03 20:43:19.425059: lr: 6.3e-05 
+2026-10-03 20:43:19.425387: 	epoch:  121 
+2026-10-03 20:47:37.335028: train loss : -1.2549: seg_CE= 0.1848, seg_DC= -1.4397 
+2026-10-03 20:47:53.880836: validation loss: -1.2757: seg_CE= 0.1629, seg_DC= -1.4386 
+2026-10-03 20:47:53.881398: Average global foreground Dice: [0.8086, 0.9578] val_metric 0.8086 val_metric_MA 0.8085 
+2026-10-03 20:47:54.263510: lr: 6.3e-05 
+2026-10-03 20:47:54.263806: 	epoch:  122 
+2026-10-03 20:52:26.077250: train loss : -1.2762: seg_CE= 0.1845, seg_DC= -1.4607 
+2026-10-03 20:52:45.141799: validation loss: -1.1569: seg_CE= 0.1961, seg_DC= -1.3530 
+2026-10-03 20:52:45.153014: Average global foreground Dice: [0.7732, 0.955] val_metric 0.7732 val_metric_MA 0.8085 
+2026-10-03 20:52:45.182998: lesion-wise sens 0.5862 prec 0.3566 clsf acc 1.0000, val_metric 0.6476 
+2026-10-03 20:52:45.183317: sens of each class [0.5862] and size [0.0606, 0.451, 0.8409, 0.8696] 
+2026-10-03 20:52:45.925582: lr: 6.2e-05 
+2026-10-03 20:52:45.925886: 	epoch:  123 
+2026-10-03 20:57:05.544357: train loss : -1.2386: seg_CE= 0.1825, seg_DC= -1.4211 
+2026-10-03 20:57:20.904591: validation loss: -1.2799: seg_CE= 0.2008, seg_DC= -1.4807 
+2026-10-03 20:57:20.911893: Average global foreground Dice: [0.8371, 0.9536] val_metric 0.8371 val_metric_MA 0.805 
+2026-10-03 20:57:21.709230: lr: 6.2e-05 
+2026-10-03 20:57:21.709505: 	epoch:  124 
+2026-10-03 21:01:29.326321: train loss : -1.2740: seg_CE= 0.1788, seg_DC= -1.4528 
+2026-10-03 21:01:49.026047: validation loss: -1.2578: seg_CE= 0.2146, seg_DC= -1.4724 
+2026-10-03 21:01:49.026616: Average global foreground Dice: [0.7649, 0.9504] val_metric 0.7649 val_metric_MA 0.8082 
+2026-10-03 21:01:49.063747: lesion-wise sens 0.5550 prec 0.4221 clsf acc 1.0000, val_metric 0.659 
+2026-10-03 21:01:49.064085: sens of each class [0.555] and size [0.0169, 0.4737, 0.8235, 0.9615] 
+2026-10-03 21:01:49.526387: lr: 6.2e-05 
+2026-10-03 21:01:49.526643: saving scheduled checkpoint file... 
+2026-10-03 21:01:49.560401: saving checkpoint... 
+2026-10-03 21:01:49.937778: done, saving took 0.41 seconds 
+2026-10-03 21:01:50.103848: done 
+2026-10-03 21:01:50.104157: 	epoch:  125 
+2026-10-03 21:06:32.477112: train loss : -1.2375: seg_CE= 0.1731, seg_DC= -1.4106 
+2026-10-03 21:06:46.833596: validation loss: -1.2383: seg_CE= 0.1839, seg_DC= -1.4223 
+2026-10-03 21:06:46.844787: Average global foreground Dice: [0.7812, 0.9452] val_metric 0.7812 val_metric_MA 0.8039 
+2026-10-03 21:06:47.269510: lr: 6.1e-05 
+2026-10-03 21:06:47.269818: 	epoch:  126 
+2026-10-03 21:11:39.191967: train loss : -1.2551: seg_CE= 0.1915, seg_DC= -1.4465 
+2026-10-03 21:12:01.765041: validation loss: -1.1866: seg_CE= 0.1927, seg_DC= -1.3793 
+2026-10-03 21:12:01.771210: Average global foreground Dice: [0.8312, 0.947] val_metric 0.8312 val_metric_MA 0.8016 
+2026-10-03 21:12:01.796627: lesion-wise sens 0.6643 prec 0.2657 clsf acc 1.0000, val_metric 0.6433 
+2026-10-03 21:12:01.796962: sens of each class [0.6643] and size [0.0, 0.5517, 0.8049, 0.9778] 
+2026-10-03 21:12:02.174760: lr: 6.1e-05 
+2026-10-03 21:12:02.175069: 	epoch:  127 
+2026-10-03 21:16:03.919576: train loss : -1.2491: seg_CE= 0.1842, seg_DC= -1.4333 
+2026-10-03 21:16:18.053295: validation loss: -1.2773: seg_CE= 0.1621, seg_DC= -1.4395 
+2026-10-03 21:16:18.058813: Average global foreground Dice: [0.8158, 0.9512] val_metric 0.8158 val_metric_MA 0.8046 
+2026-10-03 21:16:18.712045: lr: 6.1e-05 
+2026-10-03 21:16:18.712708: 	epoch:  128 
+2026-10-03 21:20:53.400840: train loss : -1.2644: seg_CE= 0.1812, seg_DC= -1.4456 
+2026-10-03 21:21:16.542137: validation loss: -1.2806: seg_CE= 0.1826, seg_DC= -1.4633 
+2026-10-03 21:21:16.542749: Average global foreground Dice: [0.8159, 0.9494] val_metric 0.8159 val_metric_MA 0.8057 
+2026-10-03 21:21:16.590184: lesion-wise sens 0.6102 prec 0.3354 clsf acc 1.0000, val_metric 0.6485 
+2026-10-03 21:21:16.590492: sens of each class [0.6102] and size [0.12, 0.5526, 0.8485, 0.9464] 
+2026-10-03 21:21:17.500906: lr: 6e-05 
+2026-10-03 21:21:17.501167: 	epoch:  129 
+2026-10-03 21:26:06.438894: train loss : -1.2754: seg_CE= 0.1819, seg_DC= -1.4573 
+2026-10-03 21:26:23.234468: validation loss: -1.1896: seg_CE= 0.2369, seg_DC= -1.4266 
+2026-10-03 21:26:23.239501: Average global foreground Dice: [0.8271, 0.9447] val_metric 0.8271 val_metric_MA 0.8067 
+2026-10-03 21:26:23.995747: lr: 6e-05 
+2026-10-03 21:26:23.996165: 	epoch:  130 
+2026-10-03 21:30:53.050829: train loss : -1.2480: seg_CE= 0.1866, seg_DC= -1.4346 
+2026-10-03 21:31:10.975547: validation loss: -1.2191: seg_CE= 0.1893, seg_DC= -1.4083 
+2026-10-03 21:31:10.982084: Average global foreground Dice: [0.7898, 0.9531] val_metric 0.7898 val_metric_MA 0.8087 
+2026-10-03 21:31:11.007969: lesion-wise sens 0.6108 prec 0.4435 clsf acc 1.0000, val_metric 0.6848 
+2026-10-03 21:31:11.008279: sens of each class [0.6108] and size [0.0667, 0.6, 0.8372, 0.9545] 
+2026-10-03 21:31:11.438809: lr: 6e-05 
+2026-10-03 21:31:11.439131: 	epoch:  131 
+2026-10-03 21:35:37.113301: train loss : -1.2313: seg_CE= 0.1851, seg_DC= -1.4164 
+2026-10-03 21:35:51.969550: validation loss: -1.1377: seg_CE= 0.2028, seg_DC= -1.3405 
+2026-10-03 21:35:51.975466: Average global foreground Dice: [0.7784, 0.9389] val_metric 0.7784 val_metric_MA 0.8069 
+2026-10-03 21:35:52.433359: lr: 5.9e-05 
+2026-10-03 21:35:52.433659: 	epoch:  132 
+2026-10-03 21:40:16.921015: train loss : -1.2689: seg_CE= 0.1854, seg_DC= -1.4543 
+2026-10-03 21:40:35.416159: validation loss: -1.2566: seg_CE= 0.1886, seg_DC= -1.4452 
+2026-10-03 21:40:35.421381: Average global foreground Dice: [0.8317, 0.9515] val_metric 0.8317 val_metric_MA 0.804 
+2026-10-03 21:40:35.449322: lesion-wise sens 0.6879 prec 0.3086 clsf acc 1.0000, val_metric 0.6655 
+2026-10-03 21:40:35.449813: sens of each class [0.6879] and size [0.0741, 0.4839, 0.825, 0.9831] 
+2026-10-03 21:40:35.832995: lr: 5.9e-05 
+2026-10-03 21:40:35.833294: 	epoch:  133 
+2026-10-03 21:44:51.530397: train loss : -1.2699: seg_CE= 0.1840, seg_DC= -1.4540 
+2026-10-03 21:45:08.877164: validation loss: -1.2803: seg_CE= 0.1968, seg_DC= -1.4770 
+2026-10-03 21:45:08.889822: Average global foreground Dice: [0.8094, 0.9464] val_metric 0.8094 val_metric_MA 0.8068 
+2026-10-03 21:45:09.282174: lr: 5.9e-05 
+2026-10-03 21:45:09.282482: 	epoch:  134 
+2026-10-03 21:49:18.127129: train loss : -1.2735: seg_CE= 0.1829, seg_DC= -1.4564 
+2026-10-03 21:49:37.932039: validation loss: -1.1820: seg_CE= 0.2036, seg_DC= -1.3856 
+2026-10-03 21:49:37.936978: Average global foreground Dice: [0.8156, 0.9455] val_metric 0.8156 val_metric_MA 0.807 
+2026-10-03 21:49:37.966297: lesion-wise sens 0.5257 prec 0.3476 clsf acc 1.0000, val_metric 0.6244 
+2026-10-03 21:49:37.966601: sens of each class [0.5257] and size [0.05, 0.5, 0.7966, 0.9464] 
+2026-10-03 21:49:38.469679: lr: 5.8e-05 
+2026-10-03 21:49:38.469992: 	epoch:  135 
+2026-10-03 21:53:55.505149: train loss : -1.2335: seg_CE= 0.1842, seg_DC= -1.4177 
+2026-10-03 21:54:12.011698: validation loss: -1.3164: seg_CE= 0.1983, seg_DC= -1.5147 
+2026-10-03 21:54:12.025201: Average global foreground Dice: [0.8178, 0.9499] val_metric 0.8178 val_metric_MA 0.8079 
+2026-10-03 21:54:12.584837: lr: 5.8e-05 
+2026-10-03 21:54:12.585128: 	epoch:  136 
+2026-10-03 21:58:10.382354: train loss : -1.2793: seg_CE= 0.1825, seg_DC= -1.4618 
+2026-10-03 21:58:32.662414: validation loss: -1.2425: seg_CE= 0.2008, seg_DC= -1.4433 
+2026-10-03 21:58:32.671512: Average global foreground Dice: [0.7943, 0.9436] val_metric 0.7943 val_metric_MA 0.8089 
+2026-10-03 21:58:32.704777: lesion-wise sens 0.6568 prec 0.3595 clsf acc 1.0000, val_metric 0.6721 
+2026-10-03 21:58:32.705082: sens of each class [0.6568] and size [0.0303, 0.4828, 0.8333, 0.9787] 
+2026-10-03 21:58:33.220902: lr: 5.8e-05 
+2026-10-03 21:58:33.221178: 	epoch:  137 
+2026-10-03 22:03:32.880623: train loss : -1.2634: seg_CE= 0.1862, seg_DC= -1.4496 
+2026-10-03 22:03:48.619569: validation loss: -1.2478: seg_CE= 0.1917, seg_DC= -1.4394 
+2026-10-03 22:03:48.625611: Average global foreground Dice: [0.7917, 0.9497] val_metric 0.7917 val_metric_MA 0.8074 
+2026-10-03 22:03:49.022056: lr: 5.7e-05 
+2026-10-03 22:03:49.022369: 	epoch:  138 
+2026-10-03 22:08:26.441681: train loss : -1.2786: seg_CE= 0.1767, seg_DC= -1.4553 
+2026-10-03 22:08:43.016467: validation loss: -1.2515: seg_CE= 0.2024, seg_DC= -1.4539 
+2026-10-03 22:08:43.028966: Average global foreground Dice: [0.8286, 0.9405] val_metric 0.8286 val_metric_MA 0.8059 
+2026-10-03 22:08:43.056250: lesion-wise sens 0.7233 prec 0.4488 clsf acc 1.0000, val_metric 0.724 
+2026-10-03 22:08:43.056636: sens of each class [0.7233] and size [0.125, 0.5263, 0.875, 0.9833] 
+2026-10-03 22:08:43.430781: lr: 5.7e-05 
+2026-10-03 22:08:43.431068: 	epoch:  139 
+2026-10-03 22:13:15.479617: train loss : -1.2545: seg_CE= 0.1696, seg_DC= -1.4241 
+2026-10-03 22:13:33.211327: validation loss: -1.2925: seg_CE= 0.2112, seg_DC= -1.5037 
+2026-10-03 22:13:33.222948: Average global foreground Dice: [0.8317, 0.9472] val_metric 0.8317 val_metric_MA 0.8081 
+2026-10-03 22:13:33.871975: lr: 5.7e-05 
+2026-10-03 22:13:33.872317: 	epoch:  140 
+2026-10-03 22:17:45.838580: train loss : -1.2698: seg_CE= 0.1709, seg_DC= -1.4407 
+2026-10-03 22:18:06.744835: validation loss: -1.2441: seg_CE= 0.2136, seg_DC= -1.4577 
+2026-10-03 22:18:06.753599: Average global foreground Dice: [0.8264, 0.9467] val_metric 0.8264 val_metric_MA 0.8105 
+2026-10-03 22:18:06.782975: lesion-wise sens 0.6166 prec 0.4132 clsf acc 1.0000, val_metric 0.6766 
+2026-10-03 22:18:06.783287: sens of each class [0.6166] and size [0.0465, 0.5769, 0.8205, 0.9322] 
+2026-10-03 22:18:07.268177: lr: 5.6e-05 
+2026-10-03 22:18:07.286012: saving checkpoint... 
+2026-10-03 22:18:07.851554: done, saving took 0.58 seconds 
+2026-10-03 22:18:07.930149: 	epoch:  141 
+2026-10-03 22:22:25.162469: train loss : -1.2739: seg_CE= 0.1736, seg_DC= -1.4475 
+2026-10-03 22:22:44.850576: validation loss: -1.2417: seg_CE= 0.2167, seg_DC= -1.4584 
+2026-10-03 22:22:44.858950: Average global foreground Dice: [0.8375, 0.9401] val_metric 0.8375 val_metric_MA 0.8121 
+2026-10-03 22:22:45.683987: lr: 5.6e-05 
+2026-10-03 22:22:45.704411: saving checkpoint... 
+2026-10-03 22:22:46.326298: done, saving took 0.64 seconds 
+2026-10-03 22:22:46.484718: 	epoch:  142 
+2026-10-03 22:27:20.454261: train loss : -1.2769: seg_CE= 0.1867, seg_DC= -1.4636 
+2026-10-03 22:27:37.721194: validation loss: -1.2740: seg_CE= 0.1600, seg_DC= -1.4340 
+2026-10-03 22:27:37.731335: Average global foreground Dice: [0.8422, 0.9531] val_metric 0.8422 val_metric_MA 0.8146 
+2026-10-03 22:27:37.757375: lesion-wise sens 0.6184 prec 0.4253 clsf acc 1.0000, val_metric 0.6813 
+2026-10-03 22:27:37.757719: sens of each class [0.6184] and size [0.0, 0.4118, 0.973, 0.9565] 
+2026-10-03 22:27:38.200761: lr: 5.6e-05 
+2026-10-03 22:27:38.218229: saving checkpoint... 
+2026-10-03 22:27:39.248113: done, saving took 1.05 seconds 
+2026-10-03 22:27:39.399420: 	epoch:  143 
+2026-10-03 22:32:51.227794: train loss : -1.3116: seg_CE= 0.1678, seg_DC= -1.4793 
+2026-10-03 22:33:09.654791: validation loss: -1.2140: seg_CE= 0.2291, seg_DC= -1.4431 
+2026-10-03 22:33:09.660856: Average global foreground Dice: [0.7726, 0.9457] val_metric 0.7726 val_metric_MA 0.8174 
+2026-10-03 22:33:10.209070: lr: 5.6e-05 
+2026-10-03 22:33:10.209366: 	epoch:  144 
+2026-10-03 22:37:32.904041: train loss : -1.2510: seg_CE= 0.1825, seg_DC= -1.4335 
+2026-10-03 22:37:54.951687: validation loss: -1.2834: seg_CE= 0.1862, seg_DC= -1.4696 
+2026-10-03 22:37:54.952240: Average global foreground Dice: [0.8217, 0.9514] val_metric 0.8217 val_metric_MA 0.8129 
+2026-10-03 22:37:54.995085: lesion-wise sens 0.7310 prec 0.3463 clsf acc 1.0000, val_metric 0.6924 
+2026-10-03 22:37:54.995389: sens of each class [0.731] and size [0.1, 0.6585, 0.878, 1.0] 
+2026-10-03 22:37:55.635779: lr: 5.5e-05 
+2026-10-03 22:37:55.636043: 	epoch:  145 
+2026-10-03 22:42:13.125391: train loss : -1.2658: seg_CE= 0.1887, seg_DC= -1.4545 
+2026-10-03 22:42:29.900281: validation loss: -1.2781: seg_CE= 0.1917, seg_DC= -1.4698 
+2026-10-03 22:42:29.905762: Average global foreground Dice: [0.7904, 0.9493] val_metric 0.7904 val_metric_MA 0.8138 
+2026-10-03 22:42:30.810605: lr: 5.5e-05 
+2026-10-03 22:42:30.810914: 	epoch:  146 
+2026-10-03 22:46:44.203821: train loss : -1.2514: seg_CE= 0.2116, seg_DC= -1.4630 
+2026-10-03 22:47:06.919233: validation loss: -1.1926: seg_CE= 0.2346, seg_DC= -1.4272 
+2026-10-03 22:47:06.923914: Average global foreground Dice: [0.7288, 0.9466] val_metric 0.7288 val_metric_MA 0.8114 
+2026-10-03 22:47:06.984852: lesion-wise sens 0.6752 prec 0.3183 clsf acc 1.0000, val_metric 0.6645 
+2026-10-03 22:47:06.985195: sens of each class [0.6752] and size [0.0952, 0.5517, 0.7843, 0.8571] 
+2026-10-03 22:47:07.545322: lr: 5.5e-05 
+2026-10-03 22:47:07.545642: 	epoch:  147 
+2026-10-03 22:51:20.312291: train loss : -1.2854: seg_CE= 0.1893, seg_DC= -1.4747 
+2026-10-03 22:51:41.648665: validation loss: -1.2330: seg_CE= 0.2012, seg_DC= -1.4343 
+2026-10-03 22:51:41.654154: Average global foreground Dice: [0.787, 0.9469] val_metric 0.787 val_metric_MA 0.8032 
+2026-10-03 22:51:42.624040: lr: 5.4e-05 
+2026-10-03 22:51:42.624415: 	epoch:  148 
+2026-10-03 22:56:11.329354: train loss : -1.2760: seg_CE= 0.1804, seg_DC= -1.4564 
+2026-10-03 22:56:28.089660: validation loss: -1.1963: seg_CE= 0.2113, seg_DC= -1.4076 
+2026-10-03 22:56:28.090193: Average global foreground Dice: [0.8147, 0.9482] val_metric 0.8147 val_metric_MA 0.8016 
+2026-10-03 22:56:28.123475: lesion-wise sens 0.6512 prec 0.3313 clsf acc 1.0000, val_metric 0.6608 
+2026-10-03 22:56:28.123778: sens of each class [0.6512] and size [0.1515, 0.5862, 0.8611, 0.9333] 
+2026-10-03 22:56:28.429363: lr: 5.4e-05 
+2026-10-03 22:56:28.429591: 	epoch:  149 
+2026-10-03 23:00:35.906866: train loss : -1.2755: seg_CE= 0.1740, seg_DC= -1.4495 
+2026-10-03 23:00:55.323251: validation loss: -1.2738: seg_CE= 0.2050, seg_DC= -1.4788 
+2026-10-03 23:00:55.331631: Average global foreground Dice: [0.8069, 0.9457] val_metric 0.8069 val_metric_MA 0.8029 
+2026-10-03 23:00:56.168422: lr: 5.4e-05 
+2026-10-03 23:00:56.168703: saving scheduled checkpoint file... 
+2026-10-03 23:00:56.197081: saving checkpoint... 
+2026-10-03 23:00:56.735264: done, saving took 0.57 seconds 
+2026-10-03 23:00:56.971803: done 
+2026-10-03 23:00:56.972083: 	epoch:  150 
+2026-10-03 23:05:28.927326: train loss : -1.2912: seg_CE= 0.1616, seg_DC= -1.4528 
+2026-10-03 23:05:51.266467: validation loss: -1.2446: seg_CE= 0.1741, seg_DC= -1.4187 
+2026-10-03 23:05:51.285512: Average global foreground Dice: [0.8279, 0.9532] val_metric 0.8279 val_metric_MA 0.8033 
+2026-10-03 23:05:51.332516: lesion-wise sens 0.6519 prec 0.3601 clsf acc 1.0000, val_metric 0.6707 
+2026-10-03 23:05:51.332838: sens of each class [0.6519] and size [0.0, 0.4595, 0.7857, 1.0] 
+2026-10-03 23:05:52.766743: lr: 5.3e-05 
+2026-10-03 23:05:52.767053: 	epoch:  151 
+2026-10-03 23:10:09.621633: train loss : -1.2916: seg_CE= 0.1792, seg_DC= -1.4708 
+2026-10-03 23:10:26.321798: validation loss: -1.2917: seg_CE= 0.2114, seg_DC= -1.5031 
+2026-10-03 23:10:26.328420: Average global foreground Dice: [0.8346, 0.9406] val_metric 0.8346 val_metric_MA 0.8057 
+2026-10-03 23:10:26.826356: lr: 5.3e-05 
+2026-10-03 23:10:26.826648: 	epoch:  152 
+2026-10-03 23:14:51.510516: train loss : -1.2883: seg_CE= 0.1781, seg_DC= -1.4663 
+2026-10-03 23:15:11.365615: validation loss: -1.2491: seg_CE= 0.2119, seg_DC= -1.4610 
+2026-10-03 23:15:11.371203: Average global foreground Dice: [0.8356, 0.9456] val_metric 0.8356 val_metric_MA 0.8086 
+2026-10-03 23:15:11.399273: lesion-wise sens 0.6313 prec 0.4221 clsf acc 1.0000, val_metric 0.6844 
+2026-10-03 23:15:11.399630: sens of each class [0.6313] and size [0.0286, 0.4054, 0.8491, 0.963] 
+2026-10-03 23:15:11.950795: lr: 5.3e-05 
+2026-10-03 23:15:11.951108: 	epoch:  153 
+2026-10-03 23:19:30.565656: train loss : -1.3129: seg_CE= 0.1644, seg_DC= -1.4773 
+2026-10-03 23:19:47.411280: validation loss: -1.2573: seg_CE= 0.1798, seg_DC= -1.4371 
+2026-10-03 23:19:47.419352: Average global foreground Dice: [0.7794, 0.9539] val_metric 0.7794 val_metric_MA 0.8113 
+2026-10-03 23:19:48.096145: lr: 5.2e-05 
+2026-10-03 23:19:48.096447: 	epoch:  154 
+2026-10-03 23:24:23.967339: train loss : -1.2829: seg_CE= 0.1767, seg_DC= -1.4596 
+2026-10-03 23:24:45.333107: validation loss: -1.2605: seg_CE= 0.1881, seg_DC= -1.4486 
+2026-10-03 23:24:45.337766: Average global foreground Dice: [0.8216, 0.9487] val_metric 0.8216 val_metric_MA 0.8081 
+2026-10-03 23:24:45.361758: lesion-wise sens 0.7267 prec 0.3699 clsf acc 1.0000, val_metric 0.6988 
+2026-10-03 23:24:45.362091: sens of each class [0.7267] and size [0.0, 0.3913, 0.9, 0.9167] 
+2026-10-03 23:24:45.822080: lr: 5.2e-05 
+2026-10-03 23:24:45.822368: 	epoch:  155 
+2026-10-03 23:29:06.860384: train loss : -1.2686: seg_CE= 0.1838, seg_DC= -1.4524 
+2026-10-03 23:29:23.226436: validation loss: -1.2807: seg_CE= 0.1769, seg_DC= -1.4575 
+2026-10-03 23:29:23.234368: Average global foreground Dice: [0.8318, 0.9521] val_metric 0.8318 val_metric_MA 0.8095 
+2026-10-03 23:29:24.190267: lr: 5.2e-05 
+2026-10-03 23:29:24.190561: 	epoch:  156 
+2026-10-03 23:33:42.752191: train loss : -1.2890: seg_CE= 0.1638, seg_DC= -1.4528 
+2026-10-03 23:34:02.187585: validation loss: -1.2949: seg_CE= 0.1866, seg_DC= -1.4815 
+2026-10-03 23:34:02.194479: Average global foreground Dice: [0.7818, 0.9471] val_metric 0.7818 val_metric_MA 0.8117 
+2026-10-03 23:34:02.225060: lesion-wise sens 0.6681 prec 0.4481 clsf acc 1.0000, val_metric 0.7054 
+2026-10-03 23:34:02.225363: sens of each class [0.6681] and size [0.1364, 0.55, 0.8286, 1.0] 
+2026-10-03 23:34:02.694815: lr: 5.1e-05 
+2026-10-03 23:34:02.695134: 	epoch:  157 
+2026-10-03 23:38:25.708774: train loss : -1.2904: seg_CE= 0.1712, seg_DC= -1.4616 
+2026-10-03 23:38:36.743145: validation loss: -1.2638: seg_CE= 0.1670, seg_DC= -1.4308 
+2026-10-03 23:38:36.752346: Average global foreground Dice: [0.8028, 0.9597] val_metric 0.8028 val_metric_MA 0.8087 
+2026-10-03 23:38:37.197599: lr: 5.1e-05 
+2026-10-03 23:38:37.197912: 	epoch:  158 
+2026-10-03 23:43:24.228932: train loss : -1.2834: seg_CE= 0.1699, seg_DC= -1.4533 
+2026-10-03 23:43:49.374512: validation loss: -1.0588: seg_CE= 0.2139, seg_DC= -1.2728 
+2026-10-03 23:43:49.380023: Average global foreground Dice: [0.7524, 0.9327] val_metric 0.7524 val_metric_MA 0.8081 
+2026-10-03 23:43:49.425085: lesion-wise sens 0.5990 prec 0.1947 clsf acc 1.0000, val_metric 0.5979 
+2026-10-03 23:43:49.425412: sens of each class [0.599] and size [0.12, 0.6346, 0.7895, 0.8846] 
+2026-10-03 23:43:49.995836: lr: 5.1e-05 
+2026-10-03 23:43:50.008926: 	epoch:  159 
+2026-10-03 23:47:51.000418: train loss : -1.2530: seg_CE= 0.2005, seg_DC= -1.4535 
+2026-10-03 23:48:08.887049: validation loss: -1.2316: seg_CE= 0.2243, seg_DC= -1.4559 
+2026-10-03 23:48:08.887578: Average global foreground Dice: [0.8187, 0.9486] val_metric 0.8187 val_metric_MA 0.8025 
+2026-10-03 23:48:09.215305: lr: 5e-05 
+2026-10-03 23:48:09.215557: 	epoch:  160 
+2026-10-03 23:52:24.577020: train loss : -1.2694: seg_CE= 0.1784, seg_DC= -1.4478 
+2026-10-03 23:52:45.475296: validation loss: -1.2523: seg_CE= 0.1761, seg_DC= -1.4285 
+2026-10-03 23:52:45.480795: Average global foreground Dice: [0.8454, 0.9499] val_metric 0.8454 val_metric_MA 0.8042 
+2026-10-03 23:52:45.508863: lesion-wise sens 0.6633 prec 0.4530 clsf acc 1.0000, val_metric 0.7054 
+2026-10-03 23:52:45.509161: sens of each class [0.6633] and size [0.1471, 0.549, 0.7547, 0.9828] 
+2026-10-03 23:52:46.146894: lr: 5e-05 
+2026-10-03 23:52:46.147179: 	epoch:  161 
+2026-10-03 23:56:44.056489: train loss : -1.2881: seg_CE= 0.1774, seg_DC= -1.4655 
+2026-10-03 23:57:03.068558: validation loss: -1.2535: seg_CE= 0.1555, seg_DC= -1.4089 
+2026-10-03 23:57:03.069122: Average global foreground Dice: [0.8182, 0.9546] val_metric 0.8182 val_metric_MA 0.8083 
+2026-10-03 23:57:03.732699: lr: 5e-05 
+2026-10-03 23:57:03.732974: 	epoch:  162 
+2026-10-04 00:01:01.859682: train loss : -1.2588: seg_CE= 0.1949, seg_DC= -1.4537 
+2026-10-04 00:01:21.838618: validation loss: -1.2756: seg_CE= 0.1614, seg_DC= -1.4369 
+2026-10-04 00:01:21.845396: Average global foreground Dice: [0.8424, 0.9488] val_metric 0.8424 val_metric_MA 0.8093 
+2026-10-04 00:01:21.906924: lesion-wise sens 0.6954 prec 0.3344 clsf acc 1.0000, val_metric 0.6766 
+2026-10-04 00:01:21.907247: sens of each class [0.6954] and size [0.0833, 0.7586, 0.8333, 1.0] 
+2026-10-04 00:01:22.341472: lr: 4.9e-05 
+2026-10-04 00:01:22.341784: 	epoch:  163 
+2026-10-04 00:05:58.655122: train loss : -1.2553: seg_CE= 0.1756, seg_DC= -1.4309 
+2026-10-04 00:06:17.939304: validation loss: -1.1790: seg_CE= 0.2002, seg_DC= -1.3792 
+2026-10-04 00:06:18.110232: Average global foreground Dice: [0.8056, 0.9481] val_metric 0.8056 val_metric_MA 0.8126 
+2026-10-04 00:06:18.498688: lr: 4.9e-05 
+2026-10-04 00:06:18.498939: 	epoch:  164 
+2026-10-04 00:10:52.869771: train loss : -1.3130: seg_CE= 0.1815, seg_DC= -1.4945 
+2026-10-04 00:11:15.421633: validation loss: -1.2363: seg_CE= 0.1945, seg_DC= -1.4308 
+2026-10-04 00:11:15.444524: Average global foreground Dice: [0.8387, 0.9487] val_metric 0.8387 val_metric_MA 0.8119 
+2026-10-04 00:11:15.480790: lesion-wise sens 0.6101 prec 0.3311 clsf acc 1.0000, val_metric 0.647 
+2026-10-04 00:11:15.481109: sens of each class [0.6101] and size [0.05, 0.4375, 0.8788, 0.963] 
+2026-10-04 00:11:16.248348: lr: 4.9e-05 
+2026-10-04 00:11:16.248637: 	epoch:  165 
+2026-10-04 00:15:53.234980: train loss : -1.3079: seg_CE= 0.1739, seg_DC= -1.4818 
+2026-10-04 00:16:11.598026: validation loss: -1.2822: seg_CE= 0.1922, seg_DC= -1.4744 
+2026-10-04 00:16:11.598627: Average global foreground Dice: [0.8493, 0.9501] val_metric 0.8493 val_metric_MA 0.8146 
+2026-10-04 00:16:12.082143: lr: 4.8e-05 
+2026-10-04 00:16:12.110352: saving checkpoint... 
+2026-10-04 00:16:12.652715: done, saving took 0.57 seconds 
+2026-10-04 00:16:12.882563: 	epoch:  166 
+2026-10-04 00:20:55.093999: train loss : -1.2977: seg_CE= 0.1655, seg_DC= -1.4632 
+2026-10-04 00:21:13.652181: validation loss: -1.3140: seg_CE= 0.1822, seg_DC= -1.4962 
+2026-10-04 00:21:13.661293: Average global foreground Dice: [0.838, 0.9496] val_metric 0.838 val_metric_MA 0.818 
+2026-10-04 00:21:13.703144: lesion-wise sens 0.6055 prec 0.5057 clsf acc 1.0000, val_metric 0.7038 
+2026-10-04 00:21:13.703425: sens of each class [0.6055] and size [0.0794, 0.5435, 0.88, 0.9831] 
+2026-10-04 00:21:14.447246: lr: 4.8e-05 
+2026-10-04 00:21:14.465147: saving checkpoint... 
+2026-10-04 00:21:15.054499: done, saving took 0.61 seconds 
+2026-10-04 00:21:15.177872: 	epoch:  167 
+2026-10-04 00:25:51.671715: train loss : -1.2842: seg_CE= 0.1714, seg_DC= -1.4557 
+2026-10-04 00:26:06.586657: validation loss: -1.2161: seg_CE= 0.1973, seg_DC= -1.4133 
+2026-10-04 00:26:06.608684: Average global foreground Dice: [0.8468, 0.9482] val_metric 0.8468 val_metric_MA 0.82 
+2026-10-04 00:26:07.223045: lr: 4.8e-05 
+2026-10-04 00:26:07.249857: saving checkpoint... 
+2026-10-04 00:26:07.785383: done, saving took 0.56 seconds 
+2026-10-04 00:26:07.921894: 	epoch:  168 
+2026-10-04 00:30:26.669615: train loss : -1.2913: seg_CE= 0.1877, seg_DC= -1.4790 
+2026-10-04 00:30:51.116657: validation loss: -1.2092: seg_CE= 0.1989, seg_DC= -1.4081 
+2026-10-04 00:30:51.126076: Average global foreground Dice: [0.8241, 0.9427] val_metric 0.8241 val_metric_MA 0.8227 
+2026-10-04 00:30:51.162104: lesion-wise sens 0.5882 prec 0.2972 clsf acc 1.0000, val_metric 0.6285 
+2026-10-04 00:30:51.162431: sens of each class [0.5882] and size [0.0556, 0.5833, 0.7708, 0.963] 
+2026-10-04 00:30:51.738050: lr: 4.7e-05 
+2026-10-04 00:30:51.769624: saving checkpoint... 
+2026-10-04 00:30:52.297718: done, saving took 0.56 seconds 
+2026-10-04 00:30:52.381539: 	epoch:  169 
+2026-10-04 00:34:54.899758: train loss : -1.2753: seg_CE= 0.1668, seg_DC= -1.4421 
+2026-10-04 00:35:12.333073: validation loss: -1.2197: seg_CE= 0.1897, seg_DC= -1.4094 
+2026-10-04 00:35:12.354862: Average global foreground Dice: [0.8166, 0.9441] val_metric 0.8166 val_metric_MA 0.8229 
+2026-10-04 00:35:12.927307: lr: 4.7e-05 
+2026-10-04 00:35:12.927610: 	epoch:  170 
+2026-10-04 00:39:56.751360: train loss : -1.2624: seg_CE= 0.1723, seg_DC= -1.4348 
+2026-10-04 00:40:18.324568: validation loss: -1.3623: seg_CE= 0.1758, seg_DC= -1.5380 
+2026-10-04 00:40:18.331470: Average global foreground Dice: [0.8243, 0.9558] val_metric 0.8243 val_metric_MA 0.8222 
+2026-10-04 00:40:18.367851: lesion-wise sens 0.6129 prec 0.4564 clsf acc 1.0000, val_metric 0.6898 
+2026-10-04 00:40:18.368168: sens of each class [0.6129] and size [0.0517, 0.6154, 0.8511, 0.9667] 
+2026-10-04 00:40:19.121350: lr: 4.7e-05 
+2026-10-04 00:40:19.130148: 	epoch:  171 
+2026-10-04 00:44:50.229167: train loss : -1.3019: seg_CE= 0.1559, seg_DC= -1.4578 
+2026-10-04 00:45:08.930993: validation loss: -1.2686: seg_CE= 0.1921, seg_DC= -1.4607 
+2026-10-04 00:45:08.949743: Average global foreground Dice: [0.8201, 0.9533] val_metric 0.8201 val_metric_MA 0.8224 
+2026-10-04 00:45:09.509588: lr: 4.6e-05 
+2026-10-04 00:45:09.509896: 	epoch:  172 
+2026-10-04 00:49:54.876381: train loss : -1.2662: seg_CE= 0.1759, seg_DC= -1.4421 
+2026-10-04 00:50:11.235486: validation loss: -1.2181: seg_CE= 0.1905, seg_DC= -1.4085 
+2026-10-04 00:50:11.245017: Average global foreground Dice: [0.7749, 0.9502] val_metric 0.7749 val_metric_MA 0.8222 
+2026-10-04 00:50:11.305075: lesion-wise sens 0.6039 prec 0.3796 clsf acc 1.0000, val_metric 0.6612 
+2026-10-04 00:50:11.305389: sens of each class [0.6039] and size [0.0556, 0.2963, 0.8235, 0.9649] 
+2026-10-04 00:50:11.734281: lr: 4.6e-05 
+2026-10-04 00:50:11.734615: 	epoch:  173 
+2026-10-04 00:54:42.807266: train loss : -1.3389: seg_CE= 0.1594, seg_DC= -1.4983 
+2026-10-04 00:55:03.012393: validation loss: -1.2726: seg_CE= 0.1789, seg_DC= -1.4515 
+2026-10-04 00:55:03.035650: Average global foreground Dice: [0.7965, 0.9563] val_metric 0.7965 val_metric_MA 0.8175 
+2026-10-04 00:55:03.762337: lr: 4.6e-05 
+2026-10-04 00:55:03.762639: 	epoch:  174 
+2026-10-04 00:59:17.383516: train loss : -1.2880: seg_CE= 0.1794, seg_DC= -1.4675 
+2026-10-04 00:59:38.884071: validation loss: -1.3373: seg_CE= 0.1815, seg_DC= -1.5188 
+2026-10-04 00:59:38.884678: Average global foreground Dice: [0.8179, 0.9544] val_metric 0.8179 val_metric_MA 0.8154 
+2026-10-04 00:59:38.941365: lesion-wise sens 0.6220 prec 0.4655 clsf acc 1.0000, val_metric 0.6958 
+2026-10-04 00:59:38.941681: sens of each class [0.622] and size [0.0698, 0.4912, 0.8077, 1.0] 
+2026-10-04 00:59:39.649770: lr: 4.5e-05 
+2026-10-04 00:59:39.650029: saving scheduled checkpoint file... 
+2026-10-04 00:59:39.672533: saving checkpoint... 
+2026-10-04 00:59:40.293972: done, saving took 0.64 seconds 
+2026-10-04 00:59:40.447761: done 
+2026-10-04 00:59:40.448022: 	epoch:  175 
+2026-10-04 01:04:23.455851: train loss : -1.2920: seg_CE= 0.1821, seg_DC= -1.4740 
+2026-10-04 01:04:36.855535: validation loss: -1.3022: seg_CE= 0.1584, seg_DC= -1.4606 
+2026-10-04 01:04:36.862835: Average global foreground Dice: [0.8282, 0.9551] val_metric 0.8282 val_metric_MA 0.8156 
+2026-10-04 01:04:37.301109: lr: 4.5e-05 
+2026-10-04 01:04:37.301405: 	epoch:  176 
+2026-10-04 01:08:45.866549: train loss : -1.2947: seg_CE= 0.1668, seg_DC= -1.4614 
+2026-10-04 01:09:05.192510: validation loss: -1.3064: seg_CE= 0.1633, seg_DC= -1.4697 
+2026-10-04 01:09:05.203557: Average global foreground Dice: [0.8534, 0.9538] val_metric 0.8534 val_metric_MA 0.8169 
+2026-10-04 01:09:05.228980: lesion-wise sens 0.7055 prec 0.4689 clsf acc 1.0000, val_metric 0.7248 
+2026-10-04 01:09:05.229282: sens of each class [0.7055] and size [0.0811, 0.7037, 0.9057, 0.9783] 
+2026-10-04 01:09:05.744579: lr: 4.5e-05 
+2026-10-04 01:09:05.744890: 	epoch:  177 
+2026-10-04 01:13:29.307153: train loss : -1.3106: seg_CE= 0.1600, seg_DC= -1.4706 
+2026-10-04 01:13:47.231211: validation loss: -1.2766: seg_CE= 0.2062, seg_DC= -1.4828 
+2026-10-04 01:13:47.243905: Average global foreground Dice: [0.8145, 0.9459] val_metric 0.8145 val_metric_MA 0.8205 
+2026-10-04 01:13:47.725886: lr: 4.4e-05 
+2026-10-04 01:13:47.726317: 	epoch:  178 
+2026-10-04 01:17:53.561837: train loss : -1.3260: seg_CE= 0.1645, seg_DC= -1.4905 
+2026-10-04 01:18:15.571950: validation loss: -1.2607: seg_CE= 0.1893, seg_DC= -1.4500 
+2026-10-04 01:18:15.582559: Average global foreground Dice: [0.809, 0.955] val_metric 0.809 val_metric_MA 0.8199 
+2026-10-04 01:18:15.622218: lesion-wise sens 0.5628 prec 0.3247 clsf acc 1.0000, val_metric 0.6291 
+2026-10-04 01:18:15.622519: sens of each class [0.5628] and size [0.0, 0.3803, 0.8448, 0.9818] 
+2026-10-04 01:18:16.499951: lr: 4.4e-05 
+2026-10-04 01:18:16.500470: 	epoch:  179 
+2026-10-04 01:22:31.106514: train loss : -1.2950: seg_CE= 0.1631, seg_DC= -1.4580 
+2026-10-04 01:22:50.847068: validation loss: -1.2995: seg_CE= 0.1775, seg_DC= -1.4770 
+2026-10-04 01:22:50.862207: Average global foreground Dice: [0.8538, 0.9503] val_metric 0.8538 val_metric_MA 0.8188 
+2026-10-04 01:22:51.722805: lr: 4.4e-05 
+2026-10-04 01:22:51.723116: 	epoch:  180 
+2026-10-04 01:27:20.124793: train loss : -1.2809: seg_CE= 0.1655, seg_DC= -1.4463 
+2026-10-04 01:27:38.765406: validation loss: -1.1521: seg_CE= 0.2265, seg_DC= -1.3785 
+2026-10-04 01:27:38.774119: Average global foreground Dice: [0.8097, 0.9348] val_metric 0.8097 val_metric_MA 0.8223 
+2026-10-04 01:27:38.805281: lesion-wise sens 0.5972 prec 0.4048 clsf acc 1.0000, val_metric 0.6673 
+2026-10-04 01:27:38.805602: sens of each class [0.5972] and size [0.0, 0.1739, 0.775, 0.9808] 
+2026-10-04 01:27:39.305787: lr: 4.4e-05 
+2026-10-04 01:27:39.306090: 	epoch:  181 
+2026-10-04 01:32:25.162990: train loss : -1.3326: seg_CE= 0.1672, seg_DC= -1.4998 
+2026-10-04 01:32:40.670259: validation loss: -1.3488: seg_CE= 0.1603, seg_DC= -1.5091 
+2026-10-04 01:32:40.677872: Average global foreground Dice: [0.8376, 0.9572] val_metric 0.8376 val_metric_MA 0.8211 
+2026-10-04 01:32:41.105023: lr: 4.3e-05 
+2026-10-04 01:32:41.105318: 	epoch:  182 
+2026-10-04 01:36:46.361950: train loss : -1.3293: seg_CE= 0.1546, seg_DC= -1.4840 
+2026-10-04 01:37:09.669143: validation loss: -1.2571: seg_CE= 0.1727, seg_DC= -1.4298 
+2026-10-04 01:37:09.680372: Average global foreground Dice: [0.7983, 0.9533] val_metric 0.7983 val_metric_MA 0.8227 
+2026-10-04 01:37:09.712490: lesion-wise sens 0.5841 prec 0.4397 clsf acc 1.0000, val_metric 0.6746 
+2026-10-04 01:37:09.712813: sens of each class [0.5841] and size [0.1017, 0.5472, 0.8235, 0.9412] 
+2026-10-04 01:37:10.293745: lr: 4.3e-05 
+2026-10-04 01:37:10.294059: 	epoch:  183 
+2026-10-04 01:41:43.801398: train loss : -1.3133: seg_CE= 0.1604, seg_DC= -1.4736 
+2026-10-04 01:42:01.735014: validation loss: -1.2779: seg_CE= 0.1814, seg_DC= -1.4593 
+2026-10-04 01:42:01.743147: Average global foreground Dice: [0.8409, 0.9536] val_metric 0.8409 val_metric_MA 0.8203 
+2026-10-04 01:42:02.151530: lr: 4.3e-05 
+2026-10-04 01:42:02.151841: 	epoch:  184 
+2026-10-04 01:45:58.568461: train loss : -1.2807: seg_CE= 0.1809, seg_DC= -1.4616 
+2026-10-04 01:46:22.214546: validation loss: -1.3570: seg_CE= 0.1746, seg_DC= -1.5316 
+2026-10-04 01:46:22.215127: Average global foreground Dice: [0.8293, 0.9501] val_metric 0.8293 val_metric_MA 0.8224 
+2026-10-04 01:46:22.257807: lesion-wise sens 0.6364 prec 0.4022 clsf acc 1.0000, val_metric 0.6795 
+2026-10-04 01:46:22.258102: sens of each class [0.6364] and size [0.0323, 0.4, 0.7714, 0.9714] 
+2026-10-04 01:46:22.703078: lr: 4.2e-05 
+2026-10-04 01:46:22.731839: saving checkpoint... 
+2026-10-04 01:46:23.326375: done, saving took 0.62 seconds 
+2026-10-04 01:46:23.481364: 	epoch:  185 
+2026-10-04 01:50:46.135978: train loss : -1.3041: seg_CE= 0.1629, seg_DC= -1.4670 
+2026-10-04 01:51:04.272187: validation loss: -1.2763: seg_CE= 0.1800, seg_DC= -1.4563 
+2026-10-04 01:51:04.277871: Average global foreground Dice: [0.8441, 0.9488] val_metric 0.8441 val_metric_MA 0.823 
+2026-10-04 01:51:04.771228: lr: 4.2e-05 
+2026-10-04 01:51:04.800079: saving checkpoint... 
+2026-10-04 01:51:05.445357: done, saving took 0.67 seconds 
+2026-10-04 01:51:05.529176: 	epoch:  186 
+2026-10-04 01:55:30.351030: train loss : -1.3129: seg_CE= 0.1522, seg_DC= -1.4651 
+2026-10-04 01:55:52.520789: validation loss: -1.3555: seg_CE= 0.1869, seg_DC= -1.5424 
+2026-10-04 01:55:52.538754: Average global foreground Dice: [0.8402, 0.9524] val_metric 0.8402 val_metric_MA 0.8252 
+2026-10-04 01:55:52.577054: lesion-wise sens 0.6165 prec 0.4071 clsf acc 1.0000, val_metric 0.6745 
+2026-10-04 01:55:52.577361: sens of each class [0.6165] and size [0.0, 0.4412, 0.8519, 1.0] 
+2026-10-04 01:55:53.386514: lr: 4.2e-05 
+2026-10-04 01:55:53.421462: saving checkpoint... 
+2026-10-04 01:55:54.272612: done, saving took 0.89 seconds 
+2026-10-04 01:55:54.486136: 	epoch:  187 
+2026-10-04 02:00:21.225393: train loss : -1.3040: seg_CE= 0.1519, seg_DC= -1.4559 
+2026-10-04 02:00:37.863784: validation loss: -1.3085: seg_CE= 0.1996, seg_DC= -1.5081 
+2026-10-04 02:00:37.873303: Average global foreground Dice: [0.8389, 0.9471] val_metric 0.8389 val_metric_MA 0.8267 
+2026-10-04 02:00:38.527680: lr: 4.1e-05 
+2026-10-04 02:00:38.558194: saving checkpoint... 
+2026-10-04 02:00:39.177178: done, saving took 0.65 seconds 
+2026-10-04 02:00:39.336908: 	epoch:  188 
+2026-10-04 02:05:27.219620: train loss : -1.2995: seg_CE= 0.1582, seg_DC= -1.4577 
+2026-10-04 02:05:47.746222: validation loss: -1.1651: seg_CE= 0.1710, seg_DC= -1.3361 
+2026-10-04 02:05:47.754955: Average global foreground Dice: [0.7904, 0.9479] val_metric 0.7904 val_metric_MA 0.8279 
+2026-10-04 02:05:47.781717: lesion-wise sens 0.5609 prec 0.3884 clsf acc 1.0000, val_metric 0.6497 
+2026-10-04 02:05:47.782045: sens of each class [0.5609] and size [0.1233, 0.5909, 0.84, 0.9512] 
+2026-10-04 02:05:48.401931: lr: 4.1e-05 
+2026-10-04 02:05:48.402245: 	epoch:  189 
+2026-10-04 02:10:06.864073: train loss : -1.3409: seg_CE= 0.1650, seg_DC= -1.5059 
+2026-10-04 02:10:27.590981: validation loss: -1.3303: seg_CE= 0.1586, seg_DC= -1.4889 
+2026-10-04 02:10:27.596197: Average global foreground Dice: [0.8712, 0.9546] val_metric 0.8712 val_metric_MA 0.8241 
+2026-10-04 02:10:28.336795: lr: 4.1e-05 
+2026-10-04 02:10:28.373902: saving checkpoint... 
+2026-10-04 02:10:28.915969: done, saving took 0.58 seconds 
+2026-10-04 02:10:29.084480: 	epoch:  190 
+2026-10-04 02:14:30.308088: train loss : -1.3125: seg_CE= 0.1639, seg_DC= -1.4763 
+2026-10-04 02:14:48.498282: validation loss: -1.3593: seg_CE= 0.1665, seg_DC= -1.5258 
+2026-10-04 02:14:48.504469: Average global foreground Dice: [0.8731, 0.9519] val_metric 0.8731 val_metric_MA 0.8288 
+2026-10-04 02:14:48.547100: lesion-wise sens 0.6380 prec 0.5561 clsf acc 1.0000, val_metric 0.7314 
+2026-10-04 02:14:48.547438: sens of each class [0.638] and size [0.0, 0.4062, 0.9189, 1.0] 
+2026-10-04 02:14:49.322735: lr: 4e-05 
+2026-10-04 02:14:49.360023: saving checkpoint... 
+2026-10-04 02:14:50.066248: done, saving took 0.74 seconds 
+2026-10-04 02:14:50.401809: 	epoch:  191 
+2026-10-04 02:19:21.020783: train loss : -1.2938: seg_CE= 0.1643, seg_DC= -1.4582 
+2026-10-04 02:19:39.316119: validation loss: -1.2471: seg_CE= 0.2307, seg_DC= -1.4778 
+2026-10-04 02:19:39.323557: Average global foreground Dice: [0.7739, 0.944] val_metric 0.7739 val_metric_MA 0.8333 
+2026-10-04 02:19:39.782276: lr: 4e-05 
+2026-10-04 02:19:39.782572: 	epoch:  192 
+2026-10-04 02:23:51.591572: train loss : -1.3345: seg_CE= 0.1756, seg_DC= -1.5101 
+2026-10-04 02:24:11.550043: validation loss: -1.2529: seg_CE= 0.2258, seg_DC= -1.4787 
+2026-10-04 02:24:11.557327: Average global foreground Dice: [0.8485, 0.9436] val_metric 0.8485 val_metric_MA 0.8273 
+2026-10-04 02:24:11.614267: lesion-wise sens 0.7329 prec 0.3569 clsf acc 1.0000, val_metric 0.6966 
+2026-10-04 02:24:11.614582: sens of each class [0.7329] and size [0.0769, 0.6364, 0.85, 0.9839] 
+2026-10-04 02:24:12.036492: lr: 4e-05 
+2026-10-04 02:24:12.036780: 	epoch:  193 
+2026-10-04 02:28:22.849456: train loss : -1.3480: seg_CE= 0.1479, seg_DC= -1.4959 
+2026-10-04 02:28:40.764876: validation loss: -1.2420: seg_CE= 0.1949, seg_DC= -1.4368 
+2026-10-04 02:28:40.775954: Average global foreground Dice: [0.8033, 0.9493] val_metric 0.8033 val_metric_MA 0.8294 
+2026-10-04 02:28:41.519158: lr: 3.9e-05 
+2026-10-04 02:28:41.519467: 	epoch:  194 
+2026-10-04 02:33:20.155520: train loss : -1.3037: seg_CE= 0.1646, seg_DC= -1.4683 
+2026-10-04 02:33:40.232118: validation loss: -1.2644: seg_CE= 0.1681, seg_DC= -1.4326 
+2026-10-04 02:33:40.238076: Average global foreground Dice: [0.8233, 0.9543] val_metric 0.8233 val_metric_MA 0.8268 
+2026-10-04 02:33:40.265221: lesion-wise sens 0.6235 prec 0.3797 clsf acc 1.0000, val_metric 0.6677 
+2026-10-04 02:33:40.265578: sens of each class [0.6235] and size [0.0417, 0.68, 0.8605, 0.9783] 
+2026-10-04 02:33:40.691060: lr: 3.9e-05 
+2026-10-04 02:33:40.691393: 	epoch:  195 
+2026-10-04 02:38:03.617497: train loss : -1.2988: seg_CE= 0.1706, seg_DC= -1.4694 
+2026-10-04 02:38:19.605965: validation loss: -1.2949: seg_CE= 0.1488, seg_DC= -1.4437 
+2026-10-04 02:38:19.612604: Average global foreground Dice: [0.8558, 0.9574] val_metric 0.8558 val_metric_MA 0.8265 
+2026-10-04 02:38:20.003796: lr: 3.9e-05 
+2026-10-04 02:38:20.004058: 	epoch:  196 
+2026-10-04 02:42:28.693405: train loss : -1.3271: seg_CE= 0.1563, seg_DC= -1.4833 
+2026-10-04 02:42:49.389770: validation loss: -1.3313: seg_CE= 0.1683, seg_DC= -1.4997 
+2026-10-04 02:42:49.395416: Average global foreground Dice: [0.832, 0.9537] val_metric 0.832 val_metric_MA 0.8294 
+2026-10-04 02:42:49.429256: lesion-wise sens 0.7041 prec 0.4554 clsf acc 1.0000, val_metric 0.7198 
+2026-10-04 02:42:49.429589: sens of each class [0.7041] and size [0.2041, 0.6944, 0.8814, 0.9808] 
+2026-10-04 02:42:49.977942: lr: 3.8e-05 
+2026-10-04 02:42:49.978271: 	epoch:  197 
+2026-10-04 02:47:09.902033: train loss : -1.2818: seg_CE= 0.1771, seg_DC= -1.4589 
+2026-10-04 02:47:21.354331: validation loss: -1.3270: seg_CE= 0.1875, seg_DC= -1.5145 
+2026-10-04 02:47:21.360671: Average global foreground Dice: [0.8374, 0.9493] val_metric 0.8374 val_metric_MA 0.8297 
+2026-10-04 02:47:21.741103: lr: 3.8e-05 
+2026-10-04 02:47:21.741391: 	epoch:  198 
+2026-10-04 02:51:44.886648: train loss : -1.3216: seg_CE= 0.1544, seg_DC= -1.4760 
+2026-10-04 02:52:04.364045: validation loss: -1.2696: seg_CE= 0.1871, seg_DC= -1.4567 
+2026-10-04 02:52:04.373864: Average global foreground Dice: [0.8499, 0.9497] val_metric 0.8499 val_metric_MA 0.8304 
+2026-10-04 02:52:04.399947: lesion-wise sens 0.6937 prec 0.3607 clsf acc 1.0000, val_metric 0.6848 
+2026-10-04 02:52:04.400235: sens of each class [0.6938] and size [0.0, 0.6, 0.7805, 1.0] 
+2026-10-04 02:52:04.865910: lr: 3.8e-05 
+2026-10-04 02:52:04.866222: 	epoch:  199 
+2026-10-04 02:56:21.586944: train loss : -1.2871: seg_CE= 0.1675, seg_DC= -1.4546 
+2026-10-04 02:56:37.575813: validation loss: -1.3321: seg_CE= 0.1776, seg_DC= -1.5097 
+2026-10-04 02:56:37.590796: Average global foreground Dice: [0.8379, 0.9536] val_metric 0.8379 val_metric_MA 0.8324 
+2026-10-04 02:56:38.531136: lr: 3.7e-05 
+2026-10-04 02:56:38.531418: saving scheduled checkpoint file... 
+2026-10-04 02:56:38.560986: saving checkpoint... 
+2026-10-04 02:56:39.189930: done, saving took 0.65 seconds 
+2026-10-04 02:56:39.298847: done 
+2026-10-04 02:56:39.299243: 	epoch:  200 
+2026-10-04 03:00:51.160969: train loss : -1.2662: seg_CE= 0.1620, seg_DC= -1.4282 
+2026-10-04 03:01:15.382374: validation loss: -1.3104: seg_CE= 0.1888, seg_DC= -1.4991 
+2026-10-04 03:01:15.400929: Average global foreground Dice: [0.8138, 0.9501] val_metric 0.8138 val_metric_MA 0.8329 
+2026-10-04 03:01:15.427212: lesion-wise sens 0.6498 prec 0.4452 clsf acc 1.0000, val_metric 0.6983 
+2026-10-04 03:01:15.427531: sens of each class [0.6498] and size [0.0938, 0.4915, 0.7681, 0.9825] 
+2026-10-04 03:01:15.863840: lr: 3.7e-05 
+2026-10-04 03:01:15.864104: 	epoch:  201 
+2026-10-04 03:05:18.990559: train loss : -1.3339: seg_CE= 0.1472, seg_DC= -1.4811 
+2026-10-04 03:05:37.468318: validation loss: -1.3012: seg_CE= 0.1643, seg_DC= -1.4655 
+2026-10-04 03:05:37.475543: Average global foreground Dice: [0.8114, 0.9577] val_metric 0.8114 val_metric_MA 0.831 
+2026-10-04 03:05:38.004603: lr: 3.7e-05 
+2026-10-04 03:05:38.004984: 	epoch:  202 
+2026-10-04 03:10:13.174848: train loss : -1.3161: seg_CE= 0.1529, seg_DC= -1.4690 
+2026-10-04 03:10:34.849104: validation loss: -1.3243: seg_CE= 0.1620, seg_DC= -1.4863 
+2026-10-04 03:10:34.855258: Average global foreground Dice: [0.8414, 0.9574] val_metric 0.8414 val_metric_MA 0.8291 
+2026-10-04 03:10:34.882494: lesion-wise sens 0.6343 prec 0.4488 clsf acc 1.0000, val_metric 0.6944 
+2026-10-04 03:10:34.882787: sens of each class [0.6343] and size [0.1489, 0.5714, 0.8462, 0.9787] 
+2026-10-04 03:10:36.103452: lr: 3.6e-05 
+2026-10-04 03:10:36.103763: 	epoch:  203 
+2026-10-04 03:15:12.251076: train loss : -1.3111: seg_CE= 0.1563, seg_DC= -1.4674 
+2026-10-04 03:15:30.288301: validation loss: -1.2688: seg_CE= 0.2056, seg_DC= -1.4743 
+2026-10-04 03:15:30.295299: Average global foreground Dice: [0.8278, 0.9487] val_metric 0.8278 val_metric_MA 0.8303 
+2026-10-04 03:15:30.715114: lr: 3.6e-05 
+2026-10-04 03:15:30.715445: 	epoch:  204 
+2026-10-04 03:19:55.987677: train loss : -1.3082: seg_CE= 0.1672, seg_DC= -1.4754 
+2026-10-04 03:20:16.070953: validation loss: -1.2581: seg_CE= 0.1664, seg_DC= -1.4245 
+2026-10-04 03:20:16.077271: Average global foreground Dice: [0.8065, 0.9524] val_metric 0.8065 val_metric_MA 0.83 
+2026-10-04 03:20:16.135938: lesion-wise sens 0.6273 prec 0.4109 clsf acc 1.0000, val_metric 0.6794 
+2026-10-04 03:20:16.136279: sens of each class [0.6273] and size [0.025, 0.3673, 0.869, 0.9787] 
+2026-10-04 03:20:16.786066: lr: 3.6e-05 
+2026-10-04 03:20:16.786355: 	epoch:  205 
+2026-10-04 03:24:49.996974: train loss : -1.3278: seg_CE= 0.1635, seg_DC= -1.4913 
+2026-10-04 03:25:08.683556: validation loss: -1.3547: seg_CE= 0.1829, seg_DC= -1.5376 
+2026-10-04 03:25:08.690125: Average global foreground Dice: [0.8411, 0.9547] val_metric 0.8411 val_metric_MA 0.8277 
+2026-10-04 03:25:09.681908: lr: 3.5e-05 
+2026-10-04 03:25:09.682262: 	epoch:  206 
+2026-10-04 03:29:27.404647: train loss : -1.3604: seg_CE= 0.1611, seg_DC= -1.5215 
+2026-10-04 03:29:48.550757: validation loss: -1.3275: seg_CE= 0.1898, seg_DC= -1.5174 
+2026-10-04 03:29:48.566898: Average global foreground Dice: [0.8281, 0.954] val_metric 0.8281 val_metric_MA 0.829 
+2026-10-04 03:29:48.602644: lesion-wise sens 0.6757 prec 0.5061 clsf acc 1.0000, val_metric 0.7272 
+2026-10-04 03:29:48.602960: sens of each class [0.6757] and size [0.1714, 0.5143, 0.7959, 0.9394] 
+2026-10-04 03:29:49.166469: lr: 3.5e-05 
+2026-10-04 03:29:49.166730: 	epoch:  207 
+2026-10-04 03:34:16.563691: train loss : -1.3403: seg_CE= 0.1586, seg_DC= -1.4990 
+2026-10-04 03:34:32.175048: validation loss: -1.2271: seg_CE= 0.2031, seg_DC= -1.4302 
+2026-10-04 03:34:32.181357: Average global foreground Dice: [0.7982, 0.9469] val_metric 0.7982 val_metric_MA 0.8289 
+2026-10-04 03:34:32.603978: lr: 3.5e-05 
+2026-10-04 03:34:32.604272: 	epoch:  208 
+2026-10-04 03:38:47.441638: train loss : -1.3370: seg_CE= 0.1474, seg_DC= -1.4844 
+2026-10-04 03:39:08.557505: validation loss: -1.2959: seg_CE= 0.1960, seg_DC= -1.4919 
+2026-10-04 03:39:08.570338: Average global foreground Dice: [0.8273, 0.9473] val_metric 0.8273 val_metric_MA 0.8259 
+2026-10-04 03:39:08.608187: lesion-wise sens 0.6581 prec 0.3460 clsf acc 1.0000, val_metric 0.668 
+2026-10-04 03:39:08.608528: sens of each class [0.6581] and size [0.0444, 0.7143, 0.8462, 1.0] 
+2026-10-04 03:39:09.457487: lr: 3.4e-05 
+2026-10-04 03:39:09.457812: 	epoch:  209 
+2026-10-04 03:43:18.329559: train loss : -1.3385: seg_CE= 0.1644, seg_DC= -1.5029 
+2026-10-04 03:43:37.530824: validation loss: -1.3031: seg_CE= 0.1615, seg_DC= -1.4646 
+2026-10-04 03:43:37.541619: Average global foreground Dice: [0.8711, 0.9514] val_metric 0.8711 val_metric_MA 0.826 
+2026-10-04 03:43:37.970320: lr: 3.4e-05 
+2026-10-04 03:43:37.970587: 	epoch:  210 
+2026-10-04 03:47:45.351181: train loss : -1.3329: seg_CE= 0.1485, seg_DC= -1.4814 
+2026-10-04 03:48:05.422967: validation loss: -1.3106: seg_CE= 0.1752, seg_DC= -1.4858 
+2026-10-04 03:48:05.433369: Average global foreground Dice: [0.8076, 0.9562] val_metric 0.8076 val_metric_MA 0.8305 
+2026-10-04 03:48:05.461786: lesion-wise sens 0.6667 prec 0.5150 clsf acc 1.0000, val_metric 0.7272 
+2026-10-04 03:48:05.462085: sens of each class [0.6667] and size [0.0, 0.5185, 0.7174, 1.0] 
+2026-10-04 03:48:05.925442: lr: 3.3e-05 
+2026-10-04 03:48:05.925799: 	epoch:  211 
+2026-10-04 03:53:05.488105: train loss : -1.3257: seg_CE= 0.1500, seg_DC= -1.4757 
+2026-10-04 03:53:23.949621: validation loss: -1.3100: seg_CE= 0.1669, seg_DC= -1.4769 
+2026-10-04 03:53:23.973148: Average global foreground Dice: [0.7592, 0.9531] val_metric 0.7592 val_metric_MA 0.8282 
+2026-10-04 03:53:24.628955: lr: 3.3e-05 
+2026-10-04 03:53:24.629259: 	epoch:  212 
+2026-10-04 03:57:41.417161: train loss : -1.3161: seg_CE= 0.1620, seg_DC= -1.4782 
+2026-10-04 03:58:03.420988: validation loss: -1.3586: seg_CE= 0.1447, seg_DC= -1.5034 
+2026-10-04 03:58:03.432928: Average global foreground Dice: [0.8398, 0.9598] val_metric 0.8398 val_metric_MA 0.8213 
+2026-10-04 03:58:03.466452: lesion-wise sens 0.7018 prec 0.5107 clsf acc 1.0000, val_metric 0.7375 
+2026-10-04 03:58:03.466777: sens of each class [0.7018] and size [0.0968, 0.6857, 0.85, 0.9333] 
+2026-10-04 03:58:03.989491: lr: 3.3e-05 
+2026-10-04 03:58:03.989795: 	epoch:  213 
+2026-10-04 04:02:21.390108: train loss : -1.3098: seg_CE= 0.1482, seg_DC= -1.4580 
+2026-10-04 04:02:35.658994: validation loss: -1.2852: seg_CE= 0.1761, seg_DC= -1.4613 
+2026-10-04 04:02:35.659659: Average global foreground Dice: [0.8611, 0.9515] val_metric 0.8611 val_metric_MA 0.8232 
+2026-10-04 04:02:36.104190: lr: 3.2e-05 
+2026-10-04 04:02:36.104475: 	epoch:  214 
+2026-10-04 04:06:56.487065: train loss : -1.3276: seg_CE= 0.1580, seg_DC= -1.4856 
+2026-10-04 04:07:15.133940: validation loss: -1.2830: seg_CE= 0.2092, seg_DC= -1.4922 
+2026-10-04 04:07:15.139768: Average global foreground Dice: [0.7639, 0.9462] val_metric 0.7639 val_metric_MA 0.827 
+2026-10-04 04:07:15.164670: lesion-wise sens 0.6053 prec 0.3800 clsf acc 1.0000, val_metric 0.6618 
+2026-10-04 04:07:15.164967: sens of each class [0.6053] and size [0.0513, 0.3864, 0.8776, 0.9138] 
+2026-10-04 04:07:15.528318: lr: 3.2e-05 
+2026-10-04 04:07:15.528593: 	epoch:  215 
+2026-10-04 04:12:07.963463: train loss : -1.3312: seg_CE= 0.1422, seg_DC= -1.4734 
+2026-10-04 04:12:25.807538: validation loss: -1.2918: seg_CE= 0.1876, seg_DC= -1.4793 
+2026-10-04 04:12:25.813668: Average global foreground Dice: [0.8185, 0.9539] val_metric 0.8185 val_metric_MA 0.8207 
+2026-10-04 04:12:26.383764: lr: 3.2e-05 
+2026-10-04 04:12:26.384054: 	epoch:  216 
+2026-10-04 04:16:43.057634: train loss : -1.3662: seg_CE= 0.1571, seg_DC= -1.5233 
+2026-10-04 04:17:03.944983: validation loss: -1.2630: seg_CE= 0.1556, seg_DC= -1.4186 
+2026-10-04 04:17:03.951005: Average global foreground Dice: [0.8362, 0.9575] val_metric 0.8362 val_metric_MA 0.8204 
+2026-10-04 04:17:03.987497: lesion-wise sens 0.6190 prec 0.4558 clsf acc 1.0000, val_metric 0.6916 
+2026-10-04 04:17:03.987854: sens of each class [0.619] and size [0.125, 0.4444, 0.8333, 1.0] 
+2026-10-04 04:17:04.704500: lr: 3.1e-05 
+2026-10-04 04:17:04.705684: 	epoch:  217 
+2026-10-04 04:21:43.597802: train loss : -1.3575: seg_CE= 0.1463, seg_DC= -1.5038 
+2026-10-04 04:22:05.119612: validation loss: -1.2927: seg_CE= 0.2062, seg_DC= -1.4989 
+2026-10-04 04:22:05.125416: Average global foreground Dice: [0.8451, 0.9446] val_metric 0.8451 val_metric_MA 0.822 
+2026-10-04 04:22:05.906673: lr: 3.1e-05 
+2026-10-04 04:22:05.906959: 	epoch:  218 
+2026-10-04 04:26:16.713542: train loss : -1.3390: seg_CE= 0.1494, seg_DC= -1.4884 
+2026-10-04 04:26:38.477735: validation loss: -1.2412: seg_CE= 0.2085, seg_DC= -1.4497 
+2026-10-04 04:26:38.485851: Average global foreground Dice: [0.8081, 0.9466] val_metric 0.8081 val_metric_MA 0.8243 
+2026-10-04 04:26:38.546126: lesion-wise sens 0.6243 prec 0.3424 clsf acc 1.0000, val_metric 0.6556 
+2026-10-04 04:26:38.546418: sens of each class [0.6243] and size [0.0645, 0.4444, 0.82, 0.9091] 
+2026-10-04 04:26:39.506402: lr: 3.1e-05 
+2026-10-04 04:26:39.506691: 	epoch:  219 
+2026-10-04 04:31:13.042798: train loss : -1.2961: seg_CE= 0.1554, seg_DC= -1.4515 
+2026-10-04 04:31:31.139716: validation loss: -1.3289: seg_CE= 0.1682, seg_DC= -1.4971 
+2026-10-04 04:31:31.144795: Average global foreground Dice: [0.8772, 0.9497] val_metric 0.8772 val_metric_MA 0.8227 
+2026-10-04 04:31:32.377234: lr: 3e-05 
+2026-10-04 04:31:32.377559: 	epoch:  220 
+2026-10-04 04:35:40.093713: train loss : -1.3428: seg_CE= 0.1479, seg_DC= -1.4907 
+2026-10-04 04:35:59.115196: validation loss: -1.2823: seg_CE= 0.1735, seg_DC= -1.4558 
+2026-10-04 04:35:59.122005: Average global foreground Dice: [0.8513, 0.9518] val_metric 0.8513 val_metric_MA 0.8282 
+2026-10-04 04:35:59.151376: lesion-wise sens 0.5849 prec 0.4106 clsf acc 1.0000, val_metric 0.6652 
+2026-10-04 04:35:59.151696: sens of each class [0.5849] and size [0.0357, 0.4444, 0.8727, 0.9643] 
+2026-10-04 04:35:59.521556: lr: 3e-05 
+2026-10-04 04:35:59.521877: 	epoch:  221 
+2026-10-04 04:40:30.930257: train loss : -1.3369: seg_CE= 0.1581, seg_DC= -1.4950 
+2026-10-04 04:40:45.367710: validation loss: -1.3353: seg_CE= 0.1598, seg_DC= -1.4951 
+2026-10-04 04:40:45.382228: Average global foreground Dice: [0.8054, 0.9579] val_metric 0.8054 val_metric_MA 0.8305 
+2026-10-04 04:40:45.831259: lr: 3e-05 
+2026-10-04 04:40:45.831553: 	epoch:  222 
+2026-10-04 04:45:25.082250: train loss : -1.3368: seg_CE= 0.1536, seg_DC= -1.4904 
+2026-10-04 04:45:42.142529: validation loss: -1.3374: seg_CE= 0.1671, seg_DC= -1.5045 
+2026-10-04 04:45:42.147841: Average global foreground Dice: [0.8335, 0.9547] val_metric 0.8335 val_metric_MA 0.828 
+2026-10-04 04:45:42.173340: lesion-wise sens 0.7214 prec 0.4570 clsf acc 1.0000, val_metric 0.7261 
+2026-10-04 04:45:42.173630: sens of each class [0.7214] and size [0.087, 0.5385, 0.9091, 0.9574] 
+2026-10-04 04:45:42.633686: lr: 2.9e-05 
+2026-10-04 04:45:42.633998: 	epoch:  223 
+2026-10-04 04:50:13.699056: train loss : -1.3208: seg_CE= 0.1596, seg_DC= -1.4804 
+2026-10-04 04:50:34.260569: validation loss: -1.3196: seg_CE= 0.1685, seg_DC= -1.4881 
+2026-10-04 04:50:34.266217: Average global foreground Dice: [0.8413, 0.9516] val_metric 0.8413 val_metric_MA 0.8285 
+2026-10-04 04:50:34.986278: lr: 2.9e-05 
+2026-10-04 04:50:34.986567: 	epoch:  224 
+2026-10-04 04:55:05.909123: train loss : -1.3377: seg_CE= 0.1564, seg_DC= -1.4941 
+2026-10-04 04:55:25.091368: validation loss: -1.3304: seg_CE= 0.1784, seg_DC= -1.5088 
+2026-10-04 04:55:25.100973: Average global foreground Dice: [0.8558, 0.9565] val_metric 0.8558 val_metric_MA 0.8298 
+2026-10-04 04:55:25.158767: lesion-wise sens 0.6322 prec 0.4721 clsf acc 1.0000, val_metric 0.7014 
+2026-10-04 04:55:25.159107: sens of each class [0.6322] and size [0.0667, 0.4583, 0.8542, 0.9649] 
+2026-10-04 04:55:26.112043: lr: 2.9e-05 
+2026-10-04 04:55:26.112348: saving scheduled checkpoint file... 
+2026-10-04 04:55:26.152709: saving checkpoint... 
+2026-10-04 04:55:26.843934: done, saving took 0.73 seconds 
+2026-10-04 04:55:27.056781: done 
+2026-10-04 04:55:27.057044: 	epoch:  225 
+2026-10-04 04:59:50.832223: train loss : -1.3519: seg_CE= 0.1465, seg_DC= -1.4984 
+2026-10-04 05:00:13.410115: validation loss: -1.3318: seg_CE= 0.1751, seg_DC= -1.5068 
+2026-10-04 05:00:13.447440: Average global foreground Dice: [0.8315, 0.9513] val_metric 0.8315 val_metric_MA 0.8324 
+2026-10-04 05:00:14.153780: lr: 2.8e-05 
+2026-10-04 05:00:14.154058: 	epoch:  226 
+2026-10-04 05:04:31.141543: train loss : -1.3157: seg_CE= 0.1554, seg_DC= -1.4711 
+2026-10-04 05:04:52.177352: validation loss: -1.2581: seg_CE= 0.1815, seg_DC= -1.4396 
+2026-10-04 05:04:52.184064: Average global foreground Dice: [0.848, 0.9529] val_metric 0.848 val_metric_MA 0.8323 
+2026-10-04 05:04:52.217379: lesion-wise sens 0.6763 prec 0.3381 clsf acc 1.0000, val_metric 0.6715 
+2026-10-04 05:04:52.217844: sens of each class [0.6763] and size [0.0, 0.25, 0.8298, 0.9615] 
+2026-10-04 05:04:52.630962: lr: 2.8e-05 
+2026-10-04 05:04:52.656155: saving checkpoint... 
+2026-10-04 05:04:53.344142: done, saving took 0.71 seconds 
+2026-10-04 05:04:53.423762: 	epoch:  227 
+2026-10-04 05:09:09.661514: train loss : -1.3398: seg_CE= 0.1508, seg_DC= -1.4906 
+2026-10-04 05:09:32.430052: validation loss: -1.3696: seg_CE= 0.1661, seg_DC= -1.5357 
+2026-10-04 05:09:32.437267: Average global foreground Dice: [0.8285, 0.9562] val_metric 0.8285 val_metric_MA 0.8339 
+2026-10-04 05:09:32.984014: lr: 2.8e-05 
+2026-10-04 05:09:32.984331: 	epoch:  228 
+2026-10-04 05:14:05.395318: train loss : -1.3542: seg_CE= 0.1512, seg_DC= -1.5055 
+2026-10-04 05:14:27.331401: validation loss: -1.3479: seg_CE= 0.1761, seg_DC= -1.5240 
+2026-10-04 05:14:27.346418: Average global foreground Dice: [0.8712, 0.9518] val_metric 0.8712 val_metric_MA 0.8333 
+2026-10-04 05:14:27.375182: lesion-wise sens 0.6329 prec 0.4651 clsf acc 1.0000, val_metric 0.6993 
+2026-10-04 05:14:27.375498: sens of each class [0.6329] and size [0.05, 0.52, 0.7812, 0.9836] 
+2026-10-04 05:14:27.739531: lr: 2.7e-05 
+2026-10-04 05:14:27.754957: saving checkpoint... 
+2026-10-04 05:14:28.294246: done, saving took 0.55 seconds 
+2026-10-04 05:14:28.371746: 	epoch:  229 
+2026-10-04 05:18:56.736326: train loss : -1.3174: seg_CE= 0.1494, seg_DC= -1.4668 
+2026-10-04 05:19:10.891661: validation loss: -1.3458: seg_CE= 0.1596, seg_DC= -1.5054 
+2026-10-04 05:19:10.898738: Average global foreground Dice: [0.8515, 0.9558] val_metric 0.8515 val_metric_MA 0.8371 
+2026-10-04 05:19:11.645130: lr: 2.7e-05 
+2026-10-04 05:19:11.677215: saving checkpoint... 
+2026-10-04 05:19:12.270349: done, saving took 0.62 seconds 
+2026-10-04 05:19:12.380744: 	epoch:  230 
+2026-10-04 05:23:41.241709: train loss : -1.3710: seg_CE= 0.1531, seg_DC= -1.5241 
+2026-10-04 05:23:59.246916: validation loss: -1.3330: seg_CE= 0.1630, seg_DC= -1.4960 
+2026-10-04 05:23:59.252029: Average global foreground Dice: [0.8413, 0.9552] val_metric 0.8413 val_metric_MA 0.8386 
+2026-10-04 05:23:59.306208: lesion-wise sens 0.6845 prec 0.4647 clsf acc 1.0000, val_metric 0.7164 
+2026-10-04 05:23:59.306541: sens of each class [0.6845] and size [0.0278, 0.619, 0.873, 1.0] 
+2026-10-04 05:23:59.757142: lr: 2.7e-05 
+2026-10-04 05:23:59.798181: saving checkpoint... 
+2026-10-04 05:24:00.420048: done, saving took 0.65 seconds 
+2026-10-04 05:24:00.502292: 	epoch:  231 
+2026-10-04 05:28:13.672776: train loss : -1.3424: seg_CE= 0.1624, seg_DC= -1.5047 
+2026-10-04 05:28:29.001661: validation loss: -1.3024: seg_CE= 0.1587, seg_DC= -1.4611 
+2026-10-04 05:28:29.009138: Average global foreground Dice: [0.8487, 0.9565] val_metric 0.8487 val_metric_MA 0.8388 
+2026-10-04 05:28:29.440408: lr: 2.6e-05 
+2026-10-04 05:28:29.461857: saving checkpoint... 
+2026-10-04 05:28:30.054087: done, saving took 0.61 seconds 
+2026-10-04 05:28:30.147638: 	epoch:  232 
+2026-10-04 05:32:49.987055: train loss : -1.3479: seg_CE= 0.1476, seg_DC= -1.4955 
+2026-10-04 05:33:12.570451: validation loss: -1.3394: seg_CE= 0.1673, seg_DC= -1.5067 
+2026-10-04 05:33:12.576381: Average global foreground Dice: [0.8547, 0.9566] val_metric 0.8547 val_metric_MA 0.8398 
+2026-10-04 05:33:12.603215: lesion-wise sens 0.6269 prec 0.4941 clsf acc 1.0000, val_metric 0.707 
+2026-10-04 05:33:12.604166: sens of each class [0.6269] and size [0.1111, 0.5227, 0.902, 0.9808] 
+2026-10-04 05:33:12.988321: lr: 2.6e-05 
+2026-10-04 05:33:13.004103: saving checkpoint... 
+2026-10-04 05:33:13.550665: done, saving took 0.56 seconds 
+2026-10-04 05:33:13.629127: 	epoch:  233 
+2026-10-04 05:37:24.476271: train loss : -1.4003: seg_CE= 0.1368, seg_DC= -1.5371 
+2026-10-04 05:37:44.744017: validation loss: -1.2128: seg_CE= 0.2034, seg_DC= -1.4162 
+2026-10-04 05:37:44.744595: Average global foreground Dice: [0.8029, 0.9447] val_metric 0.8029 val_metric_MA 0.8413 
+2026-10-04 05:37:45.386563: lr: 2.6e-05 
+2026-10-04 05:37:45.386871: 	epoch:  234 
+2026-10-04 05:42:32.998201: train loss : -1.3654: seg_CE= 0.1584, seg_DC= -1.5238 
+2026-10-04 05:42:54.366914: validation loss: -1.2525: seg_CE= 0.1728, seg_DC= -1.4253 
+2026-10-04 05:42:54.375769: Average global foreground Dice: [0.7951, 0.9545] val_metric 0.7951 val_metric_MA 0.8375 
+2026-10-04 05:42:54.409211: lesion-wise sens 0.6080 prec 0.4979 clsf acc 1.0000, val_metric 0.702 
+2026-10-04 05:42:54.409552: sens of each class [0.608] and size [0.0612, 0.5818, 0.8333, 0.9787] 
+2026-10-04 05:42:54.972944: lr: 2.5e-05 
+2026-10-04 05:42:54.973214: 	epoch:  235 
+2026-10-04 05:46:53.092001: train loss : -1.3365: seg_CE= 0.1472, seg_DC= -1.4837 
+2026-10-04 05:47:11.331032: validation loss: -1.3050: seg_CE= 0.1744, seg_DC= -1.4795 
+2026-10-04 05:47:11.338625: Average global foreground Dice: [0.8463, 0.9572] val_metric 0.8463 val_metric_MA 0.8332 
+2026-10-04 05:47:11.903088: lr: 2.5e-05 
+2026-10-04 05:47:11.903383: 	epoch:  236 
+2026-10-04 05:51:33.808099: train loss : -1.3201: seg_CE= 0.1500, seg_DC= -1.4701 
+2026-10-04 05:51:56.228929: validation loss: -1.3313: seg_CE= 0.1743, seg_DC= -1.5056 
+2026-10-04 05:51:56.233984: Average global foreground Dice: [0.8345, 0.9508] val_metric 0.8345 val_metric_MA 0.8345 
+2026-10-04 05:51:56.266234: lesion-wise sens 0.7189 prec 0.4143 clsf acc 1.0000, val_metric 0.7111 
+2026-10-04 05:51:56.266554: sens of each class [0.7189] and size [0.1622, 0.6061, 0.8824, 1.0] 
+2026-10-04 05:51:57.131357: lr: 2.5e-05 
+2026-10-04 05:51:57.131660: 	epoch:  237 
+2026-10-04 05:56:00.723038: train loss : -1.3550: seg_CE= 0.1584, seg_DC= -1.5134 
+2026-10-04 05:56:20.503255: validation loss: -1.3366: seg_CE= 0.1548, seg_DC= -1.4914 
+2026-10-04 05:56:20.511684: Average global foreground Dice: [0.8565, 0.9519] val_metric 0.8565 val_metric_MA 0.8345 
+2026-10-04 05:56:21.189325: lr: 2.4e-05 
+2026-10-04 05:56:21.189624: 	epoch:  238 
+2026-10-04 06:01:04.095117: train loss : -1.3503: seg_CE= 0.1523, seg_DC= -1.5026 
+2026-10-04 06:01:22.210271: validation loss: -1.2483: seg_CE= 0.2048, seg_DC= -1.4531 
+2026-10-04 06:01:22.215623: Average global foreground Dice: [0.8068, 0.9485] val_metric 0.8068 val_metric_MA 0.8367 
+2026-10-04 06:01:22.238892: lesion-wise sens 0.6258 prec 0.3440 clsf acc 1.0000, val_metric 0.6566 
+2026-10-04 06:01:22.239202: sens of each class [0.6258] and size [0.025, 0.5217, 0.878, 0.9412] 
+2026-10-04 06:01:22.603620: lr: 2.4e-05 
+2026-10-04 06:01:22.603942: 	epoch:  239 
+2026-10-04 06:05:30.946993: train loss : -1.3587: seg_CE= 0.1445, seg_DC= -1.5032 
+2026-10-04 06:05:49.955148: validation loss: -1.3722: seg_CE= 0.1657, seg_DC= -1.5379 
+2026-10-04 06:05:49.964343: Average global foreground Dice: [0.856, 0.9546] val_metric 0.856 val_metric_MA 0.8337 
+2026-10-04 06:05:50.629673: lr: 2.3e-05 
+2026-10-04 06:05:50.629993: 	epoch:  240 
+2026-10-04 06:10:29.470600: train loss : -1.3109: seg_CE= 0.1576, seg_DC= -1.4685 
+2026-10-04 06:10:45.978462: validation loss: -1.3595: seg_CE= 0.1379, seg_DC= -1.4974 
+2026-10-04 06:10:45.989961: Average global foreground Dice: [0.8476, 0.9594] val_metric 0.8476 val_metric_MA 0.836 
+2026-10-04 06:10:46.028274: lesion-wise sens 0.6946 prec 0.4659 clsf acc 1.0000, val_metric 0.7202 
+2026-10-04 06:10:46.028610: sens of each class [0.6946] and size [0.122, 0.7436, 0.8958, 1.0] 
+2026-10-04 06:10:46.485110: lr: 2.3e-05 
+2026-10-04 06:10:46.485431: 	epoch:  241 
+2026-10-04 06:15:02.500228: train loss : -1.3365: seg_CE= 0.1692, seg_DC= -1.5057 
+2026-10-04 06:15:23.496991: validation loss: -1.2725: seg_CE= 0.2005, seg_DC= -1.4730 
+2026-10-04 06:15:23.510337: Average global foreground Dice: [0.8475, 0.9439] val_metric 0.8475 val_metric_MA 0.8371 
+2026-10-04 06:15:24.043765: lr: 2.3e-05 
+2026-10-04 06:15:24.044070: 	epoch:  242 
+2026-10-04 06:19:36.991318: train loss : -1.3409: seg_CE= 0.1513, seg_DC= -1.4922 
+2026-10-04 06:20:00.150725: validation loss: -1.4113: seg_CE= 0.1494, seg_DC= -1.5607 
+2026-10-04 06:20:00.156077: Average global foreground Dice: [0.8635, 0.9581] val_metric 0.8635 val_metric_MA 0.8382 
+2026-10-04 06:20:00.188036: lesion-wise sens 0.6935 prec 0.4474 clsf acc 1.0000, val_metric 0.7136 
+2026-10-04 06:20:00.188370: sens of each class [0.6935] and size [0.122, 0.6078, 0.9184, 0.9828] 
+2026-10-04 06:20:00.742010: lr: 2.2e-05 
+2026-10-04 06:20:00.742321: 	epoch:  243 
+2026-10-04 06:24:37.128381: train loss : -1.3610: seg_CE= 0.1459, seg_DC= -1.5069 
+2026-10-04 06:24:53.276980: validation loss: -1.2926: seg_CE= 0.1825, seg_DC= -1.4751 
+2026-10-04 06:24:53.283096: Average global foreground Dice: [0.8122, 0.9555] val_metric 0.8122 val_metric_MA 0.8407 
+2026-10-04 06:24:53.726038: lr: 2.2e-05 
+2026-10-04 06:24:53.726321: 	epoch:  244 
+2026-10-04 06:28:58.749086: train loss : -1.3435: seg_CE= 0.1480, seg_DC= -1.4914 
+2026-10-04 06:29:21.794163: validation loss: -1.3410: seg_CE= 0.1497, seg_DC= -1.4907 
+2026-10-04 06:29:21.799029: Average global foreground Dice: [0.8369, 0.9583] val_metric 0.8369 val_metric_MA 0.8378 
+2026-10-04 06:29:21.821270: lesion-wise sens 0.6339 prec 0.4531 clsf acc 1.0000, val_metric 0.6957 
+2026-10-04 06:29:21.821569: sens of each class [0.6339] and size [0.0426, 0.5938, 0.8333, 1.0] 
+2026-10-04 06:29:22.506585: lr: 2.2e-05 
+2026-10-04 06:29:22.506871: 	epoch:  245 
+2026-10-04 06:33:28.969285: train loss : -1.3574: seg_CE= 0.1395, seg_DC= -1.4968 
+2026-10-04 06:33:46.985901: validation loss: -1.3051: seg_CE= 0.1966, seg_DC= -1.5017 
+2026-10-04 06:33:47.001247: Average global foreground Dice: [0.858, 0.9504] val_metric 0.858 val_metric_MA 0.8377 
+2026-10-04 06:33:47.423398: lr: 2.1e-05 
+2026-10-04 06:33:47.423697: 	epoch:  246 
+2026-10-04 06:38:12.595142: train loss : -1.3759: seg_CE= 0.1447, seg_DC= -1.5206 
+2026-10-04 06:38:31.698644: validation loss: -1.3252: seg_CE= 0.1630, seg_DC= -1.4882 
+2026-10-04 06:38:31.709252: Average global foreground Dice: [0.8453, 0.9538] val_metric 0.8453 val_metric_MA 0.8398 
+2026-10-04 06:38:31.741160: lesion-wise sens 0.6667 prec 0.4683 clsf acc 1.0000, val_metric 0.7116 
+2026-10-04 06:38:31.741468: sens of each class [0.6667] and size [0.0769, 0.4167, 0.875, 0.9655] 
+2026-10-04 06:38:32.404219: lr: 2.1e-05 
+2026-10-04 06:38:32.404515: 	epoch:  247 
+2026-10-04 06:42:46.785072: train loss : -1.3530: seg_CE= 0.1414, seg_DC= -1.4944 
+2026-10-04 06:43:03.366134: validation loss: -1.2228: seg_CE= 0.1848, seg_DC= -1.4076 
+2026-10-04 06:43:03.384847: Average global foreground Dice: [0.8512, 0.9456] val_metric 0.8512 val_metric_MA 0.8403 
+2026-10-04 06:43:03.850964: lr: 2.1e-05 
+2026-10-04 06:43:03.880083: saving checkpoint... 
+2026-10-04 06:43:04.524127: done, saving took 0.67 seconds 
+2026-10-04 06:43:04.675774: 	epoch:  248 
+2026-10-04 06:47:27.315938: train loss : -1.3386: seg_CE= 0.1479, seg_DC= -1.4866 
+2026-10-04 06:47:47.498899: validation loss: -1.2928: seg_CE= 0.1494, seg_DC= -1.4422 
+2026-10-04 06:47:47.517574: Average global foreground Dice: [0.8096, 0.961] val_metric 0.8096 val_metric_MA 0.8414 
+2026-10-04 06:47:47.552374: lesion-wise sens 0.6324 prec 0.4936 clsf acc 1.0000, val_metric 0.7087 
+2026-10-04 06:47:47.552698: sens of each class [0.6324] and size [0.125, 0.4839, 0.8462, 0.9615] 
+2026-10-04 06:47:48.011713: lr: 2e-05 
+2026-10-04 06:47:48.012013: 	epoch:  249 
+2026-10-04 06:52:06.512134: train loss : -1.3818: seg_CE= 0.1440, seg_DC= -1.5257 
+2026-10-04 06:52:24.084598: validation loss: -1.3368: seg_CE= 0.1712, seg_DC= -1.5080 
+2026-10-04 06:52:24.092282: Average global foreground Dice: [0.8084, 0.9601] val_metric 0.8084 val_metric_MA 0.8382 
+2026-10-04 06:52:24.537713: lr: 2e-05 
+2026-10-04 06:52:24.537980: saving scheduled checkpoint file... 
+2026-10-04 06:52:24.555067: saving checkpoint... 
+2026-10-04 06:52:25.145372: done, saving took 0.61 seconds 
+2026-10-04 06:52:25.267956: done 
+2026-10-04 06:52:25.268195: 	epoch:  250 
+2026-10-04 06:56:47.601369: train loss : -1.3477: seg_CE= 0.1518, seg_DC= -1.4995 
+2026-10-04 06:57:05.529728: validation loss: -1.2654: seg_CE= 0.1709, seg_DC= -1.4363 
+2026-10-04 06:57:05.537319: Average global foreground Dice: [0.8603, 0.9518] val_metric 0.8603 val_metric_MA 0.8352 
+2026-10-04 06:57:05.570246: lesion-wise sens 0.6552 prec 0.4335 clsf acc 1.0000, val_metric 0.6962 
+2026-10-04 06:57:05.570569: sens of each class [0.6552] and size [0.0, 0.5581, 0.9565, 1.0] 
+2026-10-04 06:57:06.033935: lr: 2e-05 
+2026-10-04 06:57:06.034400: 	epoch:  251 
+2026-10-04 07:01:19.734290: train loss : -1.3568: seg_CE= 0.1511, seg_DC= -1.5079 
+2026-10-04 07:01:39.510392: validation loss: -1.3245: seg_CE= 0.1612, seg_DC= -1.4857 
+2026-10-04 07:01:39.519120: Average global foreground Dice: [0.7875, 0.9597] val_metric 0.7875 val_metric_MA 0.8377 
+2026-10-04 07:01:40.221315: lr: 1.9e-05 
+2026-10-04 07:01:40.221609: 	epoch:  252 
+2026-10-04 07:05:55.092938: train loss : -1.3921: seg_CE= 0.1368, seg_DC= -1.5290 
+2026-10-04 07:06:15.156913: validation loss: -1.2686: seg_CE= 0.1537, seg_DC= -1.4223 
+2026-10-04 07:06:15.169398: Average global foreground Dice: [0.8258, 0.9611] val_metric 0.8258 val_metric_MA 0.8327 
+2026-10-04 07:06:15.202336: lesion-wise sens 0.6294 prec 0.3782 clsf acc 1.0000, val_metric 0.6692 
+2026-10-04 07:06:15.202657: sens of each class [0.6294] and size [0.037, 0.5769, 0.7174, 0.9318] 
+2026-10-04 07:06:15.808388: lr: 1.9e-05 
+2026-10-04 07:06:15.808668: 	epoch:  253 
+2026-10-04 07:10:43.179941: train loss : -1.3534: seg_CE= 0.1545, seg_DC= -1.5079 
+2026-10-04 07:11:04.586344: validation loss: -1.3259: seg_CE= 0.1583, seg_DC= -1.4842 
+2026-10-04 07:11:04.593306: Average global foreground Dice: [0.8504, 0.9566] val_metric 0.8504 val_metric_MA 0.832 
+2026-10-04 07:11:05.333111: lr: 1.8e-05 
+2026-10-04 07:11:05.333377: 	epoch:  254 
+2026-10-04 07:15:29.523432: train loss : -1.3294: seg_CE= 0.1487, seg_DC= -1.4782 
+2026-10-04 07:15:46.780840: validation loss: -1.3261: seg_CE= 0.1686, seg_DC= -1.4947 
+2026-10-04 07:15:46.788780: Average global foreground Dice: [0.8416, 0.9565] val_metric 0.8416 val_metric_MA 0.8339 
+2026-10-04 07:15:46.814902: lesion-wise sens 0.7169 prec 0.4685 clsf acc 1.0000, val_metric 0.7285 
+2026-10-04 07:15:46.815221: sens of each class [0.7169] and size [0.0714, 0.5588, 0.88, 1.0] 
+2026-10-04 07:15:47.197534: lr: 1.8e-05 
+2026-10-04 07:15:47.197847: 	epoch:  255 
+2026-10-04 07:20:07.058169: train loss : -1.3836: seg_CE= 0.1435, seg_DC= -1.5271 
+2026-10-04 07:20:26.259859: validation loss: -1.2844: seg_CE= 0.1629, seg_DC= -1.4473 
+2026-10-04 07:20:26.265633: Average global foreground Dice: [0.8531, 0.9504] val_metric 0.8531 val_metric_MA 0.8346 
+2026-10-04 07:20:26.753161: lr: 1.8e-05 
+2026-10-04 07:20:26.753451: 	epoch:  256 
+2026-10-04 07:25:02.375762: train loss : -1.3503: seg_CE= 0.1509, seg_DC= -1.5012 
+2026-10-04 07:25:23.787488: validation loss: -1.2835: seg_CE= 0.1572, seg_DC= -1.4407 
+2026-10-04 07:25:23.793162: Average global foreground Dice: [0.861, 0.9571] val_metric 0.861 val_metric_MA 0.8365 
+2026-10-04 07:25:23.814358: lesion-wise sens 0.4777 prec 0.5350 clsf acc 1.0000, val_metric 0.6709 
+2026-10-04 07:25:23.814643: sens of each class [0.4777] and size [0.0395, 0.3469, 0.7391, 1.0] 
+2026-10-04 07:25:24.530009: lr: 1.7e-05 
+2026-10-04 07:25:24.530308: 	epoch:  257 
+2026-10-04 07:29:28.251779: train loss : -1.3626: seg_CE= 0.1547, seg_DC= -1.5173 
+2026-10-04 07:29:47.279351: validation loss: -1.2256: seg_CE= 0.1864, seg_DC= -1.4120 
+2026-10-04 07:29:47.286743: Average global foreground Dice: [0.8052, 0.9563] val_metric 0.8052 val_metric_MA 0.8389 
+2026-10-04 07:29:47.735632: lr: 1.7e-05 
+2026-10-04 07:29:47.735931: 	epoch:  258 
+2026-10-04 07:33:49.453821: train loss : -1.3555: seg_CE= 0.1513, seg_DC= -1.5068 
+2026-10-04 07:34:09.135242: validation loss: -1.3249: seg_CE= 0.1756, seg_DC= -1.5005 
+2026-10-04 07:34:09.148509: Average global foreground Dice: [0.8088, 0.9574] val_metric 0.8088 val_metric_MA 0.8356 
+2026-10-04 07:34:09.176899: lesion-wise sens 0.5515 prec 0.4511 clsf acc 1.0000, val_metric 0.6675 
+2026-10-04 07:34:09.177232: sens of each class [0.5515] and size [0.0517, 0.4722, 0.7442, 0.9649] 
+2026-10-04 07:34:09.841482: lr: 1.7e-05 
+2026-10-04 07:34:09.841749: 	epoch:  259 
+2026-10-04 07:38:19.580574: train loss : -1.3386: seg_CE= 0.1499, seg_DC= -1.4885 
+2026-10-04 07:38:37.403391: validation loss: -1.3757: seg_CE= 0.1741, seg_DC= -1.5498 
+2026-10-04 07:38:37.409573: Average global foreground Dice: [0.8689, 0.9561] val_metric 0.8689 val_metric_MA 0.8329 
+2026-10-04 07:38:38.066279: lr: 1.6e-05 
+2026-10-04 07:38:38.066578: 	epoch:  260 
+2026-10-04 07:42:57.708863: train loss : -1.3399: seg_CE= 0.1474, seg_DC= -1.4873 
+2026-10-04 07:43:20.121892: validation loss: -1.3008: seg_CE= 0.1616, seg_DC= -1.4624 
+2026-10-04 07:43:20.191571: Average global foreground Dice: [0.8601, 0.9515] val_metric 0.8601 val_metric_MA 0.8365 
+2026-10-04 07:43:20.227466: lesion-wise sens 0.5644 prec 0.5478 clsf acc 1.0000, val_metric 0.7041 
+2026-10-04 07:43:20.227746: sens of each class [0.5644] and size [0.0962, 0.4691, 0.8372, 0.9796] 
+2026-10-04 07:43:22.089142: lr: 1.6e-05 
+2026-10-04 07:43:22.089455: 	epoch:  261 
+2026-10-04 07:47:37.189837: train loss : -1.3793: seg_CE= 0.1349, seg_DC= -1.5143 
+2026-10-04 07:47:54.805225: validation loss: -1.3415: seg_CE= 0.1724, seg_DC= -1.5139 
+2026-10-04 07:47:54.816087: Average global foreground Dice: [0.8645, 0.953] val_metric 0.8645 val_metric_MA 0.8388 
+2026-10-04 07:47:55.620023: lr: 1.6e-05 
+2026-10-04 07:47:55.620333: 	epoch:  262 
+2026-10-04 07:52:07.813161: train loss : -1.4111: seg_CE= 0.1374, seg_DC= -1.5486 
+2026-10-04 07:52:28.853882: validation loss: -1.3281: seg_CE= 0.1671, seg_DC= -1.4951 
+2026-10-04 07:52:28.859065: Average global foreground Dice: [0.8519, 0.9553] val_metric 0.8519 val_metric_MA 0.8414 
+2026-10-04 07:52:28.896120: lesion-wise sens 0.5415 prec 0.4824 clsf acc 1.0000, val_metric 0.6746 
+2026-10-04 07:52:28.896453: sens of each class [0.5415] and size [0.0278, 0.5094, 0.8269, 1.0] 
+2026-10-04 07:52:29.525568: lr: 1.5e-05 
+2026-10-04 07:52:29.578749: saving checkpoint... 
+2026-10-04 07:52:30.150085: done, saving took 0.62 seconds 
+2026-10-04 07:52:30.231417: 	epoch:  263 
+2026-10-04 07:56:24.893042: train loss : -1.3605: seg_CE= 0.1554, seg_DC= -1.5159 
+2026-10-04 07:56:45.239855: validation loss: -1.2718: seg_CE= 0.1723, seg_DC= -1.4441 
+2026-10-04 07:56:45.249985: Average global foreground Dice: [0.7715, 0.96] val_metric 0.7715 val_metric_MA 0.8425 
+2026-10-04 07:56:45.845609: lr: 1.5e-05 
+2026-10-04 07:56:45.845912: 	epoch:  264 
+2026-10-04 08:00:46.447729: train loss : -1.3809: seg_CE= 0.1458, seg_DC= -1.5267 
+2026-10-04 08:01:07.143786: validation loss: -1.3365: seg_CE= 0.1838, seg_DC= -1.5203 
+2026-10-04 08:01:07.151868: Average global foreground Dice: [0.8281, 0.9547] val_metric 0.8281 val_metric_MA 0.8354 
+2026-10-04 08:01:07.194305: lesion-wise sens 0.7548 prec 0.4479 clsf acc 1.0000, val_metric 0.7342 
+2026-10-04 08:01:07.194669: sens of each class [0.7548] and size [0.2258, 0.5, 0.9778, 1.0] 
+2026-10-04 08:01:07.643623: lr: 1.4e-05 
+2026-10-04 08:01:07.643911: 	epoch:  265 
+2026-10-04 08:05:09.461622: train loss : -1.3667: seg_CE= 0.1432, seg_DC= -1.5099 
+2026-10-04 08:05:28.240556: validation loss: -1.2891: seg_CE= 0.1859, seg_DC= -1.4750 
+2026-10-04 08:05:28.259739: Average global foreground Dice: [0.8372, 0.954] val_metric 0.8372 val_metric_MA 0.8346 
+2026-10-04 08:05:29.215023: lr: 1.4e-05 
+2026-10-04 08:05:29.215362: 	epoch:  266 
+2026-10-04 08:09:24.540688: train loss : -1.3949: seg_CE= 0.1497, seg_DC= -1.5445 
+2026-10-04 08:09:46.064700: validation loss: -1.3144: seg_CE= 0.1534, seg_DC= -1.4678 
+2026-10-04 08:09:46.069959: Average global foreground Dice: [0.8483, 0.9601] val_metric 0.8483 val_metric_MA 0.8349 
+2026-10-04 08:09:46.103278: lesion-wise sens 0.6471 prec 0.4925 clsf acc 1.0000, val_metric 0.7132 
+2026-10-04 08:09:46.103588: sens of each class [0.6471] and size [0.037, 0.4706, 0.8182, 0.9583] 
+2026-10-04 08:09:46.752382: lr: 1.4e-05 
+2026-10-04 08:09:46.753174: 	epoch:  267 
+2026-10-04 08:14:27.040867: train loss : -1.3656: seg_CE= 0.1434, seg_DC= -1.5090 
+2026-10-04 08:14:43.761101: validation loss: -1.3150: seg_CE= 0.1831, seg_DC= -1.4981 
+2026-10-04 08:14:43.767666: Average global foreground Dice: [0.842, 0.9521] val_metric 0.842 val_metric_MA 0.8362 
+2026-10-04 08:14:44.451982: lr: 1.3e-05 
+2026-10-04 08:14:44.452277: 	epoch:  268 
+2026-10-04 08:19:07.927628: train loss : -1.3686: seg_CE= 0.1403, seg_DC= -1.5089 
+2026-10-04 08:19:25.312158: validation loss: -1.3282: seg_CE= 0.1621, seg_DC= -1.4902 
+2026-10-04 08:19:25.317871: Average global foreground Dice: [0.8596, 0.9524] val_metric 0.8596 val_metric_MA 0.8368 
+2026-10-04 08:19:25.347698: lesion-wise sens 0.7219 prec 0.5023 clsf acc 1.0000, val_metric 0.7414 
+2026-10-04 08:19:25.348332: sens of each class [0.7219] and size [0.1176, 0.4483, 0.82, 0.9636] 
+2026-10-04 08:19:25.748863: lr: 1.3e-05 
+2026-10-04 08:19:25.749146: 	epoch:  269 
+2026-10-04 08:23:47.156709: train loss : -1.3663: seg_CE= 0.1365, seg_DC= -1.5028 
+2026-10-04 08:24:05.648288: validation loss: -1.3978: seg_CE= 0.1512, seg_DC= -1.5490 
+2026-10-04 08:24:05.663051: Average global foreground Dice: [0.8651, 0.9573] val_metric 0.8651 val_metric_MA 0.8391 
+2026-10-04 08:24:06.241055: lr: 1.3e-05 
+2026-10-04 08:24:06.241359: 	epoch:  270 
+2026-10-04 08:28:26.037478: train loss : -1.3704: seg_CE= 0.1572, seg_DC= -1.5276 
+2026-10-04 08:28:46.395989: validation loss: -1.3138: seg_CE= 0.1626, seg_DC= -1.4764 
+2026-10-04 08:28:46.405485: Average global foreground Dice: [0.8703, 0.9533] val_metric 0.8703 val_metric_MA 0.8417 
+2026-10-04 08:28:46.436516: lesion-wise sens 0.5862 prec 0.4795 clsf acc 1.0000, val_metric 0.6886 
+2026-10-04 08:28:46.436847: sens of each class [0.5862] and size [0.0769, 0.463, 0.8667, 0.9808] 
+2026-10-04 08:28:47.006514: lr: 1.2e-05 
+2026-10-04 08:28:47.025028: saving checkpoint... 
+2026-10-04 08:28:47.568532: done, saving took 0.56 seconds 
+2026-10-04 08:28:47.715017: 	epoch:  271 
+2026-10-04 08:33:33.206025: train loss : -1.3787: seg_CE= 0.1340, seg_DC= -1.5128 
+2026-10-04 08:33:50.522377: validation loss: -1.2652: seg_CE= 0.1820, seg_DC= -1.4472 
+2026-10-04 08:33:50.529517: Average global foreground Dice: [0.8413, 0.9517] val_metric 0.8413 val_metric_MA 0.8446 
+2026-10-04 08:33:50.980882: lr: 1.2e-05 
+2026-10-04 08:33:50.981193: 	epoch:  272 
+2026-10-04 08:38:27.285215: train loss : -1.3669: seg_CE= 0.1387, seg_DC= -1.5056 
+2026-10-04 08:38:48.272449: validation loss: -1.2570: seg_CE= 0.1768, seg_DC= -1.4338 
+2026-10-04 08:38:48.277699: Average global foreground Dice: [0.8097, 0.9509] val_metric 0.8097 val_metric_MA 0.8442 
+2026-10-04 08:38:48.301205: lesion-wise sens 0.6859 prec 0.4580 clsf acc 1.0000, val_metric 0.7146 
+2026-10-04 08:38:48.301508: sens of each class [0.6859] and size [0.0571, 0.6122, 0.8627, 0.9821] 
+2026-10-04 08:38:49.144148: lr: 1.1e-05 
+2026-10-04 08:38:49.144437: 	epoch:  273 
+2026-10-04 08:42:41.750669: train loss : -1.3524: seg_CE= 0.1460, seg_DC= -1.4984 
+2026-10-04 08:42:59.997309: validation loss: -1.3152: seg_CE= 0.1827, seg_DC= -1.4979 
+2026-10-04 08:43:00.023986: Average global foreground Dice: [0.8322, 0.9515] val_metric 0.8322 val_metric_MA 0.8408 
+2026-10-04 08:43:00.808835: lr: 1.1e-05 
+2026-10-04 08:43:00.809128: 	epoch:  274 
+2026-10-04 08:47:27.823584: train loss : -1.3571: seg_CE= 0.1406, seg_DC= -1.4977 
+2026-10-04 08:47:47.510308: validation loss: -1.3250: seg_CE= 0.1691, seg_DC= -1.4941 
+2026-10-04 08:47:47.518158: Average global foreground Dice: [0.8692, 0.9522] val_metric 0.8692 val_metric_MA 0.8399 
+2026-10-04 08:47:47.556689: lesion-wise sens 0.6396 prec 0.5208 clsf acc 1.0000, val_metric 0.7201 
+2026-10-04 08:47:47.557032: sens of each class [0.6396] and size [0.0222, 0.5, 0.9074, 0.9821] 
+2026-10-04 08:47:48.090436: lr: 1.1e-05 
+2026-10-04 08:47:48.090726: saving scheduled checkpoint file... 
+2026-10-04 08:47:48.107747: saving checkpoint... 
+2026-10-04 08:47:48.697199: done, saving took 0.61 seconds 
+2026-10-04 08:47:48.795962: done 
+2026-10-04 08:47:48.796213: 	epoch:  275 
+2026-10-04 08:51:54.247435: train loss : -1.3412: seg_CE= 0.1404, seg_DC= -1.4817 
+2026-10-04 08:52:14.964650: validation loss: -1.2757: seg_CE= 0.1517, seg_DC= -1.4274 
+2026-10-04 08:52:14.972393: Average global foreground Dice: [0.8204, 0.9599] val_metric 0.8204 val_metric_MA 0.8429 
+2026-10-04 08:52:15.628268: lr: 1e-05 
+2026-10-04 08:52:15.628584: 	epoch:  276 
+2026-10-04 08:56:14.504631: train loss : -1.3928: seg_CE= 0.1449, seg_DC= -1.5377 
+2026-10-04 08:56:33.430874: validation loss: -1.3237: seg_CE= 0.1926, seg_DC= -1.5163 
+2026-10-04 08:56:33.436831: Average global foreground Dice: [0.7993, 0.9499] val_metric 0.7993 val_metric_MA 0.8406 
+2026-10-04 08:56:33.462614: lesion-wise sens 0.6414 prec 0.5207 clsf acc 1.0000, val_metric 0.7207 
+2026-10-04 08:56:33.462928: sens of each class [0.6414] and size [0.1296, 0.5303, 0.8868, 0.9844] 
+2026-10-04 08:56:34.607594: lr: 1e-05 
+2026-10-04 08:56:34.607899: 	epoch:  277 
+2026-10-04 09:01:06.715248: train loss : -1.3410: seg_CE= 0.1425, seg_DC= -1.4835 
+2026-10-04 09:01:22.613483: validation loss: -1.3144: seg_CE= 0.1668, seg_DC= -1.4812 
+2026-10-04 09:01:22.618990: Average global foreground Dice: [0.8627, 0.9543] val_metric 0.8627 val_metric_MA 0.8365 
+2026-10-04 09:01:23.058907: lr: 1e-05 
+2026-10-04 09:01:23.059209: 	epoch:  278 
+2026-10-04 09:05:31.286406: train loss : -1.3861: seg_CE= 0.1369, seg_DC= -1.5230 
+2026-10-04 09:05:47.674367: validation loss: -1.3638: seg_CE= 0.1451, seg_DC= -1.5089 
+2026-10-04 09:05:47.682436: Average global foreground Dice: [0.8436, 0.9598] val_metric 0.8436 val_metric_MA 0.8391 
+2026-10-04 09:05:47.706147: lesion-wise sens 0.7081 prec 0.4957 clsf acc 1.0000, val_metric 0.7346 
+2026-10-04 09:05:47.706454: sens of each class [0.7081] and size [0.0345, 0.6053, 0.9, 1.0] 
+2026-10-04 09:05:48.166578: lr: 9e-06 
+2026-10-04 09:05:48.166903: 	epoch:  279 
+2026-10-04 09:10:22.309140: train loss : -1.4051: seg_CE= 0.1398, seg_DC= -1.5449 
+2026-10-04 09:10:41.012497: validation loss: -1.3007: seg_CE= 0.1660, seg_DC= -1.4667 
+2026-10-04 09:10:41.020131: Average global foreground Dice: [0.848, 0.9522] val_metric 0.848 val_metric_MA 0.8395 
+2026-10-04 09:10:41.492143: lr: 9e-06 
+2026-10-04 09:10:41.492443: 	epoch:  280 
+2026-10-04 09:15:11.151617: train loss : -1.4003: seg_CE= 0.1447, seg_DC= -1.5451 
+2026-10-04 09:15:32.131492: validation loss: -1.3136: seg_CE= 0.1725, seg_DC= -1.4861 
+2026-10-04 09:15:32.137666: Average global foreground Dice: [0.8479, 0.9538] val_metric 0.8479 val_metric_MA 0.8404 
+2026-10-04 09:15:32.167309: lesion-wise sens 0.5773 prec 0.4766 clsf acc 1.0000, val_metric 0.6846 
+2026-10-04 09:15:32.167621: sens of each class [0.5773] and size [0.0577, 0.4419, 0.8, 1.0] 
+2026-10-04 09:15:32.615176: lr: 8e-06 
+2026-10-04 09:15:32.615612: 	epoch:  281 
+2026-10-04 09:20:08.578972: train loss : -1.3872: seg_CE= 0.1320, seg_DC= -1.5192 
+2026-10-04 09:20:24.844947: validation loss: -1.3040: seg_CE= 0.1428, seg_DC= -1.4468 
+2026-10-04 09:20:24.850468: Average global foreground Dice: [0.8308, 0.9624] val_metric 0.8308 val_metric_MA 0.8411 
+2026-10-04 09:20:25.344469: lr: 8e-06 
+2026-10-04 09:20:25.344789: 	epoch:  282 
+2026-10-04 09:24:53.022373: train loss : -1.3727: seg_CE= 0.1443, seg_DC= -1.5170 
+2026-10-04 09:25:12.603062: validation loss: -1.2572: seg_CE= 0.1783, seg_DC= -1.4355 
+2026-10-04 09:25:12.613558: Average global foreground Dice: [0.8516, 0.9517] val_metric 0.8516 val_metric_MA 0.8401 
+2026-10-04 09:25:12.646865: lesion-wise sens 0.6395 prec 0.5193 clsf acc 1.0000, val_metric 0.7196 
+2026-10-04 09:25:12.647157: sens of each class [0.6395] and size [0.1842, 0.5312, 0.84, 0.9423] 
+2026-10-04 09:25:13.029123: lr: 8e-06 
+2026-10-04 09:25:13.029426: 	epoch:  283 
+2026-10-04 09:29:08.061972: train loss : -1.4142: seg_CE= 0.1399, seg_DC= -1.5541 
+2026-10-04 09:29:28.467980: validation loss: -1.2892: seg_CE= 0.1772, seg_DC= -1.4664 
+2026-10-04 09:29:28.494185: Average global foreground Dice: [0.8416, 0.9535] val_metric 0.8416 val_metric_MA 0.8413 
+2026-10-04 09:29:29.431725: lr: 7e-06 
+2026-10-04 09:29:29.432033: 	epoch:  284 
+2026-10-04 09:34:19.705367: train loss : -1.3669: seg_CE= 0.1427, seg_DC= -1.5096 
+2026-10-04 09:34:39.184032: validation loss: -1.4083: seg_CE= 0.1572, seg_DC= -1.5655 
+2026-10-04 09:34:39.191768: Average global foreground Dice: [0.8443, 0.9579] val_metric 0.8443 val_metric_MA 0.8413 
+2026-10-04 09:34:39.228149: lesion-wise sens 0.6567 prec 0.5867 clsf acc 1.0000, val_metric 0.7478 
+2026-10-04 09:34:39.228482: sens of each class [0.6567] and size [0.1053, 0.4419, 0.8136, 1.0] 
+2026-10-04 09:34:39.677431: lr: 7e-06 
+2026-10-04 09:34:39.677740: 	epoch:  285 
+2026-10-04 09:38:37.376260: train loss : -1.3918: seg_CE= 0.1315, seg_DC= -1.5233 
+2026-10-04 09:38:57.752385: validation loss: -1.3265: seg_CE= 0.1456, seg_DC= -1.4721 
+2026-10-04 09:38:57.764900: Average global foreground Dice: [0.827, 0.9579] val_metric 0.827 val_metric_MA 0.8416 
+2026-10-04 09:38:58.736513: lr: 6e-06 
+2026-10-04 09:38:58.736825: 	epoch:  286 
+2026-10-04 09:43:28.013559: train loss : -1.3761: seg_CE= 0.1331, seg_DC= -1.5092 
+2026-10-04 09:43:48.378285: validation loss: -1.3692: seg_CE= 0.1621, seg_DC= -1.5313 
+2026-10-04 09:43:48.384302: Average global foreground Dice: [0.8774, 0.9528] val_metric 0.8774 val_metric_MA 0.8401 
+2026-10-04 09:43:48.425658: lesion-wise sens 0.7161 prec 0.4431 clsf acc 1.0000, val_metric 0.7197 
+2026-10-04 09:43:48.426005: sens of each class [0.7161] and size [0.0417, 0.3846, 0.9091, 0.9836] 
+2026-10-04 09:43:48.890132: lr: 6e-06 
+2026-10-04 09:43:48.890441: 	epoch:  287 
+2026-10-04 09:48:13.653869: train loss : -1.3651: seg_CE= 0.1441, seg_DC= -1.5092 
+2026-10-04 09:48:30.064478: validation loss: -1.3792: seg_CE= 0.1610, seg_DC= -1.5401 
+2026-10-04 09:48:30.069673: Average global foreground Dice: [0.8691, 0.9553] val_metric 0.8691 val_metric_MA 0.8439 
+2026-10-04 09:48:30.512555: lr: 6e-06 
+2026-10-04 09:48:30.528737: saving checkpoint... 
+2026-10-04 09:48:30.900122: done, saving took 0.39 seconds 
+2026-10-04 09:48:31.115309: 	epoch:  288 
+2026-10-04 09:53:42.200704: train loss : -1.3999: seg_CE= 0.1358, seg_DC= -1.5357 
+2026-10-04 09:53:59.144585: validation loss: -1.4170: seg_CE= 0.1716, seg_DC= -1.5886 
+2026-10-04 09:53:59.151574: Average global foreground Dice: [0.8377, 0.9573] val_metric 0.8377 val_metric_MA 0.8464 
+2026-10-04 09:53:59.183167: lesion-wise sens 0.6300 prec 0.5399 clsf acc 1.0000, val_metric 0.7233 
+2026-10-04 09:53:59.183463: sens of each class [0.63] and size [0.0465, 0.4857, 0.8727, 1.0] 
+2026-10-04 09:53:59.656454: lr: 5e-06 
+2026-10-04 09:53:59.656767: 	epoch:  289 
+2026-10-04 09:58:02.991726: train loss : -1.3973: seg_CE= 0.1333, seg_DC= -1.5306 
+2026-10-04 09:58:16.901897: validation loss: -1.3052: seg_CE= 0.1637, seg_DC= -1.4689 
+2026-10-04 09:58:16.907130: Average global foreground Dice: [0.853, 0.9543] val_metric 0.853 val_metric_MA 0.8455 
+2026-10-04 09:58:17.577019: lr: 5e-06 
+2026-10-04 09:58:17.577330: 	epoch:  290 
+2026-10-04 10:03:00.548147: train loss : -1.3584: seg_CE= 0.1328, seg_DC= -1.4913 
+2026-10-04 10:03:19.409249: validation loss: -1.2903: seg_CE= 0.1735, seg_DC= -1.4638 
+2026-10-04 10:03:19.416215: Average global foreground Dice: [0.857, 0.9535] val_metric 0.857 val_metric_MA 0.8463 
+2026-10-04 10:03:19.448794: lesion-wise sens 0.5523 prec 0.4455 clsf acc 1.0000, val_metric 0.6659 
+2026-10-04 10:03:19.449093: sens of each class [0.5523] and size [0.0469, 0.48, 0.9, 1.0] 
+2026-10-04 10:03:20.456692: lr: 4e-06 
+2026-10-04 10:03:20.485543: saving checkpoint... 
+2026-10-04 10:03:21.040578: done, saving took 0.58 seconds 
+2026-10-04 10:03:21.180659: 	epoch:  291 
+2026-10-04 10:07:33.048138: train loss : -1.4121: seg_CE= 0.1374, seg_DC= -1.5494 
+2026-10-04 10:07:52.516974: validation loss: -1.3179: seg_CE= 0.1730, seg_DC= -1.4909 
+2026-10-04 10:07:52.526773: Average global foreground Dice: [0.8693, 0.9536] val_metric 0.8693 val_metric_MA 0.8473 
+2026-10-04 10:07:53.134284: lr: 4e-06 
+2026-10-04 10:07:53.182354: saving checkpoint... 
+2026-10-04 10:07:53.569514: done, saving took 0.43 seconds 
+2026-10-04 10:07:53.712855: 	epoch:  292 
+2026-10-04 10:11:53.795403: train loss : -1.3871: seg_CE= 0.1358, seg_DC= -1.5230 
+2026-10-04 10:12:14.969605: validation loss: -1.3458: seg_CE= 0.1685, seg_DC= -1.5143 
+2026-10-04 10:12:15.001855: Average global foreground Dice: [0.8633, 0.9535] val_metric 0.8633 val_metric_MA 0.8495 
+2026-10-04 10:12:15.052556: lesion-wise sens 0.5774 prec 0.5354 clsf acc 1.0000, val_metric 0.7043 
+2026-10-04 10:12:15.052886: sens of each class [0.5774] and size [0.0563, 0.569, 0.8475, 1.0] 
+2026-10-04 10:12:16.298032: lr: 3e-06 
+2026-10-04 10:12:16.342348: saving checkpoint... 
+2026-10-04 10:12:16.723652: done, saving took 0.43 seconds 
+2026-10-04 10:12:16.882291: 	epoch:  293 
+2026-10-04 10:16:47.572265: train loss : -1.3394: seg_CE= 0.1556, seg_DC= -1.4950 
+2026-10-04 10:17:08.017812: validation loss: -1.2430: seg_CE= 0.1620, seg_DC= -1.4049 
+2026-10-04 10:17:08.022609: Average global foreground Dice: [0.8369, 0.9549] val_metric 0.8369 val_metric_MA 0.8509 
+2026-10-04 10:17:08.486388: lr: 3e-06 
+2026-10-04 10:17:08.486690: 	epoch:  294 
+2026-10-04 10:21:36.276622: train loss : -1.3795: seg_CE= 0.1402, seg_DC= -1.5197 
+2026-10-04 10:21:56.006924: validation loss: -1.3175: seg_CE= 0.1667, seg_DC= -1.4843 
+2026-10-04 10:21:56.041945: Average global foreground Dice: [0.8711, 0.9528] val_metric 0.8711 val_metric_MA 0.8495 
+2026-10-04 10:21:56.069713: lesion-wise sens 0.6875 prec 0.4672 clsf acc 1.0000, val_metric 0.7182 
+2026-10-04 10:21:56.070045: sens of each class [0.6875] and size [0.1333, 0.5532, 0.8431, 1.0] 
+2026-10-04 10:21:56.523717: lr: 3e-06 
+2026-10-04 10:21:56.539503: saving checkpoint... 
+2026-10-04 10:21:56.862382: done, saving took 0.34 seconds 
+2026-10-04 10:21:56.943990: 	epoch:  295 
+2026-10-04 10:25:51.968979: train loss : -1.3562: seg_CE= 0.1354, seg_DC= -1.4916 
+2026-10-04 10:26:10.464481: validation loss: -1.2899: seg_CE= 0.1481, seg_DC= -1.4380 
+2026-10-04 10:26:10.477001: Average global foreground Dice: [0.8441, 0.9556] val_metric 0.8441 val_metric_MA 0.8517 
+2026-10-04 10:26:11.073675: lr: 2e-06 
+2026-10-04 10:26:11.073981: 	epoch:  296 
+2026-10-04 10:30:24.734861: train loss : -1.3964: seg_CE= 0.1311, seg_DC= -1.5275 
+2026-10-04 10:30:43.609623: validation loss: -1.3878: seg_CE= 0.1477, seg_DC= -1.5355 
+2026-10-04 10:30:43.616382: Average global foreground Dice: [0.8329, 0.9609] val_metric 0.8329 val_metric_MA 0.8509 
+2026-10-04 10:30:43.646656: lesion-wise sens 0.6500 prec 0.5247 clsf acc 1.0000, val_metric 0.7249 
+2026-10-04 10:30:43.646986: sens of each class [0.65] and size [0.0976, 0.6304, 0.8222, 0.9792] 
+2026-10-04 10:30:44.117437: lr: 2e-06 
+2026-10-04 10:30:44.117712: 	epoch:  297 
+2026-10-04 10:35:12.443390: train loss : -1.3700: seg_CE= 0.1493, seg_DC= -1.5193 
+2026-10-04 10:35:26.123411: validation loss: -1.3207: seg_CE= 0.1640, seg_DC= -1.4847 
+2026-10-04 10:35:26.135613: Average global foreground Dice: [0.8271, 0.9591] val_metric 0.8271 val_metric_MA 0.8491 
+2026-10-04 10:35:26.889231: lr: 1e-06 
+2026-10-04 10:35:26.889535: 	epoch:  298 
+2026-10-04 10:40:18.106088: train loss : -1.3892: seg_CE= 0.1392, seg_DC= -1.5284 
+2026-10-04 10:40:37.962710: validation loss: -1.2788: seg_CE= 0.2001, seg_DC= -1.4789 
+2026-10-04 10:40:37.971732: Average global foreground Dice: [0.8637, 0.9449] val_metric 0.8637 val_metric_MA 0.8469 
+2026-10-04 10:40:37.996332: lesion-wise sens 0.6021 prec 0.4528 clsf acc 1.0000, val_metric 0.685 
+2026-10-04 10:40:37.996641: sens of each class [0.6021] and size [0.0962, 0.5556, 0.8276, 1.0] 
+2026-10-04 10:40:38.796263: lr: 1e-06 
+2026-10-04 10:40:38.796559: 	epoch:  299 
+2026-10-04 10:45:07.154709: train loss : -1.3986: seg_CE= 0.1281, seg_DC= -1.5267 
+2026-10-04 10:45:27.005946: validation loss: -1.3575: seg_CE= 0.1426, seg_DC= -1.5000 
+2026-10-04 10:45:27.012503: Average global foreground Dice: [0.8684, 0.9586] val_metric 0.8684 val_metric_MA 0.8486 
+2026-10-04 10:45:27.507658: lr: 0.0 
+2026-10-04 10:45:27.507931: saving scheduled checkpoint file... 
+2026-10-04 10:45:27.532213: saving checkpoint... 
+2026-10-04 10:45:27.966396: done, saving took 0.46 seconds 
+2026-10-04 10:45:28.080632: done 
+2026-10-04 10:45:28.096587: saving checkpoint... 
+2026-10-04 10:45:28.591636: done, saving took 0.51 seconds 
+2026-10-04 10:45:28.713151: Training took 23.4 hours 

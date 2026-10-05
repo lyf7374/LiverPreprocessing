@@ -1,0 +1,12 @@
+{
+  "submitted": "2026-10-03T11:05:18",
+  "task": "Task521_HCC_strat",
+  "suffix": "_strat",
+  "lesion_sampling": "1",
+  "stage1": "30029583",
+  "stage2": {
+    "plan2": "30029584",
+    "plan2_mod": "30029585"
+  },
+  "after": ""
+}

@@ -1,0 +1,56 @@
+{
+  "0": {
+    "batch_size": 2,
+    "num_pool_per_axis": [
+      4,
+      5,
+      5
+    ],
+    "patch_size": [
+      112,
+      128,
+      160
+    ],
+    "median_patient_size_in_voxels": [
+      193,
+      214,
+      246
+    ],
+    "current_spacing": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "pool_op_kernel_sizes": [
+      [
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2
+      ],
+      [
+        2,
+        2,
+        2
+      ],
+      [
+        1,
+        2,
+        2
+      ]
+    ]
+  },
+  "base_num_features": 32,
+  "num_modalities": 4,
+  "num_classes": 2,
+  "plan_num_patches": 60
+}
